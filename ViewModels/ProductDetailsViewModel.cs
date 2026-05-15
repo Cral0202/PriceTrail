@@ -10,6 +10,7 @@ namespace PriceTrail.ViewModels;
 
 public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Product product) : ObservableObject
 {
+    private readonly DatabaseService _db = new();
     private readonly ProductExtractorService _extractor = new();
 
     public Product Product { get; } = product;
@@ -27,6 +28,7 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
 
         if (result != null)
         {
+            await _db.AddProductPageAsync(Product, result);
             Product.ProductPages.Add(result);
         }
 
@@ -51,6 +53,8 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
                 {
                     productPage.Price = result.Price;
                     productPage.Currency = result.Currency;
+
+                    await _db.UpdateProductPageAsync(productPage);
                 }
             }
         }
@@ -58,6 +62,13 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
         {
             IsRefreshing = false;
         }
+    }
+
+    [RelayCommand]
+    private async Task DeleteProductPageAsync(ProductPage page)
+    {
+        await _db.DeleteProductPageAsync(page);
+        Product.ProductPages.Remove(page);
     }
 
     [RelayCommand]

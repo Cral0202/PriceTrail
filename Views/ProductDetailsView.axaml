@@ -37,7 +37,7 @@ x:DataType="vm:ProductDetailsViewModel">
 
                     <Border Padding="10">
 
-                        <StackPanel>
+                        <StackPanel Spacing="5">
 
                             <TextBlock
                             Text="{Binding StoreName}"
@@ -48,6 +48,11 @@ x:DataType="vm:ProductDetailsViewModel">
 
                             <TextBlock
                             Text="{Binding Currency}" />
+
+                            <Button
+                            Content="Delete"
+                            Command="{Binding $parent[UserControl].DataContext.DeleteProductPageCommand}"
+                            CommandParameter="{Binding}" />
 
                         </StackPanel>
 

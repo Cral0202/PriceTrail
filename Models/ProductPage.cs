@@ -4,6 +4,8 @@ namespace PriceTrail.Models;
 
 public partial class ProductPage : ObservableObject
 {
+    public int Id { get; set; }
+    public int ProductId { get; set; } // Foreign key
     public string Url { get; set; } = "";
     public string StoreName { get; set; } = "";
 

@@ -26,10 +26,24 @@ x:DataType="vm:ProductsViewModel">
 
                 <DataTemplate x:DataType="models:Product">
 
-                    <Button
-                    Content="{Binding Name}"
-                    Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
-                    CommandParameter="{Binding}" />
+                    <Border Padding="5">
+
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="10">
+
+                            <Button
+                            Content="{Binding Name}"
+                            Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
+                            CommandParameter="{Binding}" />
+
+                            <Button
+                            Content="Delete"
+                            Command="{Binding $parent[UserControl].DataContext.DeleteProductCommand}"
+                            CommandParameter="{Binding}" />
+
+                        </StackPanel>
+
+                    </Border>
 
                 </DataTemplate>
 

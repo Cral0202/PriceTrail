@@ -13,5 +13,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         ProductsViewModel = new ProductsViewModel(this);
         CurrentViewModel = ProductsViewModel;
+
+        _ = ProductsViewModel.LoadProductsAsync();
     }
 }
