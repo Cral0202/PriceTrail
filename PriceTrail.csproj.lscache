@@ -56,13 +56,17 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 
 [sourceFiles]
 App.axaml.cs
+Converters/LocalDateTimeConverter.cs
 Database/
  AppDbContext.cs
  Migrations/
   20260515162518_InitialCreate.cs
   20260515162518_InitialCreate.Designer.cs
+  20260515202614_AddPriceHistory.cs
+  20260515202614_AddPriceHistory.Designer.cs
   AppDbContextModelSnapshot.cs
 Models/
+ PriceHistoryEntry.cs
  Product.cs
  ProductPage.cs
 obj/Debug/net10.0/

@@ -3,6 +3,7 @@ using HtmlAgilityPack;
 using PriceTrail.Models;
 
 using System;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -68,9 +69,14 @@ public class ProductExtractorService
                         {
                             if (root.TryGetProperty("offers", out var offers))
                             {
-                                var price = offers.GetProperty("price").ToString();
+                                var priceString = offers.GetProperty("price").ToString();
                                 var currency = offers.GetProperty("priceCurrency").GetString();
                                 var storeName = "";
+
+                                if (!decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price))
+                                {
+                                    continue;
+                                }
 
                                 if (offers.TryGetProperty("seller", out var seller))
                                 {

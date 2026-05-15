@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
 {
     public DbSet<Product> Products => Set<Product>();
     public DbSet<ProductPage> ProductPages => Set<ProductPage>();
+    public DbSet<PriceHistoryEntry> PriceHistoryEntries => Set<PriceHistoryEntry>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

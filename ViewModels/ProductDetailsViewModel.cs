@@ -29,6 +29,9 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
         if (result != null)
         {
             await _db.AddProductPageAsync(Product, result);
+            var historyEntry = await _db.AddPriceHistoryEntryAsync(result);
+
+            result.PriceHistory.Add(historyEntry);
             Product.ProductPages.Add(result);
         }
 
@@ -55,6 +58,9 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
                     productPage.Currency = result.Currency;
 
                     await _db.UpdateProductPageAsync(productPage);
+
+                    var historyEntry = await _db.AddPriceHistoryEntryAsync(productPage);
+                    productPage.PriceHistory.Add(historyEntry);
                 }
             }
         }

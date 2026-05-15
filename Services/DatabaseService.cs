@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,9 +15,7 @@ public class DatabaseService
     {
         using var db = new AppDbContext();
 
-        return await db.Products
-            .Include(p => p.ProductPages)
-            .ToListAsync();
+        return await db.Products.Include(p => p.ProductPages).ThenInclude(pp => pp.PriceHistory).ToListAsync();
     }
 
     public async Task AddProductAsync(Product product)
@@ -61,5 +60,22 @@ public class DatabaseService
 
         db.ProductPages.Remove(page);
         await db.SaveChangesAsync();
+    }
+
+    public async Task<PriceHistoryEntry> AddPriceHistoryEntryAsync(ProductPage page)
+    {
+        using var db = new AppDbContext();
+
+        var entry = new PriceHistoryEntry
+        {
+            ProductPageId = page.Id,
+            Price = page.Price,
+            Currency = page.Currency,
+            Timestamp = DateTime.UtcNow
+        };
+
+        db.PriceHistoryEntries.Add(entry);
+        await db.SaveChangesAsync();
+        return entry;
     }
 }
