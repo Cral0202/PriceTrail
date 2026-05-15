@@ -36,6 +36,9 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
     [RelayCommand]
     private async Task RefreshPricesAsync()
     {
+        if (IsRefreshing)
+            return;
+
         IsRefreshing = true;
 
         try
