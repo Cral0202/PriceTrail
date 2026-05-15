@@ -1,0 +1,59 @@
+<UserControl
+xmlns="https://github.com/avaloniaui"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:vm="using:PriceTrail.ViewModels"
+xmlns:models="using:PriceTrail.Models"
+x:Class="PriceTrail.Views.ProductDetailsView"
+x:DataType="vm:ProductDetailsViewModel">
+
+    <StackPanel Margin="20" Spacing="10">
+
+        <Button
+        Content="Back"
+        Command="{Binding GoBackCommand}" />
+
+        <TextBlock
+        Text="{Binding Product.Name}"
+        FontSize="28" />
+
+        <TextBox
+        PlaceholderText="Product URL"
+        Text="{Binding Url}" />
+
+        <Button
+        Content="Add Product Page"
+        Command="{Binding AddProductPageCommand}" />
+
+        <ItemsControl ItemsSource="{Binding Product.ProductPages}">
+
+            <ItemsControl.ItemTemplate>
+
+                <DataTemplate x:DataType="models:ProductPage">
+
+                    <Border Padding="10">
+
+                        <StackPanel>
+
+                            <TextBlock
+                            Text="{Binding StoreName}"
+                            FontWeight="Bold" />
+
+                            <TextBlock
+                            Text="{Binding Price}" />
+
+                            <TextBlock
+                            Text="{Binding Currency}" />
+
+                        </StackPanel>
+
+                    </Border>
+
+                </DataTemplate>
+
+            </ItemsControl.ItemTemplate>
+
+        </ItemsControl>
+
+    </StackPanel>
+
+</UserControl>

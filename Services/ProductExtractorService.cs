@@ -12,7 +12,7 @@ namespace PriceTrail.Services;
 
 public class ProductExtractorService
 {
-    private readonly HttpClient _httpClient = new();
+    private readonly HttpClient _httpClient;
 
     public ProductExtractorService()
     {
@@ -37,7 +37,7 @@ public class ProductExtractorService
         _httpClient.DefaultRequestHeaders.AcceptLanguage.ParseAdd("en-US,en;q=0.9");
     }
 
-    public async Task<ProductInfo?> ExtractAsync(string url)
+    public async Task<ProductPage?> ExtractAsync(string url)
     {
         var html = await _httpClient.GetStringAsync(url);
 
@@ -54,9 +54,7 @@ public class ProductExtractorService
             try
             {
                 var json = script.InnerText;
-
                 using var doc = JsonDocument.Parse(json);
-
                 var root = doc.RootElement;
 
                 if (root.TryGetProperty("@type", out var typeProperty))
@@ -68,13 +66,22 @@ public class ProductExtractorService
                         if (root.TryGetProperty("offers", out var offers))
                         {
                             var price = offers.GetProperty("price").ToString();
-
                             var currency = offers.GetProperty("priceCurrency").GetString();
+                            var storeName = "";
 
-                            return new ProductInfo
+                            if (offers.TryGetProperty("seller", out var seller))
                             {
+                                storeName = seller.ValueKind == JsonValueKind.Object
+                                ? seller.GetProperty("name").GetString()
+                                : seller.GetString();
+                            }
+
+                            return new ProductPage
+                            {
+                                Url = url,
+                                StoreName = storeName ?? "Unknown Store",
                                 Price = price,
-                                Currency = currency
+                                Currency = currency ?? ""
                             };
                         }
                     }
