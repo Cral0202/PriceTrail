@@ -1,9 +1,15 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace PriceTrail.Models;
 
-public class ProductPage
+public partial class ProductPage : ObservableObject
 {
     public string Url { get; set; } = "";
     public string StoreName { get; set; } = "";
-    public string Price { get; set; } = "";
-    public string Currency { get; set; } = "";
+
+    [ObservableProperty]
+    public partial string Price { get; set; } = "";
+
+    [ObservableProperty]
+    public partial string Currency { get; set; } = "";
 }

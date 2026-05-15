@@ -12,6 +12,11 @@ x:DataType="vm:ProductDetailsViewModel">
         Content="Back"
         Command="{Binding GoBackCommand}" />
 
+        <Button
+        Content="Refresh Prices"
+        Command="{Binding RefreshPricesCommand}"
+        IsEnabled="{Binding !IsRefreshing}" />
+
         <TextBlock
         Text="{Binding Product.Name}"
         FontSize="28" />

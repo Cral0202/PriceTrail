@@ -17,6 +17,9 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
     [ObservableProperty]
     public partial string Url { get; set; } = "";
 
+    [ObservableProperty]
+    public partial bool IsRefreshing { get; set; }
+
     [RelayCommand]
     private async Task AddProductPageAsync()
     {
@@ -28,6 +31,30 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
         }
 
         Url = "";
+    }
+
+    [RelayCommand]
+    private async Task RefreshPricesAsync()
+    {
+        IsRefreshing = true;
+
+        try
+        {
+            foreach (var productPage in Product.ProductPages)
+            {
+                var result = await _extractor.ExtractAsync(productPage.Url);
+
+                if (result != null)
+                {
+                    productPage.Price = result.Price;
+                    productPage.Currency = result.Currency;
+                }
+            }
+        }
+        finally
+        {
+            IsRefreshing = false;
+        }
     }
 
     [RelayCommand]
