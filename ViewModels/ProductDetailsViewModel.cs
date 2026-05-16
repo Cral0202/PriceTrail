@@ -5,10 +5,11 @@ using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.Models;
 using PriceTrail.Services;
+using PriceTrail.States;
 
 namespace PriceTrail.ViewModels;
 
-public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Product product) : ObservableObject
+public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, ProductState productState, Product product) : ObservableObject
 {
     private readonly DatabaseService _db = new();
     private readonly ProductExtractorService _extractor = new();
@@ -109,15 +110,13 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
             return;
 
         Product.Name = trimmedName;
-        await _db.UpdateProductAsync(Product);
+        await productState.UpdateProductAsync(Product);
     }
 
     [RelayCommand]
     private async Task DeleteProductAsync()
     {
-        await _db.DeleteProductAsync(Product);
-
-        mainWindow.ProductsViewModel.Products.Remove(Product); // TODO: Probably not the cleanest way to do this
+        await productState.DeleteProductAsync(Product);
         mainWindow.CurrentViewModel = mainWindow.ProductsViewModel;
     }
 

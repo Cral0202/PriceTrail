@@ -76,6 +76,7 @@ Program.cs
 Services/
  DatabaseService.cs
  ProductExtractorService.cs
+States/ProductState.cs
 ViewLocator.cs
 ViewModels/
  MainWindowViewModel.cs

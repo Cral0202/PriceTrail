@@ -6,32 +6,19 @@ using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.Models;
 using PriceTrail.Services;
+using PriceTrail.States;
 
 namespace PriceTrail.ViewModels;
 
-public partial class ProductsViewModel(MainWindowViewModel mainWindow) : ObservableObject
+public partial class ProductsViewModel(MainWindowViewModel mainWindow, ProductState productState) : ObservableObject
 {
-    private readonly DatabaseService _db = new();
-
-    public ObservableCollection<Product> Products { get; } = [];
+    public ObservableCollection<Product> Products => productState.Products;
 
     [ObservableProperty]
     public partial bool IsAddProductModalOpen { get; set; }
 
     [ObservableProperty]
     public partial string NewProductName { get; set; } = "";
-
-    public async Task LoadProductsAsync()
-    {
-        var products = await _db.GetProductsAsync();
-
-        Products.Clear();
-
-        foreach (var product in products)
-        {
-            Products.Add(product);
-        }
-    }
 
     [RelayCommand]
     private async Task AddProductAsync()
@@ -46,9 +33,7 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow) : Observa
             Name = trimmedName
         };
 
-        await _db.AddProductAsync(product);
-
-        Products.Add(product);
+        await productState.AddProductAsync(product);
 
         NewProductName = "";
         IsAddProductModalOpen = false;
@@ -57,7 +42,7 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow) : Observa
     [RelayCommand]
     private void OpenProduct(Product product)
     {
-        mainWindow.CurrentViewModel = new ProductDetailsViewModel(mainWindow, product);
+        mainWindow.CurrentViewModel = new ProductDetailsViewModel(mainWindow, productState, product);
     }
 
     /**********/

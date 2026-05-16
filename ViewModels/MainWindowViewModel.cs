@@ -1,9 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
+using PriceTrail.States;
+
 namespace PriceTrail.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
+    private readonly ProductState _productState = new();
+
     [ObservableProperty]
     public partial object CurrentViewModel { get; set; }
 
@@ -11,9 +15,9 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        ProductsViewModel = new ProductsViewModel(this);
+        ProductsViewModel = new ProductsViewModel(this, _productState);
         CurrentViewModel = ProductsViewModel;
 
-        _ = ProductsViewModel.LoadProductsAsync();
+        _ = _productState.LoadProductsAsync();
     }
 }
