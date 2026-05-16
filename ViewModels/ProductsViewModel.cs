@@ -16,6 +16,9 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow) : Observa
     public ObservableCollection<Product> Products { get; } = [];
 
     [ObservableProperty]
+    public partial bool IsAddProductModalOpen { get; set; }
+
+    [ObservableProperty]
     public partial string NewProductName { get; set; } = "";
 
     public async Task LoadProductsAsync()
@@ -46,6 +49,7 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow) : Observa
         Products.Add(product);
 
         NewProductName = "";
+        IsAddProductModalOpen = false;
     }
 
     [RelayCommand]
@@ -59,5 +63,18 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow) : Observa
     {
         await _db.DeleteProductAsync(product);
         Products.Remove(product);
+    }
+
+    [RelayCommand]
+    private void OpenAddProductModal()
+    {
+        IsAddProductModalOpen = true;
+    }
+
+    [RelayCommand]
+    private void CancelAddProduct()
+    {
+        NewProductName = "";
+        IsAddProductModalOpen = false;
     }
 }

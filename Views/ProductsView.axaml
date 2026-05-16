@@ -6,51 +6,110 @@ xmlns:models="using:PriceTrail.Models"
 x:Class="PriceTrail.Views.ProductsView"
 x:DataType="vm:ProductsViewModel">
 
-    <StackPanel Margin="20" Spacing="10">
+    <Grid>
 
-        <TextBlock
-        Text="Products"
-        FontSize="28" />
+        <StackPanel
+        Margin="20"
+        Spacing="10">
 
-        <TextBox
-        PlaceholderText="Product Name"
-        Text="{Binding NewProductName}" />
+            <!-- HEADER -->
 
-        <Button
-        Content="Add Product"
-        Command="{Binding AddProductCommand}" />
+            <Grid ColumnDefinitions="*,Auto">
 
-        <ItemsControl ItemsSource="{Binding Products}">
+                <TextBlock
+                Grid.Column="0"
+                Text="Products"
+                FontSize="28" />
 
-            <ItemsControl.ItemTemplate>
+                <Button
+                Grid.Column="1"
+                Content="Add Product"
+                Command="{Binding OpenAddProductModalCommand}" />
 
-                <DataTemplate x:DataType="models:Product">
+            </Grid>
 
-                    <Border Padding="5">
+            <!-- PRODUCTS -->
 
-                        <StackPanel Orientation="Horizontal"
-                                    Spacing="10">
+            <ItemsControl ItemsSource="{Binding Products}">
 
-                            <Button
-                            Content="{Binding Name}"
-                            Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
-                            CommandParameter="{Binding}" />
+                <ItemsControl.ItemTemplate>
 
-                            <Button
-                            Content="Delete"
-                            Command="{Binding $parent[UserControl].DataContext.DeleteProductCommand}"
-                            CommandParameter="{Binding}" />
+                    <DataTemplate x:DataType="models:Product">
 
-                        </StackPanel>
+                        <Border Padding="5">
 
-                    </Border>
+                            <StackPanel
+                            Orientation="Horizontal"
+                            Spacing="10">
 
-                </DataTemplate>
+                                <Button
+                                Content="{Binding Name}"
+                                Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
+                                CommandParameter="{Binding}" />
 
-            </ItemsControl.ItemTemplate>
+                                <Button
+                                Content="Delete"
+                                Command="{Binding $parent[UserControl].DataContext.DeleteProductCommand}"
+                                CommandParameter="{Binding}" />
 
-        </ItemsControl>
+                            </StackPanel>
 
-    </StackPanel>
+                        </Border>
+
+                    </DataTemplate>
+
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+
+        </StackPanel>
+
+        <!-- MODAL -->
+
+        <Border
+        IsVisible="{Binding IsAddProductModalOpen}"
+        Background="#80000000">
+
+            <Border
+            Width="300"
+            Padding="20"
+            CornerRadius="10"
+            Background="#1D1B1B"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+
+                <StackPanel Spacing="10">
+
+                    <TextBlock
+                    Text="Add Product"
+                    FontSize="20"
+                    FontWeight="Bold" />
+
+                    <TextBox
+                    Text="{Binding NewProductName}"
+                    PlaceholderText="Product Name" />
+
+                    <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="10">
+
+                        <Button
+                        Content="Cancel"
+                        Command="{Binding CancelAddProductCommand}" />
+
+                        <Button
+                        Content="Add"
+                        Command="{Binding AddProductCommand}" />
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </Border>
+
+        </Border>
+
+    </Grid>
 
 </UserControl>
