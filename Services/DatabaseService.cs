@@ -26,6 +26,22 @@ public class DatabaseService
         await db.SaveChangesAsync();
     }
 
+    public async Task UpdateProductAsync(Product product)
+    {
+        using var db = new AppDbContext();
+
+        db.Products.Update(product);
+        await db.SaveChangesAsync();
+    }
+
+    public async Task DeleteProductAsync(Product product)
+    {
+        using var db = new AppDbContext();
+
+        db.Products.Remove(product);
+        await db.SaveChangesAsync();
+    }
+
     public async Task AddProductPageAsync(
         Product product,
         ProductPage page)
@@ -43,14 +59,6 @@ public class DatabaseService
         using var db = new AppDbContext();
 
         db.ProductPages.Update(page);
-        await db.SaveChangesAsync();
-    }
-
-    public async Task DeleteProductAsync(Product product)
-    {
-        using var db = new AppDbContext();
-
-        db.Products.Remove(product);
         await db.SaveChangesAsync();
     }
 

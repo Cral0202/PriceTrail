@@ -184,7 +184,7 @@ x:DataType="vm:ProductsViewModel">
 
                         <Button
                         Content="Cancel"
-                        Command="{Binding CancelAddProductCommand}" />
+                        Command="{Binding CloseAddProductModalCommand}" />
 
                         <Button
                         Content="Add"

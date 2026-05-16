@@ -19,7 +19,13 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
     public partial bool IsAddProductPageModalOpen { get; set; }
 
     [ObservableProperty]
+    public partial bool IsEditProductModalOpen { get; set; }
+
+    [ObservableProperty]
     public partial string NewProductPageUrl { get; set; } = "";
+
+    [ObservableProperty]
+    public partial string NewProductName { get; set; } = "";
 
     [ObservableProperty]
     public partial bool IsRefreshing { get; set; }
@@ -87,6 +93,29 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
         mainWindow.CurrentViewModel = mainWindow.ProductsViewModel;
     }
 
+    /****************/
+    /* EDIT PRODUCT */
+    /****************/
+
+    [RelayCommand]
+    private async Task ChangeProductNameAsync()
+    {
+        var trimmedName = NewProductName.Trim();
+
+        if (string.IsNullOrWhiteSpace(trimmedName))
+            return;
+
+        if (Product.Name == trimmedName)
+            return;
+
+        Product.Name = trimmedName;
+        await _db.UpdateProductAsync(Product);
+    }
+
+    /**********/
+    /* MODALS */
+    /**********/
+
     [RelayCommand]
     private void OpenAddProductPageModal()
     {
@@ -94,9 +123,28 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
     }
 
     [RelayCommand]
-    private void CancelAddProductPage()
+    private void CloseAddProductPageModal()
     {
         NewProductPageUrl = "";
         IsAddProductPageModalOpen = false;
+    }
+
+    [RelayCommand]
+    private void OpenEditProductModal()
+    {
+        NewProductName = Product.Name;
+        IsEditProductModalOpen = true;
+    }
+
+    [RelayCommand]
+    private async Task CloseEditProductModalAsync()
+    {
+        // Check if product name should be updated
+        if (Product.Name != NewProductName)
+        {
+            await ChangeProductNameAsync();
+        }
+
+        IsEditProductModalOpen = false;
     }
 }

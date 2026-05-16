@@ -36,12 +36,14 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow) : Observa
     [RelayCommand]
     private async Task AddProductAsync()
     {
-        if (string.IsNullOrWhiteSpace(NewProductName))
+        var trimmedName = NewProductName.Trim();
+
+        if (string.IsNullOrWhiteSpace(trimmedName))
             return;
 
         var product = new Product
         {
-            Name = NewProductName
+            Name = trimmedName
         };
 
         await _db.AddProductAsync(product);
@@ -65,6 +67,10 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow) : Observa
         Products.Remove(product);
     }
 
+    /**********/
+    /* MODALS */
+    /**********/
+
     [RelayCommand]
     private void OpenAddProductModal()
     {
@@ -72,7 +78,7 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow) : Observa
     }
 
     [RelayCommand]
-    private void CancelAddProduct()
+    private void CloseAddProductModal()
     {
         NewProductName = "";
         IsAddProductModalOpen = false;
