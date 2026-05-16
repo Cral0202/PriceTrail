@@ -4,17 +4,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.Models;
-using PriceTrail.Repositories;
-using PriceTrail.Services;
 using PriceTrail.States;
 
 namespace PriceTrail.ViewModels;
 
-public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, ProductState productState, Product product) : ObservableObject
+public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, AppState appState, Product product) : ObservableObject
 {
-    private readonly ProductPageRepository _productPageRepo = new();
-    private readonly PriceHistoryRepository _priceHistoryRepo = new();
-    private readonly ProductExtractorService _extractor = new();
+    private readonly ProductState _productState = appState.ProductState;
 
     public Product Product { get; } = product;
 
@@ -36,16 +32,7 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
     [RelayCommand]
     private async Task AddProductPageAsync()
     {
-        var result = await _extractor.ExtractAsync(NewProductPageUrl);
-
-        if (result != null)
-        {
-            await _productPageRepo.AddProductPageAsync(Product, result);
-            var historyEntry = await _priceHistoryRepo.AddPriceHistoryEntryAsync(result);
-
-            result.PriceHistory.Add(historyEntry);
-            Product.ProductPages.Add(result);
-        }
+        await _productState.AddProductPageToProductAsync(Product, NewProductPageUrl);
 
         NewProductPageUrl = "";
         IsAddProductPageModalOpen = false;
@@ -61,21 +48,7 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
 
         try
         {
-            foreach (var productPage in Product.ProductPages)
-            {
-                var result = await _extractor.ExtractAsync(productPage.Url);
-
-                if (result != null)
-                {
-                    productPage.Price = result.Price;
-                    productPage.Currency = result.Currency;
-
-                    await _productPageRepo.UpdateProductPageAsync(productPage);
-
-                    var historyEntry = await _priceHistoryRepo.AddPriceHistoryEntryAsync(productPage);
-                    productPage.PriceHistory.Add(historyEntry);
-                }
-            }
+            await _productState.RefreshProductPricesAsync(Product);
         }
         finally
         {
@@ -86,8 +59,7 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
     [RelayCommand]
     private async Task DeleteProductPageAsync(ProductPage page)
     {
-        await _productPageRepo.DeleteProductPageAsync(page);
-        Product.ProductPages.Remove(page);
+        await _productState.DeleteProductPageFromProductAsync(Product, page);
     }
 
     [RelayCommand]
@@ -112,13 +84,13 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
             return;
 
         Product.Name = trimmedName;
-        await productState.UpdateProductAsync(Product);
+        await _productState.UpdateProductAsync(Product);
     }
 
     [RelayCommand]
     private async Task DeleteProductAsync()
     {
-        await productState.DeleteProductAsync(Product);
+        await _productState.DeleteProductAsync(Product);
         mainWindow.CurrentViewModel = mainWindow.ProductsViewModel;
     }
 

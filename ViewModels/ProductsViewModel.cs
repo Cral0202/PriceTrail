@@ -44,7 +44,7 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow, AppState 
     [RelayCommand]
     private void OpenProduct(Product product)
     {
-        mainWindow.CurrentViewModel = new ProductDetailsViewModel(mainWindow, _productState, product);
+        mainWindow.CurrentViewModel = new ProductDetailsViewModel(mainWindow, appState, product);
     }
 
     /**********/
