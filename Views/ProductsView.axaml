@@ -123,19 +123,6 @@ x:DataType="vm:ProductsViewModel">
 
                                         </StackPanel>
 
-                                        <!-- ACTIONS -->
-
-                                        <StackPanel
-                                        Grid.Column="2"
-                                        VerticalAlignment="Top">
-
-                                            <Button
-                                            Content="Delete"
-                                            Command="{Binding $parent[UserControl].DataContext.DeleteProductCommand}"
-                                            CommandParameter="{Binding}" />
-
-                                        </StackPanel>
-
                                     </Grid>
 
                                 </Border>

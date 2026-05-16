@@ -112,6 +112,15 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
         await _db.UpdateProductAsync(Product);
     }
 
+    [RelayCommand]
+    private async Task DeleteProductAsync()
+    {
+        await _db.DeleteProductAsync(Product);
+
+        mainWindow.ProductsViewModel.Products.Remove(Product); // TODO: Probably not the cleanest way to do this
+        mainWindow.CurrentViewModel = mainWindow.ProductsViewModel;
+    }
+
     /**********/
     /* MODALS */
     /**********/

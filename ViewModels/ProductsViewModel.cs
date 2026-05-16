@@ -60,13 +60,6 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow) : Observa
         mainWindow.CurrentViewModel = new ProductDetailsViewModel(mainWindow, product);
     }
 
-    [RelayCommand]
-    private async Task DeleteProductAsync(Product product)
-    {
-        await _db.DeleteProductAsync(product);
-        Products.Remove(product);
-    }
-
     /**********/
     /* MODALS */
     /**********/
