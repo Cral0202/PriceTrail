@@ -8,61 +8,65 @@ x:DataType="vm:ProductsViewModel">
 
     <Grid>
 
-        <StackPanel
-        Margin="20"
-        Spacing="10">
+        <ScrollViewer>
 
-            <!-- HEADER -->
+            <StackPanel
+            Margin="20"
+            Spacing="10">
 
-            <Grid ColumnDefinitions="*,Auto">
+                <!-- HEADER -->
 
-                <TextBlock
-                Grid.Column="0"
-                Text="Products"
-                FontSize="28" />
+                <Grid ColumnDefinitions="*,Auto">
 
-                <Button
-                Grid.Column="1"
-                Content="Add Product"
-                Command="{Binding OpenAddProductModalCommand}" />
+                    <TextBlock
+                    Grid.Column="0"
+                    Text="Products"
+                    FontSize="28" />
 
-            </Grid>
+                    <Button
+                    Grid.Column="1"
+                    Content="Add Product"
+                    Command="{Binding OpenAddProductModalCommand}" />
 
-            <!-- PRODUCTS -->
+                </Grid>
 
-            <ItemsControl ItemsSource="{Binding Products}">
+                <!-- PRODUCTS -->
 
-                <ItemsControl.ItemTemplate>
+                <ItemsControl ItemsSource="{Binding Products}">
 
-                    <DataTemplate x:DataType="models:Product">
+                    <ItemsControl.ItemTemplate>
 
-                        <Border Padding="5">
+                        <DataTemplate x:DataType="models:Product">
 
-                            <StackPanel
-                            Orientation="Horizontal"
-                            Spacing="10">
+                            <Border Padding="5">
 
-                                <Button
-                                Content="{Binding Name}"
-                                Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
-                                CommandParameter="{Binding}" />
+                                <StackPanel
+                                Orientation="Horizontal"
+                                Spacing="10">
 
-                                <Button
-                                Content="Delete"
-                                Command="{Binding $parent[UserControl].DataContext.DeleteProductCommand}"
-                                CommandParameter="{Binding}" />
+                                    <Button
+                                    Content="{Binding Name}"
+                                    Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
+                                    CommandParameter="{Binding}" />
 
-                            </StackPanel>
+                                    <Button
+                                    Content="Delete"
+                                    Command="{Binding $parent[UserControl].DataContext.DeleteProductCommand}"
+                                    CommandParameter="{Binding}" />
 
-                        </Border>
+                                </StackPanel>
 
-                    </DataTemplate>
+                            </Border>
 
-                </ItemsControl.ItemTemplate>
+                        </DataTemplate>
 
-            </ItemsControl>
+                    </ItemsControl.ItemTemplate>
 
-        </StackPanel>
+                </ItemsControl>
+
+            </StackPanel>
+
+        </ScrollViewer>
 
         <!-- MODAL -->
 
