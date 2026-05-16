@@ -6,7 +6,7 @@ namespace PriceTrail.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    private readonly ProductState _productState = new();
+    private readonly AppState _appState = new();
 
     [ObservableProperty]
     public partial object CurrentViewModel { get; set; }
@@ -15,9 +15,9 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        ProductsViewModel = new ProductsViewModel(this, _productState);
+        ProductsViewModel = new ProductsViewModel(this, _appState);
         CurrentViewModel = ProductsViewModel;
 
-        _ = _productState.LoadProductsAsync();
+        _ = _appState.ProductState.LoadProductsAsync();
     }
 }

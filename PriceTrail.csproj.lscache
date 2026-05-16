@@ -78,7 +78,9 @@ Repositories/
  ProductPageRepository.cs
  ProductRepository.cs
 Services/ProductExtractorService.cs
-States/ProductState.cs
+States/
+ AppState.cs
+ ProductState.cs
 ViewLocator.cs
 ViewModels/
  MainWindowViewModel.cs

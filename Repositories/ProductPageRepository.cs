@@ -7,9 +7,7 @@ namespace PriceTrail.Repositories;
 
 public class ProductPageRepository
 {
-    public async Task AddProductPageAsync(
-        Product product,
-        ProductPage page)
+    public async Task AddProductPageAsync(Product product, ProductPage page)
     {
         using var db = new AppDbContext();
 
