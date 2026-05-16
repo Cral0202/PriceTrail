@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.Models;
+using PriceTrail.Repositories;
 using PriceTrail.Services;
 using PriceTrail.States;
 
@@ -11,7 +12,8 @@ namespace PriceTrail.ViewModels;
 
 public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, ProductState productState, Product product) : ObservableObject
 {
-    private readonly DatabaseService _db = new();
+    private readonly ProductPageRepository _productPageRepo = new();
+    private readonly PriceHistoryRepository _priceHistoryRepo = new();
     private readonly ProductExtractorService _extractor = new();
 
     public Product Product { get; } = product;
@@ -38,8 +40,8 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
 
         if (result != null)
         {
-            await _db.AddProductPageAsync(Product, result);
-            var historyEntry = await _db.AddPriceHistoryEntryAsync(result);
+            await _productPageRepo.AddProductPageAsync(Product, result);
+            var historyEntry = await _priceHistoryRepo.AddPriceHistoryEntryAsync(result);
 
             result.PriceHistory.Add(historyEntry);
             Product.ProductPages.Add(result);
@@ -68,9 +70,9 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
                     productPage.Price = result.Price;
                     productPage.Currency = result.Currency;
 
-                    await _db.UpdateProductPageAsync(productPage);
+                    await _productPageRepo.UpdateProductPageAsync(productPage);
 
-                    var historyEntry = await _db.AddPriceHistoryEntryAsync(productPage);
+                    var historyEntry = await _priceHistoryRepo.AddPriceHistoryEntryAsync(productPage);
                     productPage.PriceHistory.Add(historyEntry);
                 }
             }
@@ -84,7 +86,7 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
     [RelayCommand]
     private async Task DeleteProductPageAsync(ProductPage page)
     {
-        await _db.DeleteProductPageAsync(page);
+        await _productPageRepo.DeleteProductPageAsync(page);
         Product.ProductPages.Remove(page);
     }
 

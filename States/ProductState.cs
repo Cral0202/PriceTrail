@@ -2,19 +2,19 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 using PriceTrail.Models;
-using PriceTrail.Services;
+using PriceTrail.Repositories;
 
 namespace PriceTrail.States;
 
 public class ProductState
 {
-    private readonly DatabaseService _db = new();
+    private readonly ProductRepository _repo = new();
 
     public ObservableCollection<Product> Products { get; } = [];
 
     public async Task LoadProductsAsync()
     {
-        var products = await _db.GetProductsAsync();
+        var products = await _repo.GetProductsAsync();
 
         Products.Clear();
 
@@ -26,18 +26,18 @@ public class ProductState
 
     public async Task AddProductAsync(Product product)
     {
-        await _db.AddProductAsync(product);
+        await _repo.AddProductAsync(product);
         Products.Add(product);
     }
 
     public async Task DeleteProductAsync(Product product)
     {
-        await _db.DeleteProductAsync(product);
+        await _repo.DeleteProductAsync(product);
         Products.Remove(product);
     }
 
     public async Task UpdateProductAsync(Product product)
     {
-        await _db.UpdateProductAsync(product);
+        await _repo.UpdateProductAsync(product);
     }
 }

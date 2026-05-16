@@ -73,9 +73,11 @@ obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  PriceTrail.AssemblyInfo.cs
 Program.cs
-Services/
- DatabaseService.cs
- ProductExtractorService.cs
+Repositories/
+ PriceHistoryRepository.cs
+ ProductPageRepository.cs
+ ProductRepository.cs
+Services/ProductExtractorService.cs
 States/ProductState.cs
 ViewLocator.cs
 ViewModels/
