@@ -9,8 +9,8 @@ x:DataType="vm:ProductDetailsViewModel">
 
     <UserControl.Resources>
 
-        <converters:LocalDateTimeConverter
-        x:Key="LocalDateTimeConverter" />
+        <converters:RelativeTimeConverter
+        x:Key="RelativeTimeConverter" />
 
     </UserControl.Resources>
 
@@ -147,7 +147,7 @@ x:DataType="vm:ProductDetailsViewModel">
 
                                             <TextBlock
                                             Text="{Binding LastUpdated,
-                                            Converter={StaticResource LocalDateTimeConverter}}" />
+                                            Converter={StaticResource RelativeTimeConverter}}" />
 
                                             <TextBlock
                                             Text="⚠"

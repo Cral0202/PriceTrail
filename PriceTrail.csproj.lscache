@@ -56,7 +56,9 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 
 [sourceFiles]
 App.axaml.cs
-Converters/LocalDateTimeConverter.cs
+Converters/
+ LocalDateTimeConverter.cs
+ RelativeTimeConverter.cs
 Database/
  AppDbContext.cs
  Migrations/
