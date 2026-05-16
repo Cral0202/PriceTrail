@@ -6,6 +6,15 @@ xmlns:models="using:PriceTrail.Models"
 x:Class="PriceTrail.Views.ProductsView"
 x:DataType="vm:ProductsViewModel">
 
+    <!-- STYLES -->
+
+    <UserControl.Styles>
+        <Style Selector="Button.product-button:pointerover /template/ ContentPresenter, Button.product-button:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+    </UserControl.Styles>
+
     <Grid>
 
         <ScrollViewer>
@@ -21,7 +30,8 @@ x:DataType="vm:ProductsViewModel">
                     <TextBlock
                     Grid.Column="0"
                     Text="Products"
-                    FontSize="28" />
+                    FontSize="28"
+                    FontWeight="Bold" />
 
                     <Button
                     Grid.Column="1"
@@ -34,29 +44,103 @@ x:DataType="vm:ProductsViewModel">
 
                 <ItemsControl ItemsSource="{Binding Products}">
 
+                    <ItemsControl.ItemsPanel>
+
+                        <ItemsPanelTemplate>
+
+                            <WrapPanel Orientation="Horizontal" />
+
+                        </ItemsPanelTemplate>
+
+                    </ItemsControl.ItemsPanel>
+
                     <ItemsControl.ItemTemplate>
 
                         <DataTemplate x:DataType="models:Product">
 
-                            <Border Padding="5">
+                            <Button
+                            Classes="product-button"
+                            Padding="0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
+                            CommandParameter="{Binding}">
 
-                                <StackPanel
-                                Orientation="Horizontal"
-                                Spacing="10">
+                                <Border
+                                Width="450"
+                                Margin="0,0,10,10"
+                                Padding="15"
+                                CornerRadius="10"
+                                Background="#1D1B1B">
 
-                                    <Button
-                                    Content="{Binding Name}"
-                                    Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
-                                    CommandParameter="{Binding}" />
+                                    <Grid
+                                    ColumnDefinitions="100,*,Auto"
+                                    ColumnSpacing="15">
 
-                                    <Button
-                                    Content="Delete"
-                                    Command="{Binding $parent[UserControl].DataContext.DeleteProductCommand}"
-                                    CommandParameter="{Binding}" />
+                                        <!-- IMAGE -->
 
-                                </StackPanel>
+                                        <Border
+                                        Grid.Column="0"
+                                        Width="100"
+                                        Height="100"
+                                        Background="#2D2B2B"
+                                        CornerRadius="8">
 
-                            </Border>
+                                            <TextBlock
+                                            Text="No Image"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center" />
+
+                                        </Border>
+
+                                        <!-- INFO -->
+
+                                        <StackPanel
+                                        Grid.Column="1"
+                                        Spacing="5"
+                                        VerticalAlignment="Center">
+
+                                            <TextBlock
+                                            Text="{Binding Name}"
+                                            FontSize="16"
+                                            FontWeight="Bold" />
+
+                                            <TextBlock
+                                            FontSize="14">
+
+                                                <Run Text="{Binding LowestPrice}" />
+
+                                                <Run Text="{Binding LowestPriceCurrency}" />
+
+                                            </TextBlock>
+
+                                            <TextBlock
+                                            FontSize="14">
+
+                                                <Run Text="{Binding LowestPriceStore}" />
+
+                                            </TextBlock>
+
+                                        </StackPanel>
+
+                                        <!-- ACTIONS -->
+
+                                        <StackPanel
+                                        Grid.Column="2"
+                                        VerticalAlignment="Top">
+
+                                            <Button
+                                            Content="Delete"
+                                            Command="{Binding $parent[UserControl].DataContext.DeleteProductCommand}"
+                                            CommandParameter="{Binding}" />
+
+                                        </StackPanel>
+
+                                    </Grid>
+
+                                </Border>
+
+                            </Button>
 
                         </DataTemplate>
 
