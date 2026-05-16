@@ -16,7 +16,10 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
     public Product Product { get; } = product;
 
     [ObservableProperty]
-    public partial string Url { get; set; } = "";
+    public partial bool IsAddProductPageModalOpen { get; set; }
+
+    [ObservableProperty]
+    public partial string NewProductPageUrl { get; set; } = "";
 
     [ObservableProperty]
     public partial bool IsRefreshing { get; set; }
@@ -24,7 +27,7 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
     [RelayCommand]
     private async Task AddProductPageAsync()
     {
-        var result = await _extractor.ExtractAsync(Url);
+        var result = await _extractor.ExtractAsync(NewProductPageUrl);
 
         if (result != null)
         {
@@ -35,7 +38,8 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
             Product.ProductPages.Add(result);
         }
 
-        Url = "";
+        NewProductPageUrl = "";
+        IsAddProductPageModalOpen = false;
     }
 
     [RelayCommand]
@@ -81,5 +85,18 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, Pro
     private void GoBack()
     {
         mainWindow.CurrentViewModel = mainWindow.ProductsViewModel;
+    }
+
+    [RelayCommand]
+    private void OpenAddProductPageModal()
+    {
+        IsAddProductPageModalOpen = true;
+    }
+
+    [RelayCommand]
+    private void CancelAddProductPage()
+    {
+        NewProductPageUrl = "";
+        IsAddProductPageModalOpen = false;
     }
 }

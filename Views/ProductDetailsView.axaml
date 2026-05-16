@@ -14,100 +14,168 @@ x:DataType="vm:ProductDetailsViewModel">
 
     </UserControl.Resources>
 
-    <StackPanel Margin="20" Spacing="10">
+    <Grid>
 
-        <Button
-        Content="Back"
-        Command="{Binding GoBackCommand}" />
+        <ScrollViewer>
 
-        <Button
-        Content="Refresh Prices"
-        Command="{Binding RefreshPricesCommand}"
-        IsEnabled="{Binding !IsRefreshing}" />
+            <StackPanel Margin="20" Spacing="10">
 
-        <TextBlock
-        Text="{Binding Product.Name}"
-        FontSize="28" />
+                <!-- HEADER -->
 
-        <TextBox
-        PlaceholderText="Product URL"
-        Text="{Binding Url}" />
+                <Grid ColumnDefinitions="*,Auto"
+                      Margin="0,0,0,10">
 
-        <Button
-        Content="Add Product Page"
-        Command="{Binding AddProductPageCommand}" />
+                    <TextBlock
+                    Grid.Column="0"
+                    Text="{Binding Product.Name}"
+                    FontSize="28"
+                    FontWeight="Bold" />
 
-        <ItemsControl ItemsSource="{Binding Product.ProductPages}">
+                    <StackPanel
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="10">
 
-            <ItemsControl.ItemTemplate>
+                        <Button
+                        Content="Back"
+                        Command="{Binding GoBackCommand}" />
 
-                <DataTemplate x:DataType="models:ProductPage">
+                        <Button
+                        Content="Add URL"
+                        Command="{Binding OpenAddProductPageModalCommand}" />
 
-                    <Border Padding="10">
+                        <Button
+                        Content="Refresh Prices"
+                        Command="{Binding RefreshPricesCommand}"
+                        IsEnabled="{Binding !IsRefreshing}" />
 
-                        <StackPanel Spacing="5">
+                    </StackPanel>
 
-                            <TextBlock
-                            Text="{Binding StoreName}"
-                            FontWeight="Bold" />
+                </Grid>
 
-                            <TextBlock
-                            Text="{Binding Price}" />
+                <!-- PRODUCT PAGES -->
 
-                            <TextBlock
-                            Text="{Binding Currency}" />
+                <ItemsControl ItemsSource="{Binding Product.ProductPages}">
 
-                            <Button
-                            Content="Delete"
-                            Command="{Binding $parent[UserControl].DataContext.DeleteProductPageCommand}"
-                            CommandParameter="{Binding}" />
+                    <ItemsControl.ItemTemplate>
 
-                            <TextBlock
-                            Text="Price History"
-                            FontWeight="Bold"
-                            Margin="0,10,0,0" />
+                        <DataTemplate x:DataType="models:ProductPage">
 
-                            <ItemsControl ItemsSource="{Binding PriceHistory}">
+                            <Border Padding="10">
 
-                                <ItemsControl.ItemTemplate>
+                                <StackPanel Spacing="5">
 
-                                    <DataTemplate x:DataType="models:PriceHistoryEntry">
+                                    <TextBlock
+                                    Text="{Binding StoreName}"
+                                    FontWeight="Bold" />
 
-                                        <Border Padding="5">
+                                    <TextBlock
+                                    Text="{Binding Price}" />
 
-                                            <StackPanel Orientation="Horizontal"
-                                                        Spacing="10">
+                                    <TextBlock
+                                    Text="{Binding Currency}" />
 
-                                                <TextBlock
-                                                Text="{Binding Price}" />
+                                    <Button
+                                    Content="Delete"
+                                    Command="{Binding $parent[UserControl].DataContext.DeleteProductPageCommand}"
+                                    CommandParameter="{Binding}" />
 
-                                                <TextBlock
-                                                Text="{Binding Currency}" />
+                                    <TextBlock
+                                    Text="Price History"
+                                    FontWeight="Bold"
+                                    Margin="0,10,0,0" />
 
-                                                <TextBlock
-                                                Text="{Binding Timestamp,
-                                                Converter={StaticResource LocalDateTimeConverter}}" />
+                                    <ItemsControl ItemsSource="{Binding PriceHistory}">
 
-                                            </StackPanel>
+                                        <ItemsControl.ItemTemplate>
 
-                                        </Border>
+                                            <DataTemplate x:DataType="models:PriceHistoryEntry">
 
-                                    </DataTemplate>
+                                                <Border Padding="5">
 
-                                </ItemsControl.ItemTemplate>
+                                                    <StackPanel Orientation="Horizontal"
+                                                                Spacing="10">
 
-                            </ItemsControl>
+                                                        <TextBlock
+                                                        Text="{Binding Price}" />
 
-                        </StackPanel>
+                                                        <TextBlock
+                                                        Text="{Binding Currency}" />
 
-                    </Border>
+                                                        <TextBlock
+                                                        Text="{Binding Timestamp,
+                                                        Converter={StaticResource LocalDateTimeConverter}}" />
 
-                </DataTemplate>
+                                                    </StackPanel>
 
-            </ItemsControl.ItemTemplate>
+                                                </Border>
 
-        </ItemsControl>
+                                            </DataTemplate>
 
-    </StackPanel>
+                                        </ItemsControl.ItemTemplate>
+
+                                    </ItemsControl>
+
+                                </StackPanel>
+
+                            </Border>
+
+                        </DataTemplate>
+
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+
+            </StackPanel>
+
+        </ScrollViewer>
+
+        <!-- MODAL -->
+
+        <Border
+        IsVisible="{Binding IsAddProductPageModalOpen}"
+        Background="#80000000">
+
+            <Border
+            Width="300"
+            Padding="20"
+            CornerRadius="10"
+            Background="#1D1B1B"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+
+                <StackPanel Spacing="10">
+
+                    <TextBlock
+                    Text="Add Product Page"
+                    FontSize="20"
+                    FontWeight="Bold" />
+
+                    <TextBox
+                    Text="{Binding NewProductPageUrl}"
+                    PlaceholderText="URL" />
+
+                    <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="10">
+
+                        <Button
+                        Content="Cancel"
+                        Command="{Binding CancelAddProductPageCommand}" />
+
+                        <Button
+                        Content="Add"
+                        Command="{Binding AddProductPageCommand}" />
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </Border>
+
+        </Border>
+
+    </Grid>
 
 </UserControl>
