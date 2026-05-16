@@ -1,4 +1,7 @@
+using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -19,5 +22,21 @@ public partial class ProductPage : ObservableObject
     [ObservableProperty]
     public partial string Currency { get; set; } = "";
 
-    public ObservableCollection<PriceHistoryEntry> PriceHistory { get; set; } = [];
+    [ObservableProperty]
+    public partial bool HasError { get; set; }
+
+    public ObservableCollection<PriceHistoryEntry> PriceHistory { get; set; }
+
+    public ProductPage()
+    {
+        PriceHistory = [];
+        PriceHistory.CollectionChanged += OnPriceHistoryChanged;
+    }
+
+    private void OnPriceHistoryChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(LastUpdated));
+    }
+
+    public DateTime? LastUpdated => PriceHistory.LastOrDefault()?.Timestamp;
 }

@@ -64,6 +64,8 @@ Database/
   20260515162518_InitialCreate.Designer.cs
   20260515202614_AddPriceHistory.cs
   20260515202614_AddPriceHistory.Designer.cs
+  20260516200931_ModifyProductPage.cs
+  20260516200931_ModifyProductPage.Designer.cs
   AppDbContextModelSnapshot.cs
 Models/
  PriceHistoryEntry.cs
