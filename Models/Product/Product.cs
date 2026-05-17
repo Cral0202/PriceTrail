@@ -6,7 +6,7 @@ using System.Linq;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace PriceTrail.Models;
+namespace PriceTrail.Models.Product;
 
 public partial class Product : ObservableObject
 {

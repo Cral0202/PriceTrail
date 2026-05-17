@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.Input;
 
-using PriceTrail.Models;
+using PriceTrail.Models.Product;
 using PriceTrail.States;
 
 namespace PriceTrail.ViewModels.ProductDetails;

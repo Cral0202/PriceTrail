@@ -1,6 +1,6 @@
 using HtmlAgilityPack;
 
-using PriceTrail.Models;
+using PriceTrail.Models.Product;
 
 using System;
 using System.Globalization;

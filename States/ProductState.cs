@@ -1,8 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-using PriceTrail.Models;
-using PriceTrail.Repositories;
+using PriceTrail.Models.Product;
+using PriceTrail.Repositories.Product;
 using PriceTrail.Services;
 
 namespace PriceTrail.States;

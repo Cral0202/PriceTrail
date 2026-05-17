@@ -4,20 +4,21 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using PriceTrail.Database;
-using PriceTrail.Models;
 
-namespace PriceTrail.Repositories;
+using ProductModel = PriceTrail.Models.Product.Product;
+
+namespace PriceTrail.Repositories.Product;
 
 public class ProductRepository
 {
-    public async Task<List<Product>> GetProductsAsync()
+    public async Task<List<ProductModel>> GetProductsAsync()
     {
         using var db = new AppDbContext();
 
         return await db.Products.Include(p => p.ProductPages).ThenInclude(pp => pp.PriceHistory).ToListAsync();
     }
 
-    public async Task AddProductAsync(Product product)
+    public async Task AddProductAsync(ProductModel product)
     {
         using var db = new AppDbContext();
 
@@ -25,7 +26,7 @@ public class ProductRepository
         await db.SaveChangesAsync();
     }
 
-    public async Task UpdateProductAsync(Product product)
+    public async Task UpdateProductAsync(ProductModel product)
     {
         using var db = new AppDbContext();
 
@@ -33,7 +34,7 @@ public class ProductRepository
         await db.SaveChangesAsync();
     }
 
-    public async Task DeleteProductAsync(Product product)
+    public async Task DeleteProductAsync(ProductModel product)
     {
         using var db = new AppDbContext();
 

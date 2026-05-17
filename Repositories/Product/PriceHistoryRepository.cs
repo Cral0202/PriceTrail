@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 
 using PriceTrail.Database;
-using PriceTrail.Models;
+using PriceTrail.Models.Product;
 
-namespace PriceTrail.Repositories;
+namespace PriceTrail.Repositories.Product;
 
 public class PriceHistoryRepository
 {

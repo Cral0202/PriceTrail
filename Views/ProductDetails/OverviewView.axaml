@@ -17,7 +17,7 @@ x:DataType="subVm:OverviewViewModel">
 
         <ItemsControl.ItemTemplate>
 
-            <DataTemplate x:DataType="models:ProductPage">
+            <DataTemplate x:DataType="models:Product.ProductPage">
 
                 <Border
                 Background="#191818"

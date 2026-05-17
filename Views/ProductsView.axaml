@@ -56,7 +56,7 @@ x:DataType="vm:ProductsViewModel">
 
                     <ItemsControl.ItemTemplate>
 
-                        <DataTemplate x:DataType="models:Product">
+                        <DataTemplate x:DataType="models:Product.Product">
 
                             <Button
                             Classes="product-button"

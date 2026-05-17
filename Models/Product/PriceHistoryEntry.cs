@@ -1,6 +1,6 @@
 using System;
 
-namespace PriceTrail.Models;
+namespace PriceTrail.Models.Product;
 
 public class PriceHistoryEntry
 {

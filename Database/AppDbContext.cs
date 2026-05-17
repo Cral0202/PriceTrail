@@ -3,7 +3,7 @@ using System.IO;
 
 using Microsoft.EntityFrameworkCore;
 
-using PriceTrail.Models;
+using PriceTrail.Models.Product;
 
 namespace PriceTrail.Database;
 

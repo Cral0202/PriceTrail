@@ -1,13 +1,14 @@
 using System.Threading.Tasks;
 
 using PriceTrail.Database;
-using PriceTrail.Models;
+using ProductModel = PriceTrail.Models.Product.Product;
+using PriceTrail.Models.Product;
 
-namespace PriceTrail.Repositories;
+namespace PriceTrail.Repositories.Product;
 
 public class ProductPageRepository
 {
-    public async Task AddProductPageAsync(Product product, ProductPage page)
+    public async Task AddProductPageAsync(ProductModel product, ProductPage page)
     {
         using var db = new AppDbContext();
 
