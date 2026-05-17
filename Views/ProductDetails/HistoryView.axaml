@@ -1,0 +1,11 @@
+<UserControl
+xmlns="https://github.com/avaloniaui"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:subVm="using:PriceTrail.ViewModels.ProductDetails"
+xmlns:models="using:PriceTrail.Models"
+xmlns:converters="using:PriceTrail.Converters"
+x:Class="PriceTrail.Views.ProductDetails.HistoryView"
+x:DataType="subVm:HistoryViewModel">
+
+
+</UserControl>

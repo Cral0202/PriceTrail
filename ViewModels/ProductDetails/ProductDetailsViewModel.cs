@@ -6,28 +6,32 @@ using CommunityToolkit.Mvvm.Input;
 using PriceTrail.Models;
 using PriceTrail.States;
 
-namespace PriceTrail.ViewModels;
+namespace PriceTrail.ViewModels.ProductDetails;
 
-public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, AppState appState, Product product) : ObservableObject
+public partial class ProductDetailsViewModel : ViewModelBase
 {
-    private readonly ProductState _productState = appState.ProductState;
+    private readonly MainWindowViewModel _mainWindow;
+    private readonly AppState _appState;
+    private readonly ProductState _productState;
 
-    public Product Product { get; } = product;
+    public Product Product { get; }
 
-    [ObservableProperty]
-    public partial bool IsAddProductPageModalOpen { get; set; }
+    [ObservableProperty] public partial ViewModelBase CurrentTabViewModel { get; set; }
+    [ObservableProperty] public partial bool IsAddProductPageModalOpen { get; set; }
+    [ObservableProperty] public partial bool IsEditProductModalOpen { get; set; }
+    [ObservableProperty] public partial string NewProductPageUrl { get; set; } = "";
+    [ObservableProperty] public partial string NewProductName { get; set; } = "";
+    [ObservableProperty] public partial bool IsRefreshing { get; set; }
 
-    [ObservableProperty]
-    public partial bool IsEditProductModalOpen { get; set; }
+    public ProductDetailsViewModel(MainWindowViewModel mainWindow, AppState appState, Product product)
+    {
+        _mainWindow = mainWindow;
+        _appState = appState;
+        _productState = appState.ProductState;
+        Product = product;
 
-    [ObservableProperty]
-    public partial string NewProductPageUrl { get; set; } = "";
-
-    [ObservableProperty]
-    public partial string NewProductName { get; set; } = "";
-
-    [ObservableProperty]
-    public partial bool IsRefreshing { get; set; }
+        CurrentTabViewModel = new OverviewViewModel(_mainWindow, _appState, Product);
+    }
 
     [RelayCommand]
     private async Task AddProductPageAsync()
@@ -57,16 +61,16 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, App
     }
 
     [RelayCommand]
-    private async Task DeleteProductPageAsync(ProductPage page)
+    private void GoBack()
     {
-        await _productState.DeleteProductPageFromProductAsync(Product, page);
+        _mainWindow.CurrentViewModel = _mainWindow.ProductsViewModel;
     }
 
     [RelayCommand]
-    private void GoBack()
-    {
-        mainWindow.CurrentViewModel = mainWindow.ProductsViewModel;
-    }
+    private void SelectOverview() => CurrentTabViewModel = new OverviewViewModel(_mainWindow, _appState, Product);
+
+    [RelayCommand]
+    private void SelectHistory() => CurrentTabViewModel = new HistoryViewModel(_mainWindow, _appState, Product);
 
     /****************/
     /* EDIT PRODUCT */
@@ -91,7 +95,7 @@ public partial class ProductDetailsViewModel(MainWindowViewModel mainWindow, App
     private async Task DeleteProductAsync()
     {
         await _productState.DeleteProductAsync(Product);
-        mainWindow.CurrentViewModel = mainWindow.ProductsViewModel;
+        _mainWindow.CurrentViewModel = _mainWindow.ProductsViewModel;
     }
 
     /**********/

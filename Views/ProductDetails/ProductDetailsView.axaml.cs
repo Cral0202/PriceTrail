@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace PriceTrail.Views;
+namespace PriceTrail.Views.ProductDetails;
 
 public partial class ProductDetailsView : UserControl
 {

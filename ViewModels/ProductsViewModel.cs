@@ -5,12 +5,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.Models;
-using PriceTrail.Services;
 using PriceTrail.States;
+using PriceTrail.ViewModels.ProductDetails;
 
 namespace PriceTrail.ViewModels;
 
-public partial class ProductsViewModel(MainWindowViewModel mainWindow, AppState appState) : ObservableObject
+public partial class ProductsViewModel(MainWindowViewModel mainWindow, AppState appState) : ViewModelBase
 {
     private readonly ProductState _productState = appState.ProductState;
 

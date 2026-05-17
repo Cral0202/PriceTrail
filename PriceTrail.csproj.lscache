@@ -88,12 +88,12 @@ States/
 ViewLocator.cs
 ViewModels/
  MainWindowViewModel.cs
- ProductDetailsViewModel.cs
+ ProductDetails/ProductDetailsViewModel.cs
  ProductsViewModel.cs
  ViewModelBase.cs
 Views/
  MainWindow.axaml.cs
- ProductDetailsView.axaml.cs
+ ProductDetails/ProductDetailsView.axaml.cs
  ProductsView.axaml.cs
 
 [metadataReferences]
@@ -354,5 +354,5 @@ obj/Debug/net10.0/PriceTrail.GeneratedMSBuildEditorConfig.editorconfig
 App.axaml
 Views/
  MainWindow.axaml
- ProductDetailsView.axaml
+ ProductDetails/ProductDetailsView.axaml
  ProductsView.axaml
