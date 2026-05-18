@@ -6,7 +6,6 @@ using LiveChartsCore.Kernel;
 using LiveChartsCore.SkiaSharpView;
 
 using PriceTrail.Models.Product;
-using PriceTrail.States;
 
 namespace PriceTrail.ViewModels.ProductDetails;
 
@@ -19,7 +18,15 @@ public partial class HistoryViewModel : ViewModelBase
     public Axis[] XAxes { get; set; } = [
         new Axis
         {
-            Labeler = value => new DateTime((long)value, DateTimeKind.Utc).ToLocalTime().ToString("MMM dd"), // Will say e.g., May 18
+            Labeler = value =>
+            {
+                // Check if the value is a valid tick amount
+                if (value < DateTime.MinValue.Ticks || value > DateTime.MaxValue.Ticks)
+                    return string.Empty;
+
+                return new DateTime((long)value, DateTimeKind.Utc).ToLocalTime().ToString("MMM dd"); // Will say e.g., May 18
+            },
+
             LabelsRotation = 0
         }
     ];
@@ -40,11 +47,14 @@ public partial class HistoryViewModel : ViewModelBase
 
     private void BuildChartSeries()
     {
-        if (_product?.ProductPages == null)
+        if (_product?.ProductPages?.Count is not > 0)
             return;
 
         foreach (var page in _product.ProductPages)
         {
+            if (page.PriceHistory?.Count is not > 0)
+                continue;
+
             var lineSeries = new LineSeries<PriceHistoryEntry>
             {
                 Name = string.IsNullOrWhiteSpace(page.StoreName) ? "Unknown Store" : page.StoreName,

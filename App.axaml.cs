@@ -1,12 +1,11 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Markup.Xaml;
+
 using PriceTrail.ViewModels;
 using PriceTrail.Views;
 using PriceTrail.Database;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace PriceTrail;
