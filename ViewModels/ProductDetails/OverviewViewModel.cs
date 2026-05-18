@@ -7,7 +7,7 @@ using PriceTrail.States;
 
 namespace PriceTrail.ViewModels.ProductDetails;
 
-public partial class OverviewViewModel(MainWindowViewModel mainWindow, AppState appState, Product product) : ViewModelBase
+public partial class OverviewViewModel(AppState appState, Product product) : ViewModelBase
 {
     private readonly ProductState _productState = appState.ProductState;
 

@@ -30,7 +30,7 @@ public partial class ProductDetailsViewModel : ViewModelBase
         _productState = appState.ProductState;
         Product = product;
 
-        CurrentTabViewModel = new OverviewViewModel(_mainWindow, _appState, Product);
+        CurrentTabViewModel = new OverviewViewModel(_appState, Product);
     }
 
     [RelayCommand]
@@ -67,10 +67,10 @@ public partial class ProductDetailsViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void SelectOverview() => CurrentTabViewModel = new OverviewViewModel(_mainWindow, _appState, Product);
+    private void SelectOverview() => CurrentTabViewModel = new OverviewViewModel(_appState, Product);
 
     [RelayCommand]
-    private void SelectHistory() => CurrentTabViewModel = new HistoryViewModel(_mainWindow, _appState, Product);
+    private void SelectHistory() => CurrentTabViewModel = new HistoryViewModel(Product);
 
     /****************/
     /* EDIT PRODUCT */

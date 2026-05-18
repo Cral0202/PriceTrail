@@ -12,8 +12,6 @@ namespace PriceTrail.ViewModels.ProductDetails;
 
 public partial class HistoryViewModel : ViewModelBase
 {
-    private readonly MainWindowViewModel _mainWindow;
-    private readonly AppState _appState;
     private readonly Product _product;
 
     public ObservableCollection<ISeries> Series { get; set; } = [];
@@ -33,10 +31,8 @@ public partial class HistoryViewModel : ViewModelBase
         }
     ];
 
-    public HistoryViewModel(MainWindowViewModel mainWindow, AppState appState, Product product)
+    public HistoryViewModel(Product product)
     {
-        _mainWindow = mainWindow;
-        _appState = appState;
         _product = product;
 
         BuildChartSeries();
