@@ -1,11 +1,27 @@
 <UserControl
 xmlns="https://github.com/avaloniaui"
 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
 xmlns:subVm="using:PriceTrail.ViewModels.ProductDetails"
 xmlns:models="using:PriceTrail.Models"
 xmlns:converters="using:PriceTrail.Converters"
 x:Class="PriceTrail.Views.ProductDetails.HistoryView"
 x:DataType="subVm:HistoryViewModel">
 
+    <Grid>
+
+        <Border BorderBrush="Transparent" MinHeight="400" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+            <lvc:CartesianChart
+            Series="{Binding Series}"
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}"
+            LegendPosition="Top"
+            TooltipPosition="Top">
+            </lvc:CartesianChart>
+
+        </Border>
+
+    </Grid>
 
 </UserControl>
