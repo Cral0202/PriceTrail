@@ -108,7 +108,7 @@ x:DataType="vm:ProductsViewModel">
                                             <TextBlock
                                             FontSize="14">
 
-                                                <Run Text="{Binding LowestPrice}" />
+                                                <Run Text="{Binding LowestPrice, StringFormat={}{0:0.##}}" />
 
                                                 <Run Text="{Binding LowestPriceCurrency}" />
 

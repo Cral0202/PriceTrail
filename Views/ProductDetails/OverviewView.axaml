@@ -57,7 +57,7 @@ x:DataType="subVm:OverviewViewModel">
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center">
 
-                            <Run Text="{Binding Price}" />
+                            <Run Text="{Binding Price, StringFormat={}{0:0.##}}" />
                             <Run Text="{Binding Currency}" />
 
                         </TextBlock>
