@@ -3,6 +3,7 @@ using HtmlAgilityPack;
 using PriceTrail.Models.Product;
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
@@ -59,41 +60,40 @@ public class ProductExtractorService
                 try
                 {
                     using var doc = JsonDocument.Parse(script.InnerText);
-                    var root = doc.RootElement;
 
-                    if (root.TryGetProperty("@type", out var typeProperty))
+                    foreach (var node in GetNodes(doc.RootElement))
                     {
-                        var type = typeProperty.GetString();
+                        if (!IsProduct(node))
+                            continue;
 
-                        if (type == "Product")
+                        if (!node.TryGetProperty("offers", out var offersElement))
+                            continue;
+
+                        // Offers can be object or array
+                        var offers = offersElement.ValueKind == JsonValueKind.Array ? offersElement[0] : offersElement;
+
+                        var priceString = offers.GetProperty("price").ToString();
+                        var currency = offers.GetProperty("priceCurrency").GetString();
+
+                        if (!decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price))
+                            continue;
+
+                        var storeName = "Unknown Store";
+
+                        if (offers.TryGetProperty("seller", out var seller))
                         {
-                            if (root.TryGetProperty("offers", out var offers))
-                            {
-                                var priceString = offers.GetProperty("price").ToString();
-                                var currency = offers.GetProperty("priceCurrency").GetString();
-                                var storeName = "";
-
-                                if (!decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price))
-                                {
-                                    continue;
-                                }
-
-                                if (offers.TryGetProperty("seller", out var seller))
-                                {
-                                    storeName = seller.ValueKind == JsonValueKind.Object
-                                    ? seller.GetProperty("name").GetString()
-                                    : seller.GetString();
-                                }
-
-                                return new ProductPage
-                                {
-                                    Url = url,
-                                    StoreName = storeName ?? "Unknown Store",
-                                    Price = price,
-                                    Currency = currency ?? "Unknown Currency"
-                                };
-                            }
+                            storeName = seller.ValueKind == JsonValueKind.Object
+                                ? seller.GetProperty("name").GetString() ?? storeName
+                                : seller.GetString() ?? storeName;
                         }
+
+                        return new ProductPage
+                        {
+                            Url = url,
+                            StoreName = storeName,
+                            Price = price,
+                            Currency = currency ?? "Unknown Currency"
+                        };
                     }
                 }
                 catch
@@ -108,5 +108,50 @@ public class ProductExtractorService
         }
 
         return null;
+    }
+
+    private static IEnumerable<JsonElement> GetNodes(JsonElement root)
+    {
+        if (root.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var item in root.EnumerateArray())
+            {
+                foreach (var node in GetNodes(item))
+                    yield return node;
+            }
+        }
+        else if (root.ValueKind == JsonValueKind.Object)
+        {
+            yield return root;
+
+            if (root.TryGetProperty("@graph", out var graph))
+            {
+                foreach (var item in graph.EnumerateArray())
+                {
+                    foreach (var node in GetNodes(item))
+                        yield return node;
+                }
+            }
+        }
+    }
+
+    private static bool IsProduct(JsonElement element)
+    {
+        if (!element.TryGetProperty("@type", out var typeProperty))
+            return false;
+
+        if (typeProperty.ValueKind == JsonValueKind.String)
+            return typeProperty.GetString() == "Product";
+
+        if (typeProperty.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var type in typeProperty.EnumerateArray())
+            {
+                if (type.GetString() == "Product")
+                    return true;
+            }
+        }
+
+        return false;
     }
 }
