@@ -72,10 +72,10 @@ public class ProductExtractorService
                         // Offers can be object or array
                         var offers = offersElement.ValueKind == JsonValueKind.Array ? offersElement[0] : offersElement;
 
-                        var priceString = offers.GetProperty("price").ToString();
-                        var currency = offers.GetProperty("priceCurrency").GetString();
+                        var priceString = TryResolvePrice(offers);
+                        var currency = TryResolveCurrency(offers);
 
-                        if (!decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price))
+                        if (string.IsNullOrEmpty(priceString) || !decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price))
                             continue;
 
                         var storeName = "Unknown Store";
@@ -153,5 +153,45 @@ public class ProductExtractorService
         }
 
         return false;
+    }
+
+    private static string? TryResolvePrice(JsonElement element)
+    {
+        // Direct flat price
+        if (element.TryGetProperty("price", out var p) && p.ValueKind != JsonValueKind.Null)
+            return p.ToString();
+
+        // Price range lowest entry
+        if (element.TryGetProperty("lowPrice", out var lp))
+            return lp.ToString();
+
+        // Nested price specification
+        if (element.TryGetProperty("priceSpecification", out var spec))
+        {
+            var targetSpec = spec.ValueKind == JsonValueKind.Array && spec.GetArrayLength() > 0 ? spec[0] : spec;
+
+            if (targetSpec.ValueKind == JsonValueKind.Object && targetSpec.TryGetProperty("price", out var specPrice))
+                return specPrice.ToString();
+        }
+
+        return null;
+    }
+
+    private static string? TryResolveCurrency(JsonElement element)
+    {
+        // Try root level first
+        if (element.TryGetProperty("priceCurrency", out var c))
+            return c.GetString();
+
+        // Try digging into priceSpecification if currency isn't at the root
+        if (element.TryGetProperty("priceSpecification", out var spec))
+        {
+            var targetSpec = spec.ValueKind == JsonValueKind.Array && spec.GetArrayLength() > 0 ? spec[0] : spec;
+
+            if (targetSpec.ValueKind == JsonValueKind.Object && targetSpec.TryGetProperty("priceCurrency", out var specCurrency))
+                return specCurrency.GetString();
+        }
+
+        return "Unknown Currency";
     }
 }
