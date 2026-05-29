@@ -70,8 +70,14 @@ public class ProductState
             var result = await _extractor.ExtractAsync(productPage.Url);
 
             if (!result.IsSuccess)
-                continue; // TODO: Show error to user
+            {
+                // TODO: Show error to user
+                productPage.HasError = true;
+                await _productPageRepo.UpdateProductPageAsync(productPage);
+                continue;
+            }
 
+            productPage.HasError = false;
             productPage.Price = result.Page!.Price;
             productPage.Currency = result.Page!.Currency;
 
