@@ -45,18 +45,20 @@ public class ProductState
         await _productRepo.UpdateProductAsync(product);
     }
 
-    public async Task AddProductPageToProductAsync(Product product, string url)
+    public async Task<bool> AddProductPageToProductAsync(Product product, string url)
     {
         var result = await _extractor.ExtractAsync(url);
 
         if (result == null)
-            return;
+            return false;
 
         await _productPageRepo.AddProductPageAsync(product, result);
         var historyEntry = await _priceHistoryRepo.AddPriceHistoryEntryAsync(result);
 
         result.PriceHistory.Add(historyEntry);
         product.ProductPages.Add(result);
+
+        return true;
     }
 
     public async Task RefreshProductPricesAsync(Product product)

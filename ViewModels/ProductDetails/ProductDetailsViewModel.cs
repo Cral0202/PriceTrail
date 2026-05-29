@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.Models.Product;
+using PriceTrail.Services;
 using PriceTrail.States;
 
 namespace PriceTrail.ViewModels.ProductDetails;
@@ -36,10 +37,13 @@ public partial class ProductDetailsViewModel : ViewModelBase
     [RelayCommand]
     private async Task AddProductPageAsync()
     {
-        await _productState.AddProductPageToProductAsync(Product, NewProductPageUrl);
+        var success = await _productState.AddProductPageToProductAsync(Product, NewProductPageUrl);
 
         NewProductPageUrl = "";
         IsAddProductPageModalOpen = false;
+
+        if (!success)
+            NotificationService.Instance.ShowMessage("Error", "Failed to add URL.", Avalonia.Controls.Notifications.NotificationType.Error); // TODO: Should show error reason
     }
 
     [RelayCommand]
