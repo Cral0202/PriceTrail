@@ -71,13 +71,16 @@ public class ProductState
 
             if (!result.IsSuccess)
             {
-                // TODO: Show error to user
                 productPage.HasError = true;
+                productPage.ErrorMessage = result.ErrorMessage!;
+
                 await _productPageRepo.UpdateProductPageAsync(productPage);
                 continue;
             }
 
             productPage.HasError = false;
+            productPage.ErrorMessage = "";
+
             productPage.Price = result.Page!.Price;
             productPage.Currency = result.Page!.Currency;
 

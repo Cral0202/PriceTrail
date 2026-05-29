@@ -86,7 +86,11 @@ x:DataType="subVm:OverviewViewModel">
 
                                 <TextBlock
                                 Text="⚠"
-                                IsVisible="{Binding HasError}" />
+                                Foreground="OrangeRed"
+                                Cursor="Hand"
+                                IsVisible="{Binding HasError}"
+                                ToolTip.Tip="{Binding ErrorMessage}"
+                                ToolTip.ShowDelay="100" />
 
                             </StackPanel>
 

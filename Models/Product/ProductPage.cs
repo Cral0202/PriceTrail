@@ -25,6 +25,9 @@ public partial class ProductPage : ObservableObject
     [ObservableProperty]
     public partial bool HasError { get; set; }
 
+    [ObservableProperty]
+    public partial string ErrorMessage { get; set; } = "";
+
     public ObservableCollection<PriceHistoryEntry> PriceHistory { get; set; }
 
     public ProductPage()
