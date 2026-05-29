@@ -45,20 +45,22 @@ public class ProductState
         await _productRepo.UpdateProductAsync(product);
     }
 
-    public async Task<bool> AddProductPageToProductAsync(Product product, string url)
+    public async Task<string?> AddProductPageToProductAsync(Product product, string url)
     {
         var result = await _extractor.ExtractAsync(url);
 
-        if (result == null)
-            return false;
+        if (!result.IsSuccess)
+            return result.ErrorMessage;
 
-        await _productPageRepo.AddProductPageAsync(product, result);
-        var historyEntry = await _priceHistoryRepo.AddPriceHistoryEntryAsync(result);
+        var productPage = result.Page!;
 
-        result.PriceHistory.Add(historyEntry);
-        product.ProductPages.Add(result);
+        await _productPageRepo.AddProductPageAsync(product, productPage);
+        var historyEntry = await _priceHistoryRepo.AddPriceHistoryEntryAsync(productPage);
 
-        return true;
+        productPage.PriceHistory.Add(historyEntry);
+        product.ProductPages.Add(productPage);
+
+        return null;
     }
 
     public async Task RefreshProductPricesAsync(Product product)
@@ -67,11 +69,11 @@ public class ProductState
         {
             var result = await _extractor.ExtractAsync(productPage.Url);
 
-            if (result == null)
-                continue;
+            if (!result.IsSuccess)
+                continue; // TODO: Show error to user
 
-            productPage.Price = result.Price;
-            productPage.Currency = result.Currency;
+            productPage.Price = result.Page!.Price;
+            productPage.Currency = result.Page!.Currency;
 
             await _productPageRepo.UpdateProductPageAsync(productPage);
 

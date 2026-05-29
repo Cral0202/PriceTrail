@@ -37,13 +37,15 @@ public partial class ProductDetailsViewModel : ViewModelBase
     [RelayCommand]
     private async Task AddProductPageAsync()
     {
-        var success = await _productState.AddProductPageToProductAsync(Product, NewProductPageUrl);
+        string? errorMessage = await _productState.AddProductPageToProductAsync(Product, NewProductPageUrl);
 
         NewProductPageUrl = "";
         IsAddProductPageModalOpen = false;
 
-        if (!success)
-            NotificationService.Instance.ShowMessage("Error", "Failed to add URL.", Avalonia.Controls.Notifications.NotificationType.Error); // TODO: Should show error reason
+        if (errorMessage != null)
+        {
+            NotificationService.Instance.ShowMessage("Failed to add URL", errorMessage, Avalonia.Controls.Notifications.NotificationType.Error);
+        }
     }
 
     [RelayCommand]

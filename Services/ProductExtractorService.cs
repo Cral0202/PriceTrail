@@ -42,7 +42,7 @@ public class ProductExtractorService
         _httpClient.Timeout = TimeSpan.FromSeconds(10);
     }
 
-    public async Task<ProductPage?> ExtractAsync(string url)
+    public async Task<ExtractionResult> ExtractAsync(string url)
     {
         try
         {
@@ -53,7 +53,7 @@ public class ProductExtractorService
             var scriptNodes = document.DocumentNode.SelectNodes("//script[@type='application/ld+json']");
 
             if (scriptNodes == null)
-                return null;
+                return ExtractionResult.Failure("No JSON-LD metadata found on the page.");
 
             foreach (var script in scriptNodes)
             {
@@ -87,13 +87,13 @@ public class ProductExtractorService
                                 : seller.GetString() ?? storeName;
                         }
 
-                        return new ProductPage
+                        return ExtractionResult.Success(new ProductPage
                         {
                             Url = url,
                             StoreName = storeName,
                             Price = price,
                             Currency = currency ?? "Unknown Currency"
-                        };
+                        });
                     }
                 }
                 catch
@@ -101,13 +101,17 @@ public class ProductExtractorService
                     // Invalid JSON-LD blocks
                 }
             }
-        }
-        catch
-        {
-            // Network errors
-        }
 
-        return null;
+            return ExtractionResult.Failure($"Analyzed metadata blocks, but none contained valid product schema.");
+        }
+        catch (HttpRequestException e)
+        {
+            return ExtractionResult.Failure($"Could not fetch the web page. ({e.StatusCode})");
+        }
+        catch (Exception e)
+        {
+            return ExtractionResult.Failure($"An unexpected error occurred: {e.Message}");
+        }
     }
 
     private static IEnumerable<JsonElement> GetNodes(JsonElement root)
