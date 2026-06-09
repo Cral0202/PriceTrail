@@ -19,7 +19,6 @@ PriceTrail is currently in early development.
 - More reliable product data extraction
 - Automatic background price fetching
 - Price notifications
-- Multi-currency support
 
 ## Screenshots
 
