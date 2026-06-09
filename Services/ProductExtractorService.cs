@@ -73,11 +73,12 @@ public class ProductExtractorService
                         var offers = offersElement.ValueKind == JsonValueKind.Array ? offersElement[0] : offersElement;
 
                         var priceString = TryResolvePrice(offers);
-                        var currency = TryResolveCurrency(offers);
 
                         if (string.IsNullOrEmpty(priceString) || !decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price))
                             continue;
 
+                        var currency = TryResolveCurrency(offers);
+                        var imageUrl = TryResolveImage(node);
                         var storeName = "Unknown Store";
 
                         if (offers.TryGetProperty("seller", out var seller))
@@ -92,7 +93,8 @@ public class ProductExtractorService
                             Url = url,
                             StoreName = storeName,
                             Price = price,
-                            Currency = currency ?? "Unknown Currency"
+                            Currency = currency ?? "Unknown Currency",
+                            ImageUrl = imageUrl
                         });
                     }
                 }
@@ -197,5 +199,37 @@ public class ProductExtractorService
         }
 
         return "Unknown Currency";
+    }
+
+    private static string? TryResolveImage(JsonElement element)
+    {
+        // TODO: Some websites seem to return relative URLs, needs to be handled
+
+        if (!element.TryGetProperty("image", out var imageElement) || imageElement.ValueKind == JsonValueKind.Null)
+            return null;
+
+        // Direct string URL
+        if (imageElement.ValueKind == JsonValueKind.String)
+            return imageElement.GetString();
+
+        // Array (could be strings or ImageObjects)
+        if (imageElement.ValueKind == JsonValueKind.Array && imageElement.GetArrayLength() > 0)
+        {
+            var firstImage = imageElement[0];
+
+            if (firstImage.ValueKind == JsonValueKind.String)
+                return firstImage.GetString();
+
+            if (firstImage.ValueKind == JsonValueKind.Object && firstImage.TryGetProperty("url", out var urlProp))
+                return urlProp.GetString();
+        }
+
+        // Single nested ImageObject
+        if (imageElement.ValueKind == JsonValueKind.Object && imageElement.TryGetProperty("url", out var urlElement))
+        {
+            return urlElement.GetString();
+        }
+
+        return null;
     }
 }

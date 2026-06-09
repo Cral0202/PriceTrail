@@ -23,6 +23,9 @@ public partial class ProductPage : ObservableObject
     public partial string Currency { get; set; } = "";
 
     [ObservableProperty]
+    public partial string? ImageUrl { get; set; } = "";
+
+    [ObservableProperty]
     public partial bool HasError { get; set; }
 
     [ObservableProperty]

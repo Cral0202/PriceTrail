@@ -39,4 +39,6 @@ public partial class Product : ObservableObject
     public decimal? LowestPrice => LowestPricePage?.Price;
     public string LowestPriceCurrency => LowestPricePage?.Currency ?? "";
     public string LowestPriceStore => LowestPricePage?.StoreName ?? "";
+
+    public string? DisplayImageUrl => ProductPages.FirstOrDefault()?.ImageUrl;
 }

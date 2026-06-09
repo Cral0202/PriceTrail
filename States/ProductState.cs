@@ -83,6 +83,7 @@ public class ProductState
 
             productPage.Price = result.Page!.Price;
             productPage.Currency = result.Page!.Currency;
+            productPage.ImageUrl = result.Page!.ImageUrl;
 
             await _productPageRepo.UpdateProductPageAsync(productPage);
 
