@@ -1,11 +1,12 @@
 <UserControl
-xmlns="https://github.com/avaloniaui"
-xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-xmlns:vm="using:PriceTrail.ViewModels"
-xmlns:models="using:PriceTrail.Models"
-xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
-x:Class="PriceTrail.Views.ProductsView"
-x:DataType="vm:ProductsViewModel">
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:PriceTrail.ViewModels"
+    xmlns:models="using:PriceTrail.Models"
+    xmlns:asyncImageLoader="using:AsyncImageLoader"
+    xmlns:fluentIcons="using:FluentIcons.Avalonia"
+    x:Class="PriceTrail.Views.ProductsView"
+    x:DataType="vm:ProductsViewModel">
 
     <!-- STYLES -->
 
@@ -21,23 +22,36 @@ x:DataType="vm:ProductsViewModel">
         <ScrollViewer>
 
             <StackPanel
-            Margin="20"
-            Spacing="10">
+                Margin="20"
+                Spacing="10">
 
                 <!-- HEADER -->
 
                 <Grid ColumnDefinitions="*,Auto">
 
                     <TextBlock
-                    Grid.Column="0"
-                    Text="Products"
-                    FontSize="28"
-                    FontWeight="Bold" />
+                        Grid.Column="0"
+                        Text="Products"
+                        FontSize="28"
+                        FontWeight="Bold" />
 
                     <Button
-                    Grid.Column="1"
-                    Content="Add Product"
-                    Command="{Binding OpenAddProductModalCommand}" />
+                        Grid.Column="1"
+                        Command="{Binding OpenAddProductModalCommand}">
+
+                        <StackPanel
+                            Orientation="Horizontal"
+                            Spacing="8">
+
+                            <fluentIcons:SymbolIcon
+                                Symbol="Add"
+                                FontSize="16" />
+
+                            <TextBlock Text="Add Product"/>
+
+                        </StackPanel>
+
+                    </Button>
 
                 </Grid>
 
@@ -60,47 +74,47 @@ x:DataType="vm:ProductsViewModel">
                         <DataTemplate x:DataType="models:Product.Product">
 
                             <Button
-                            Classes="product-button"
-                            Padding="0"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
-                            CommandParameter="{Binding}">
+                                Classes="product-button"
+                                Padding="0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
+                                CommandParameter="{Binding}">
 
                                 <Border
-                                Width="450"
-                                Margin="0,0,10,10"
-                                Padding="15"
-                                CornerRadius="10"
-                                Background="#1D1B1B">
+                                    Width="450"
+                                    Margin="0,0,10,10"
+                                    Padding="15"
+                                    CornerRadius="10"
+                                    Background="#1D1B1B">
 
                                     <Grid
-                                    ColumnDefinitions="100,*,Auto"
-                                    ColumnSpacing="15">
+                                        ColumnDefinitions="100,*,Auto"
+                                        ColumnSpacing="15">
 
                                         <!-- IMAGE -->
 
                                         <Border
-                                        Grid.Column="0"
-                                        Width="100"
-                                        Height="100"
-                                        Background="#2D2B2B"
-                                        CornerRadius="8"
-                                        ClipToBounds="True">
+                                            Grid.Column="0"
+                                            Width="100"
+                                            Height="100"
+                                            Background="#2D2B2B"
+                                            CornerRadius="8"
+                                            ClipToBounds="True">
 
                                             <Panel>
                                                 <TextBlock
-                                                Text="No Image"
-                                                FontSize="14"
-                                                Foreground="#888888"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                IsVisible="{Binding DisplayImageUrl, Converter={x:Static StringConverters.IsNullOrEmpty}}" />
+                                                    Text="No Image"
+                                                    FontSize="14"
+                                                    Foreground="#888888"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    IsVisible="{Binding DisplayImageUrl, Converter={x:Static StringConverters.IsNullOrEmpty}}" />
 
                                                 <Image
-                                                asyncImageLoader:ImageLoader.Source="{Binding DisplayImageUrl}"
-                                                Stretch="Uniform"
-                                                RenderOptions.BitmapInterpolationMode="HighQuality" />
+                                                    asyncImageLoader:ImageLoader.Source="{Binding DisplayImageUrl}"
+                                                    Stretch="Uniform"
+                                                    RenderOptions.BitmapInterpolationMode="HighQuality" />
 
                                             </Panel>
 
@@ -109,17 +123,17 @@ x:DataType="vm:ProductsViewModel">
                                         <!-- INFO -->
 
                                         <StackPanel
-                                        Grid.Column="1"
-                                        Spacing="5"
-                                        VerticalAlignment="Center">
+                                            Grid.Column="1"
+                                            Spacing="5"
+                                            VerticalAlignment="Center">
 
                                             <TextBlock
-                                            Text="{Binding Name}"
-                                            FontSize="16"
-                                            FontWeight="Bold" />
+                                                Text="{Binding Name}"
+                                                FontSize="16"
+                                                FontWeight="Bold" />
 
                                             <TextBlock
-                                            FontSize="14">
+                                                FontSize="14">
 
                                                 <Run Text="{Binding LowestPrice, StringFormat={}{0:0.##}}" />
 
@@ -128,7 +142,7 @@ x:DataType="vm:ProductsViewModel">
                                             </TextBlock>
 
                                             <TextBlock
-                                            FontSize="14">
+                                                FontSize="14">
 
                                                 <Run Text="{Binding LowestPriceStore}" />
 
@@ -155,40 +169,40 @@ x:DataType="vm:ProductsViewModel">
         <!-- MODAL -->
 
         <Border
-        IsVisible="{Binding IsAddProductModalOpen}"
-        Background="#80000000">
+            IsVisible="{Binding IsAddProductModalOpen}"
+            Background="#80000000">
 
             <Border
-            Width="300"
-            Padding="20"
-            CornerRadius="10"
-            Background="#1D1B1B"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
+                Width="300"
+                Padding="20"
+                CornerRadius="10"
+                Background="#1D1B1B"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
 
                 <StackPanel Spacing="10">
 
                     <TextBlock
-                    Text="Add Product"
-                    FontSize="20"
-                    FontWeight="Bold" />
+                        Text="Add Product"
+                        FontSize="20"
+                        FontWeight="Bold" />
 
                     <TextBox
-                    Text="{Binding NewProductName}"
-                    PlaceholderText="Product Name" />
+                        Text="{Binding NewProductName}"
+                        PlaceholderText="Product Name" />
 
                     <StackPanel
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Spacing="10">
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="10">
 
                         <Button
-                        Content="Cancel"
-                        Command="{Binding CloseAddProductModalCommand}" />
+                            Content="Cancel"
+                            Command="{Binding CloseAddProductModalCommand}" />
 
                         <Button
-                        Content="Add"
-                        Command="{Binding AddProductCommand}" />
+                            Content="Add"
+                            Command="{Binding AddProductCommand}" />
 
                     </StackPanel>
 

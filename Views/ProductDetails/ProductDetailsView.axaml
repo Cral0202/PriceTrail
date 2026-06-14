@@ -1,17 +1,18 @@
 <UserControl
-xmlns="https://github.com/avaloniaui"
-xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-xmlns:vm="using:PriceTrail.ViewModels.ProductDetails"
-xmlns:views="using:PriceTrail.Views.ProductDetails"
-xmlns:models="using:PriceTrail.Models"
-xmlns:converters="using:PriceTrail.Converters"
-x:Class="PriceTrail.Views.ProductDetails.ProductDetailsView"
-x:DataType="vm:ProductDetailsViewModel">
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:PriceTrail.ViewModels.ProductDetails"
+    xmlns:views="using:PriceTrail.Views.ProductDetails"
+    xmlns:models="using:PriceTrail.Models"
+    xmlns:converters="using:PriceTrail.Converters"
+    xmlns:fluentIcons="using:FluentIcons.Avalonia"
+    x:Class="PriceTrail.Views.ProductDetails.ProductDetailsView"
+    x:DataType="vm:ProductDetailsViewModel">
 
     <UserControl.Resources>
 
         <converters:RelativeTimeConverter
-        x:Key="RelativeTimeConverter" />
+            x:Key="RelativeTimeConverter" />
 
     </UserControl.Resources>
 
@@ -27,53 +28,126 @@ x:DataType="vm:ProductDetailsViewModel">
                       Margin="0,0,0,10">
 
                     <TextBlock
-                    Grid.Column="0"
-                    Text="{Binding Product.Name}"
-                    FontSize="28"
-                    FontWeight="Bold" />
+                        Grid.Column="0"
+                        Text="{Binding Product.Name}"
+                        FontSize="28"
+                        FontWeight="Bold" />
 
                     <StackPanel
-                    Grid.Column="1"
-                    Orientation="Horizontal"
-                    Spacing="10">
+                        Grid.Column="1"
+                        Orientation="Horizontal"
+                        Spacing="10">
+
+                        <Button Command="{Binding GoBackCommand}">
+
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Spacing="8">
+
+                                <fluentIcons:SymbolIcon
+                                    Symbol="ArrowLeft"
+                                    FontSize="16" />
+
+                                <TextBlock Text="Back" />
+
+                            </StackPanel>
+
+                        </Button>
+
+                        <Button Command="{Binding OpenAddProductPageModalCommand}">
+
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Spacing="8">
+
+                                <fluentIcons:SymbolIcon
+                                    Symbol="Add"
+                                    FontSize="16" />
+
+                                <TextBlock Text="Add URL" />
+
+                            </StackPanel>
+
+                        </Button>
 
                         <Button
-                        Content="Back"
-                        Command="{Binding GoBackCommand}" />
+                            Command="{Binding RefreshPricesCommand}"
+                            IsEnabled="{Binding !IsRefreshing}">
 
-                        <Button
-                        Content="Add URL"
-                        Command="{Binding OpenAddProductPageModalCommand}" />
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Spacing="8">
 
-                        <Button
-                        Content="Refresh Prices"
-                        Command="{Binding RefreshPricesCommand}"
-                        IsEnabled="{Binding !IsRefreshing}" />
+                                <fluentIcons:SymbolIcon
+                                    Symbol="ArrowSync"
+                                    FontSize="16" />
 
-                        <Button
-                        Content="Edit"
-                        Command="{Binding OpenEditProductModalCommand}" />
+                                <TextBlock Text="Refresh Prices" />
+
+                            </StackPanel>
+
+                        </Button>
+
+                        <Button Command="{Binding OpenEditProductModalCommand}">
+
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Spacing="8">
+
+                                <fluentIcons:SymbolIcon
+                                    Symbol="Edit"
+                                    FontSize="16" />
+
+                                <TextBlock Text="Edit" />
+
+                            </StackPanel>
+
+                        </Button>
 
                     </StackPanel>
 
                 </Grid>
 
                 <Border
-                Background="#191818"
-                Padding="10"
-                CornerRadius="10" >
+                    Background="#191818"
+                    Padding="10"
+                    CornerRadius="10" >
 
                     <StackPanel
-                    Orientation="Horizontal"
-                    Spacing="10">
+                        Orientation="Horizontal"
+                        Spacing="10">
 
-                        <Button
-                        Content="Overview"
-                        Command="{Binding SelectOverviewCommand}" />
+                        <Button Command="{Binding SelectOverviewCommand}">
 
-                        <Button
-                        Content="History"
-                        Command="{Binding SelectHistoryCommand}" />
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Spacing="8">
+
+                                <fluentIcons:SymbolIcon
+                                    Symbol="List"
+                                    FontSize="16" />
+
+                                <TextBlock Text="Overview" />
+
+                            </StackPanel>
+
+                        </Button>
+
+                        <Button Command="{Binding SelectHistoryCommand}">
+
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Spacing="8">
+
+                                <fluentIcons:SymbolIcon
+                                    Symbol="DataUsage"
+                                    FontSize="16" />
+
+                                <TextBlock Text="History" />
+
+                            </StackPanel>
+
+                        </Button>
 
                     </StackPanel>
 
@@ -97,40 +171,40 @@ x:DataType="vm:ProductDetailsViewModel">
         <!-- MODALS -->
 
         <Border
-        IsVisible="{Binding IsAddProductPageModalOpen}"
-        Background="#80000000">
+            IsVisible="{Binding IsAddProductPageModalOpen}"
+            Background="#80000000">
 
             <Border
-            Width="300"
-            Padding="20"
-            CornerRadius="10"
-            Background="#1D1B1B"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
+                Width="300"
+                Padding="20"
+                CornerRadius="10"
+                Background="#1D1B1B"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
 
                 <StackPanel Spacing="10">
 
                     <TextBlock
-                    Text="Add Product Page"
-                    FontSize="20"
-                    FontWeight="Bold" />
+                        Text="Add Product Page"
+                        FontSize="20"
+                        FontWeight="Bold" />
 
                     <TextBox
-                    Text="{Binding NewProductPageUrl}"
-                    PlaceholderText="URL" />
+                        Text="{Binding NewProductPageUrl}"
+                        PlaceholderText="URL" />
 
                     <StackPanel
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Spacing="10">
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="10">
 
                         <Button
-                        Content="Cancel"
-                        Command="{Binding CloseAddProductPageModalCommand}" />
+                            Content="Cancel"
+                            Command="{Binding CloseAddProductPageModalCommand}" />
 
                         <Button
-                        Content="Add"
-                        Command="{Binding AddProductPageCommand}" />
+                            Content="Add"
+                            Command="{Binding AddProductPageCommand}" />
 
                     </StackPanel>
 
@@ -141,33 +215,33 @@ x:DataType="vm:ProductDetailsViewModel">
         </Border>
 
         <Border
-        IsVisible="{Binding IsEditProductModalOpen}"
-        Background="#80000000">
+            IsVisible="{Binding IsEditProductModalOpen}"
+            Background="#80000000">
 
             <Border
-            Width="300"
-            Padding="20"
-            CornerRadius="10"
-            Background="#1D1B1B"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
+                Width="300"
+                Padding="20"
+                CornerRadius="10"
+                Background="#1D1B1B"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
 
                 <StackPanel Spacing="16">
 
                     <TextBlock
-                    Text="Edit Product"
-                    FontSize="20"
-                    FontWeight="Bold" />
+                        Text="Edit Product"
+                        FontSize="20"
+                        FontWeight="Bold" />
 
                     <StackPanel Spacing="4">
 
                         <TextBlock
-                        Text="Name"
-                        Opacity="0.7" />
+                            Text="Name"
+                            Opacity="0.7" />
 
                         <TextBox
-                        Text="{Binding NewProductName}"
-                        PlaceholderText="Name" />
+                            Text="{Binding NewProductName}"
+                            PlaceholderText="Name" />
 
                     </StackPanel>
 
@@ -176,23 +250,35 @@ x:DataType="vm:ProductDetailsViewModel">
                     <StackPanel Spacing="10">
 
                         <TextBlock
-                        Text="Danger Zone"
-                        FontWeight="SemiBold" />
+                            Text="Danger Zone"
+                            FontWeight="SemiBold" />
 
-                        <Button
-                        Content="Delete Product"
-                        Command="{Binding DeleteProductCommand}" />
+                        <Button Command="{Binding DeleteProductCommand}">
+
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Spacing="8">
+
+                                <fluentIcons:SymbolIcon
+                                    Symbol="Delete"
+                                    FontSize="16" />
+
+                                <TextBlock Text="Delete Product" />
+
+                            </StackPanel>
+
+                        </Button>
 
                     </StackPanel>
 
                     <StackPanel
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Spacing="10">
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="10">
 
                         <Button
-                        Content="Close"
-                        Command="{Binding CloseEditProductModalCommand}" />
+                            Content="Close"
+                            Command="{Binding CloseEditProductModalCommand}" />
 
                     </StackPanel>
 

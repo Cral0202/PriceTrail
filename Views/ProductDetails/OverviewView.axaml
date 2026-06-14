@@ -1,11 +1,12 @@
 <UserControl
-xmlns="https://github.com/avaloniaui"
-xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-xmlns:subVm="using:PriceTrail.ViewModels.ProductDetails"
-xmlns:models="using:PriceTrail.Models"
-xmlns:converters="using:PriceTrail.Converters"
-x:Class="PriceTrail.Views.ProductDetails.OverviewView"
-x:DataType="subVm:OverviewViewModel">
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:subVm="using:PriceTrail.ViewModels.ProductDetails"
+    xmlns:models="using:PriceTrail.Models"
+    xmlns:converters="using:PriceTrail.Converters"
+    xmlns:fluentIcons="using:FluentIcons.Avalonia"
+    x:Class="PriceTrail.Views.ProductDetails.OverviewView"
+    x:DataType="subVm:OverviewViewModel">
 
     <UserControl.Resources>
         <converters:RelativeTimeConverter x:Key="RelativeTimeConverter" />
@@ -20,42 +21,42 @@ x:DataType="subVm:OverviewViewModel">
             <DataTemplate x:DataType="models:Product.ProductPage">
 
                 <Border
-                Background="#191818"
-                Padding="16"
-                CornerRadius="10"
-                Margin="0,0,0,10">
+                    Background="#191818"
+                    Padding="16"
+                    CornerRadius="10"
+                    Margin="0,0,0,10">
 
                     <Grid
-                    RowDefinitions="Auto,Auto"
-                    ColumnDefinitions="*,Auto">
+                        RowDefinitions="Auto,Auto"
+                        ColumnDefinitions="*,Auto">
 
                         <!-- TOP LEFT -->
 
                         <StackPanel
-                        Grid.Row="0"
-                        Grid.Column="0">
+                            Grid.Row="0"
+                            Grid.Column="0">
 
                             <TextBlock
-                            Text="{Binding StoreName}"
-                            FontWeight="Bold"
-                            FontSize="18" />
+                                Text="{Binding StoreName}"
+                                FontWeight="Bold"
+                                FontSize="18" />
 
                             <TextBlock
-                            Text="{Binding Url}"
-                            Opacity="0.6"
-                            TextWrapping="Wrap" />
+                                Text="{Binding Url}"
+                                Opacity="0.6"
+                                TextWrapping="Wrap" />
 
                         </StackPanel>
 
                         <!-- TOP RIGHT -->
 
                         <TextBlock
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        FontSize="24"
-                        FontWeight="Bold"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center">
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            FontSize="24"
+                            FontWeight="Bold"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
 
                             <Run Text="{Binding Price, StringFormat={}{0:0.##}}" />
                             <Run Text="{Binding Currency}" />
@@ -65,46 +66,59 @@ x:DataType="subVm:OverviewViewModel">
                         <!-- BOTTOM -->
 
                         <Grid
-                        Grid.Row="1"
-                        Grid.ColumnSpan="2"
-                        Margin="0,12,0,0"
-                        ColumnDefinitions="*,Auto">
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Margin="0,12,0,0"
+                            ColumnDefinitions="*,Auto">
 
                             <!-- LAST UPDATED / STATUS -->
 
                             <StackPanel
-                            Orientation="Horizontal"
-                            Spacing="8">
+                                Orientation="Horizontal"
+                                Spacing="8">
 
                                 <TextBlock
-                                Text="Last updated:"
-                                Opacity="0.6" />
+                                    Text="Last updated:"
+                                    Opacity="0.6" />
 
                                 <TextBlock
-                                Text="{Binding LastUpdated,
-                                Converter={StaticResource RelativeTimeConverter}}" />
+                                    Text="{Binding LastUpdated,
+                                    Converter={StaticResource RelativeTimeConverter}}" />
 
                                 <TextBlock
-                                Text="⚠"
-                                Foreground="OrangeRed"
-                                Cursor="Hand"
-                                IsVisible="{Binding HasError}"
-                                ToolTip.Tip="{Binding ErrorMessage}"
-                                ToolTip.ShowDelay="100" />
+                                    Text="⚠"
+                                    Foreground="OrangeRed"
+                                    Cursor="Hand"
+                                    IsVisible="{Binding HasError}"
+                                    ToolTip.Tip="{Binding ErrorMessage}"
+                                    ToolTip.ShowDelay="100" />
 
                             </StackPanel>
 
                             <!-- ACTIONS -->
 
                             <StackPanel
-                            Grid.Column="1"
-                            Orientation="Horizontal"
-                            Spacing="8">
+                                Grid.Column="1"
+                                Orientation="Horizontal"
+                                Spacing="8">
 
                                 <Button
-                                Content="Delete"
-                                Command="{Binding $parent[UserControl].DataContext.DeleteProductPageCommand}"
-                                CommandParameter="{Binding}" />
+                                    Command="{Binding $parent[UserControl].DataContext.DeleteProductPageCommand}"
+                                    CommandParameter="{Binding}" >
+
+                                    <StackPanel
+                                        Orientation="Horizontal"
+                                        Spacing="8">
+
+                                        <fluentIcons:SymbolIcon
+                                            Symbol="Delete"
+                                            FontSize="16" />
+
+                                        <TextBlock Text="Delete" />
+
+                                    </StackPanel>
+
+                                </Button>
 
                             </StackPanel>
 
