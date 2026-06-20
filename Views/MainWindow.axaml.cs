@@ -10,6 +10,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        Closing += MainWindow_Closing;
 
         var manager = new WindowNotificationManager(this)
         {
@@ -18,5 +19,12 @@ public partial class MainWindow : Window
         };
 
         NotificationService.Instance.Initialize(manager);
+    }
+
+    private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)
+    {
+        e.Cancel = true;
+        Hide();
+        ShowInTaskbar = false;
     }
 }

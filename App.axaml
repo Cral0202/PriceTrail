@@ -9,6 +9,28 @@
         <local:ViewLocator/>
     </Application.DataTemplates>
 
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon
+                Icon="/Assets/avalonia-logo.ico"
+                ToolTipText="PriceTrail">
+
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem
+                            Header="Show"
+                            Click="TrayShowWindow_Click" />
+
+                        <NativeMenuItem
+                            Header="Exit"
+                            Click="TrayExit_Click" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
+
     <Application.Styles>
         <FluentTheme />
 

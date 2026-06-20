@@ -8,6 +8,9 @@ using PriceTrail.Database;
 
 using Microsoft.EntityFrameworkCore;
 
+using System;
+using Avalonia.Controls;
+
 namespace PriceTrail;
 
 public partial class App : Application
@@ -32,5 +35,26 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private void TrayShowWindow_Click(object? sender, EventArgs e)
+    {
+        if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
+            return;
+
+        desktop.MainWindow ??= new MainWindow();
+
+        desktop.MainWindow.Show();
+        desktop.MainWindow.ShowInTaskbar = true;
+        desktop.MainWindow.WindowState = WindowState.Normal;
+        desktop.MainWindow.Activate();
+    }
+
+    private void TrayExit_Click(object? sender, EventArgs e)
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.Shutdown();
+        }
     }
 }
