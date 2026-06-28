@@ -4,6 +4,7 @@
         xmlns:productDetailViews="using:PriceTrail.Views.ProductDetails"
         xmlns:vm="using:PriceTrail.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:fluentIcons="using:FluentIcons.Avalonia"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PriceTrail.Views.MainWindow"
@@ -34,6 +35,54 @@
 
     </Window.DataTemplates>
 
-    <ContentControl Content="{Binding CurrentViewModel}" />
+    <Grid ColumnDefinitions="64,*">
+
+        <!-- Sidebar -->
+        <Border
+            Grid.Column="0">
+
+            <StackPanel
+                Margin="0,12"
+                Spacing="8"
+                HorizontalAlignment="Center">
+
+                <Button
+                    Width="48"
+                    Height="48"
+                    Padding="0"
+                    CornerRadius="8"
+                    ToolTip.Tip="Products"
+                    Command="{Binding ShowProductsCommand}">
+
+                    <fluentIcons:SymbolIcon
+                        Symbol="Box"
+                        FontSize="24" />
+
+                </Button>
+
+                <Button
+                    Width="48"
+                    Height="48"
+                    Padding="0"
+                    CornerRadius="8"
+                    ToolTip.Tip="Settings"
+                    Command="{Binding ShowSettingsCommand}">
+
+                    <fluentIcons:SymbolIcon
+                        Symbol="Settings"
+                        FontSize="24" />
+
+                </Button>
+
+            </StackPanel>
+
+        </Border>
+
+        <!-- Current page -->
+        <ContentControl
+            Grid.Column="1"
+            Content="{Binding CurrentViewModel}" />
+
+    </Grid>
 
 </Window>
