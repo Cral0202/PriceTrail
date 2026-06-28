@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 using System;
 using Avalonia.Controls;
+using PriceTrail.States;
+using PriceTrail.Services;
 
 namespace PriceTrail;
 
@@ -20,17 +22,25 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
         // Apply db migrations on startup
         using var db = new AppDbContext();
         db.Database.Migrate();
 
+        // State
+        var appState = new AppState();
+        await appState.ProductState.LoadProductsAsync();
+
+        // Background services
+        var priceRefreshService = new PriceRefreshService(appState.ProductState);
+        _ = priceRefreshService.StartAsync();
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new MainWindowViewModel(appState),
             };
         }
 

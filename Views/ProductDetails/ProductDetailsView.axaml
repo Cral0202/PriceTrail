@@ -71,8 +71,7 @@
                         </Button>
 
                         <Button
-                            Command="{Binding RefreshPricesCommand}"
-                            IsEnabled="{Binding !IsRefreshing}">
+                            Command="{Binding RefreshPricesCommand}">
 
                             <StackPanel
                                 Orientation="Horizontal"

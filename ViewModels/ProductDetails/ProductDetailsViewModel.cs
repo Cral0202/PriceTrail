@@ -22,7 +22,6 @@ public partial class ProductDetailsViewModel : ViewModelBase
     [ObservableProperty] public partial bool IsEditProductModalOpen { get; set; }
     [ObservableProperty] public partial string NewProductPageUrl { get; set; } = "";
     [ObservableProperty] public partial string NewProductName { get; set; } = "";
-    [ObservableProperty] public partial bool IsRefreshing { get; set; }
 
     public ProductDetailsViewModel(MainWindowViewModel mainWindow, AppState appState, Product product)
     {
@@ -51,19 +50,7 @@ public partial class ProductDetailsViewModel : ViewModelBase
     [RelayCommand]
     private async Task RefreshPricesAsync()
     {
-        if (IsRefreshing)
-            return;
-
-        IsRefreshing = true;
-
-        try
-        {
-            await _productState.RefreshProductPricesAsync(Product);
-        }
-        finally
-        {
-            IsRefreshing = false;
-        }
+        await _productState.RefreshProductPricesAsync(Product);
     }
 
     [RelayCommand]

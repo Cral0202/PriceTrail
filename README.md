@@ -10,14 +10,14 @@ PriceTrail is currently in early development.
 
 - Track multiple store pages for the same product
 - Automatic price extraction using JSON-LD
-- Local SQLite database storage
 - Price history tracking
+- Automatic price refreshes
+- Local SQLite database storage
 
 ## Planned Features
 
 - Improved UI (visuals and features)
 - More reliable product data extraction
-- Automatic background price fetching
 - Price notifications
 
 ## Screenshots
