@@ -7,11 +7,26 @@ namespace PriceTrail.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
+    // Used for the sidebar
+    public enum NavigationPage
+    {
+        Products,
+        Settings
+    }
+
     [ObservableProperty]
-    public partial object CurrentViewModel { get; set; }
+    private object _currentViewModel;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsProductsActive))]
+    [NotifyPropertyChangedFor(nameof(IsSettingsActive))]
+    private NavigationPage _currentPage = NavigationPage.Products;
 
     public ProductsViewModel ProductsViewModel { get; }
     public SettingsViewModel SettingsViewModel { get; }
+
+    public bool IsProductsActive => CurrentPage == NavigationPage.Products;
+    public bool IsSettingsActive => CurrentPage == NavigationPage.Settings;
 
     public MainWindowViewModel(AppState appState)
     {
@@ -25,11 +40,13 @@ public partial class MainWindowViewModel : ViewModelBase
     private void ShowProducts()
     {
         CurrentViewModel = ProductsViewModel;
+        CurrentPage = NavigationPage.Products;
     }
 
     [RelayCommand]
     private void ShowSettings()
     {
         CurrentViewModel = SettingsViewModel;
+        CurrentPage = NavigationPage.Settings;
     }
 }

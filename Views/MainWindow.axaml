@@ -35,6 +35,15 @@
 
     </Window.DataTemplates>
 
+    <Window.Styles>
+        <Style Selector="Button.sidebar-nav.active /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#0078D4" /> <Setter Property="TextBlock.Foreground" Value="White" />
+        </Style>
+
+        <Style Selector="Button.sidebar-nav.active:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#005A9E" /> </Style>
+    </Window.Styles>
+
     <Grid ColumnDefinitions="64,*">
 
         <!-- Sidebar -->
@@ -52,7 +61,9 @@
                     Padding="0"
                     CornerRadius="8"
                     ToolTip.Tip="Products"
-                    Command="{Binding ShowProductsCommand}">
+                    Command="{Binding ShowProductsCommand}"
+                    Classes="sidebar-nav"
+                    Classes.active="{Binding IsProductsActive}">
 
                     <fluentIcons:SymbolIcon
                         Symbol="Box"
@@ -66,7 +77,9 @@
                     Padding="0"
                     CornerRadius="8"
                     ToolTip.Tip="Settings"
-                    Command="{Binding ShowSettingsCommand}">
+                    Command="{Binding ShowSettingsCommand}"
+                    Classes="sidebar-nav"
+                    Classes.active="{Binding IsSettingsActive}">
 
                     <fluentIcons:SymbolIcon
                         Symbol="Settings"
