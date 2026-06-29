@@ -10,7 +10,6 @@
         <ScrollViewer>
 
             <StackPanel
-                Margin="20"
                 Spacing="10">
 
                 <TextBlock

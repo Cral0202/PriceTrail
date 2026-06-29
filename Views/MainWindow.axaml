@@ -92,9 +92,14 @@
         </Border>
 
         <!-- Current page -->
-        <ContentControl
+        <Border
             Grid.Column="1"
-            Content="{Binding CurrentViewModel}" />
+            Padding="20">
+
+            <ContentControl
+                Content="{Binding CurrentViewModel}" />
+
+        </Border>
 
     </Grid>
 

@@ -20,7 +20,8 @@
 
         <ScrollViewer>
 
-            <StackPanel Margin="20" Spacing="10">
+            <StackPanel
+                Spacing="10">
 
                 <!-- HEADER -->
 
