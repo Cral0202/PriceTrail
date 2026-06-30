@@ -30,11 +30,12 @@ public partial class App : Application
 
         // State
         var appState = new AppState();
+        await appState.SettingsState.InitializeAsync();
         await appState.ProductState.LoadProductsAsync();
 
         // Background services
-        var priceRefreshService = new PriceRefreshService(appState.ProductState);
-        _ = priceRefreshService.StartAsync();
+        var priceRefreshService = new PriceRefreshService(appState.ProductState, appState.SettingsState);
+        _ = priceRefreshService.RestartAsync();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
