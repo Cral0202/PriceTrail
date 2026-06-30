@@ -10,11 +10,9 @@ using PriceTrail.ViewModels.ProductDetails;
 
 namespace PriceTrail.ViewModels;
 
-public partial class ProductsViewModel(MainWindowViewModel mainWindow, AppState appState) : ViewModelBase
+public partial class ProductsViewModel(MainWindowViewModel mainWindow, ProductState productState) : ViewModelBase
 {
-    private readonly ProductState _productState = appState.ProductState;
-
-    public ObservableCollection<Product> Products => _productState.Products;
+    public ObservableCollection<Product> Products => productState.Products;
 
     [ObservableProperty]
     public partial bool IsAddProductModalOpen { get; set; }
@@ -35,7 +33,7 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow, AppState 
             Name = trimmedName
         };
 
-        await _productState.AddProductAsync(product);
+        await productState.AddProductAsync(product);
 
         NewProductName = "";
         IsAddProductModalOpen = false;
@@ -44,7 +42,7 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow, AppState 
     [RelayCommand]
     private void OpenProduct(Product product)
     {
-        mainWindow.CurrentViewModel = new ProductDetailsViewModel(mainWindow, appState, product);
+        mainWindow.CurrentViewModel = new ProductDetailsViewModel(mainWindow, productState, product);
     }
 
     /**********/

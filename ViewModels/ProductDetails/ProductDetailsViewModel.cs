@@ -12,7 +12,6 @@ namespace PriceTrail.ViewModels.ProductDetails;
 public partial class ProductDetailsViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainWindow;
-    private readonly AppState _appState;
     private readonly ProductState _productState;
 
     public Product Product { get; }
@@ -23,14 +22,13 @@ public partial class ProductDetailsViewModel : ViewModelBase
     [ObservableProperty] public partial string NewProductPageUrl { get; set; } = "";
     [ObservableProperty] public partial string NewProductName { get; set; } = "";
 
-    public ProductDetailsViewModel(MainWindowViewModel mainWindow, AppState appState, Product product)
+    public ProductDetailsViewModel(MainWindowViewModel mainWindow, ProductState productState, Product product)
     {
         _mainWindow = mainWindow;
-        _appState = appState;
-        _productState = appState.ProductState;
+        _productState = productState;
         Product = product;
 
-        CurrentTabViewModel = new OverviewViewModel(_appState, Product);
+        CurrentTabViewModel = new OverviewViewModel(productState, Product);
     }
 
     [RelayCommand]
@@ -60,7 +58,7 @@ public partial class ProductDetailsViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void SelectOverview() => CurrentTabViewModel = new OverviewViewModel(_appState, Product);
+    private void SelectOverview() => CurrentTabViewModel = new OverviewViewModel(_productState, Product);
 
     [RelayCommand]
     private void SelectHistory() => CurrentTabViewModel = new HistoryViewModel(Product);

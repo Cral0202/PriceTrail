@@ -7,15 +7,13 @@ using PriceTrail.States;
 
 namespace PriceTrail.ViewModels.ProductDetails;
 
-public partial class OverviewViewModel(AppState appState, Product product) : ViewModelBase
+public partial class OverviewViewModel(ProductState productState, Product product) : ViewModelBase
 {
-    private readonly ProductState _productState = appState.ProductState;
-
     public Product Product { get; } = product;
 
     [RelayCommand]
     private async Task DeleteProductPageAsync(ProductPage page)
     {
-        await _productState.DeleteProductPageFromProductAsync(Product, page);
+        await productState.DeleteProductPageFromProductAsync(Product, page);
     }
 }

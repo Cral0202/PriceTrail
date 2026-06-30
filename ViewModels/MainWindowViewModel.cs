@@ -30,7 +30,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel(AppState appState)
     {
-        ProductsViewModel = new ProductsViewModel(this, appState);
+        ProductsViewModel = new ProductsViewModel(this, appState.ProductState);
         SettingsViewModel = new SettingsViewModel(appState.SettingsState);
 
         CurrentViewModel = ProductsViewModel;
