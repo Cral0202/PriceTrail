@@ -61,6 +61,7 @@ public partial class HistoryViewModel : ViewModelBase
                 Values = page.PriceHistory,
                 GeometrySize = 8,
                 GeometryFill = null,
+                LineSmoothness = 0,
 
                 // Formats the X value inside the popup tooltip
                 XToolTipLabelFormatter = point => new DateTime((long)point.Coordinate.SecondaryValue, DateTimeKind.Utc).ToLocalTime().ToString("g"),
