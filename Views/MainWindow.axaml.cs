@@ -18,7 +18,7 @@ public partial class MainWindow : Window
             MaxItems = 3
         };
 
-        NotificationService.Instance.Initialize(manager);
+        ToastNotificationService.Instance.Initialize(manager);
     }
 
     private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)

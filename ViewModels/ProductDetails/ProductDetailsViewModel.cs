@@ -41,7 +41,7 @@ public partial class ProductDetailsViewModel : ViewModelBase
 
         if (errorMessage != null)
         {
-            NotificationService.Instance.ShowMessage("Failed to add URL", errorMessage, Avalonia.Controls.Notifications.NotificationType.Error);
+            ToastNotificationService.Instance.ShowMessage("Failed to add URL", errorMessage, Avalonia.Controls.Notifications.NotificationType.Error);
         }
     }
 

@@ -4,15 +4,15 @@ using Avalonia.Controls.Notifications;
 
 namespace PriceTrail.Services;
 
-public sealed class NotificationService
+public sealed class ToastNotificationService
 {
-    public static NotificationService Instance { get; } = new();
+    public static ToastNotificationService Instance { get; } = new();
 
     private static readonly TimeSpan DefaultNotificationDuration = TimeSpan.FromSeconds(5);
 
     private WindowNotificationManager? _manager;
 
-    private NotificationService()
+    private ToastNotificationService()
     {
     }
 
