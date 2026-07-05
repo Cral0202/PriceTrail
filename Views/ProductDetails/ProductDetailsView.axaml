@@ -39,7 +39,9 @@
                         Orientation="Horizontal"
                         Spacing="10">
 
-                        <Button Command="{Binding GoBackCommand}">
+                        <Button
+                            Classes="outline"
+                            Command="{Binding GoBackCommand}">
 
                             <StackPanel
                                 Orientation="Horizontal"
@@ -55,7 +57,9 @@
 
                         </Button>
 
-                        <Button Command="{Binding OpenAddProductPageModalCommand}">
+                        <Button
+                            Classes="primary"
+                            Command="{Binding OpenAddProductPageModalCommand}">
 
                             <StackPanel
                                 Orientation="Horizontal"
@@ -72,6 +76,7 @@
                         </Button>
 
                         <Button
+                            Classes="primary"
                             Command="{Binding RefreshPricesCommand}">
 
                             <StackPanel
@@ -88,7 +93,9 @@
 
                         </Button>
 
-                        <Button Command="{Binding OpenEditProductModalCommand}">
+                        <Button
+                            Classes="primary"
+                            Command="{Binding OpenEditProductModalCommand}">
 
                             <StackPanel
                                 Orientation="Horizontal"
@@ -109,7 +116,7 @@
                 </Grid>
 
                 <Border
-                    Background="#191818"
+                    Background="{StaticResource SurfaceBrush}"
                     Padding="10"
                     CornerRadius="10" >
 
@@ -117,7 +124,9 @@
                         Orientation="Horizontal"
                         Spacing="10">
 
-                        <Button Command="{Binding SelectOverviewCommand}">
+                        <Button
+                            Classes="primary"
+                            Command="{Binding SelectOverviewCommand}">
 
                             <StackPanel
                                 Orientation="Horizontal"
@@ -133,7 +142,9 @@
 
                         </Button>
 
-                        <Button Command="{Binding SelectHistoryCommand}">
+                        <Button
+                            Classes="primary"
+                            Command="{Binding SelectHistoryCommand}">
 
                             <StackPanel
                                 Orientation="Horizontal"
@@ -167,126 +178,6 @@
             </StackPanel>
 
         </ScrollViewer>
-
-        <!-- MODALS -->
-
-        <Border
-            IsVisible="{Binding IsAddProductPageModalOpen}"
-            Background="#80000000">
-
-            <Border
-                Width="300"
-                Padding="20"
-                CornerRadius="10"
-                Background="#1D1B1B"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-
-                <StackPanel Spacing="10">
-
-                    <TextBlock
-                        Text="Add Product Page"
-                        FontSize="20"
-                        FontWeight="Bold" />
-
-                    <TextBox
-                        Text="{Binding NewProductPageUrl}"
-                        PlaceholderText="URL" />
-
-                    <StackPanel
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        Spacing="10">
-
-                        <Button
-                            Content="Cancel"
-                            Command="{Binding CloseAddProductPageModalCommand}" />
-
-                        <Button
-                            Content="Add"
-                            Command="{Binding AddProductPageCommand}" />
-
-                    </StackPanel>
-
-                </StackPanel>
-
-            </Border>
-
-        </Border>
-
-        <Border
-            IsVisible="{Binding IsEditProductModalOpen}"
-            Background="#80000000">
-
-            <Border
-                Width="300"
-                Padding="20"
-                CornerRadius="10"
-                Background="#1D1B1B"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-
-                <StackPanel Spacing="16">
-
-                    <TextBlock
-                        Text="Edit Product"
-                        FontSize="20"
-                        FontWeight="Bold" />
-
-                    <StackPanel Spacing="4">
-
-                        <TextBlock
-                            Text="Name"
-                            Opacity="0.7" />
-
-                        <TextBox
-                            Text="{Binding NewProductName}"
-                            PlaceholderText="Name" />
-
-                    </StackPanel>
-
-                    <!-- DANGER ZONE -->
-
-                    <StackPanel Spacing="10">
-
-                        <TextBlock
-                            Text="Danger Zone"
-                            FontWeight="SemiBold" />
-
-                        <Button Command="{Binding DeleteProductCommand}">
-
-                            <StackPanel
-                                Orientation="Horizontal"
-                                Spacing="8">
-
-                                <fluentIcons:SymbolIcon
-                                    Symbol="Delete"
-                                    FontSize="16" />
-
-                                <TextBlock Text="Delete Product" />
-
-                            </StackPanel>
-
-                        </Button>
-
-                    </StackPanel>
-
-                    <StackPanel
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        Spacing="10">
-
-                        <Button
-                            Content="Close"
-                            Command="{Binding CloseEditProductModalCommand}" />
-
-                    </StackPanel>
-
-                </StackPanel>
-
-            </Border>
-
-        </Border>
 
     </Grid>
 

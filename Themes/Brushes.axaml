@@ -1,0 +1,99 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Background -->
+    <SolidColorBrush
+        x:Key="WindowBackgroundBrush"
+        Color="#23211F"/>
+
+    <SolidColorBrush
+        x:Key="SurfaceBrush"
+        Color="#2B2927"/>
+
+    <SolidColorBrush
+        x:Key="SurfaceRaisedBrush"
+        Color="#34312F"/>
+
+    <!-- Borders -->
+    <SolidColorBrush
+        x:Key="BorderBrush"
+        Color="#474340"/>
+
+    <!-- Text -->
+    <SolidColorBrush
+        x:Key="PrimaryTextBrush"
+        Color="#F3F3F3"/>
+
+    <!-- Accent -->
+    <SolidColorBrush
+        x:Key="AccentBrush"
+        Color="#B45309"/>
+
+    <SolidColorBrush
+        x:Key="AccentBrushDarker"
+        Color="#8E3307"/>
+
+    <!-- Modals -->
+
+    <SolidColorBrush
+        x:Key="ModalOverlayBrush"
+        Color="#80000000"/>
+
+    <SolidColorBrush
+        x:Key="ModalSurfaceBrush"
+        Color="#1D1B1B" />
+
+    <SolidColorBrush
+        x:Key="ModalBorderBrush"
+        Color="#4A4A4A" />
+
+    <!-- Default button -->
+
+    <SolidColorBrush
+        x:Key="ButtonForegroundBrush"
+        Color="#E0E0E0"/>
+
+    <!-- Primary button -->
+
+    <LinearGradientBrush
+        x:Key="PrimaryButtonBackgroundBrush"
+        StartPoint="0,0"
+        EndPoint="1,1">
+
+        <GradientStop
+            Offset="0"
+            Color="#C2410C"/>
+
+        <GradientStop
+            Offset="1"
+            Color="#B45309"/>
+
+    </LinearGradientBrush>
+
+    <LinearGradientBrush
+        x:Key="PrimaryButtonHoverBrush"
+        StartPoint="0,0"
+        EndPoint="1,1">
+
+        <GradientStop
+            Offset="0"
+            Color="#A93A0A"/>
+
+        <GradientStop
+            Offset="1"
+            Color="#96450A"/>
+
+    </LinearGradientBrush>
+
+    <!-- Danger button -->
+
+    <SolidColorBrush
+        x:Key="DangerButtonBackgroundBrush"
+        Color="#B3261E"/>
+
+    <SolidColorBrush
+        x:Key="DangerButtonHoverBrush"
+        Color="#8C1D18"/>
+
+</ResourceDictionary>

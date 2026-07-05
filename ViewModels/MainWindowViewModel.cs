@@ -18,6 +18,11 @@ public partial class MainWindowViewModel : ViewModelBase
     private object _currentViewModel;
 
     [ObservableProperty]
+    public partial ObservableObject? CurrentModalViewModel { get; set; }
+
+    public bool IsModalOpen => CurrentModalViewModel != null;
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsProductsActive))]
     [NotifyPropertyChangedFor(nameof(IsSettingsActive))]
     private NavigationPage _currentPage = NavigationPage.Products;
@@ -48,5 +53,10 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         CurrentViewModel = SettingsViewModel;
         CurrentPage = NavigationPage.Settings;
+    }
+
+    partial void OnCurrentModalViewModelChanged(ObservableObject? value)
+    {
+        OnPropertyChanged(nameof(IsModalOpen));
     }
 }

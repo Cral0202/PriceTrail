@@ -1,0 +1,44 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:PriceTrail.ViewModels"
+    x:Class="PriceTrail.Views.AddProductModalView"
+    x:DataType="vm:AddProductModalViewModel">
+
+    <Border
+        Classes="modal"
+        Width="300">
+
+        <StackPanel Spacing="10">
+
+            <TextBlock
+                Text="Add Product"
+                FontSize="20"
+                FontWeight="Bold" />
+
+            <TextBox
+                Text="{Binding NewProductName}"
+                PlaceholderText="Product Name" />
+
+            <StackPanel
+                Orientation="Horizontal"
+                HorizontalAlignment="Right"
+                Spacing="10">
+
+                <Button
+                    Classes="outline"
+                    Content="Cancel"
+                    Command="{Binding CloseCommand}" />
+
+                <Button
+                    Classes="primary"
+                    Content="Add"
+                    Command="{Binding AddProductCommand}" />
+
+            </StackPanel>
+
+        </StackPanel>
+
+    </Border>
+
+</UserControl>

@@ -37,11 +37,11 @@
 
     <Window.Styles>
         <Style Selector="Button.sidebar-nav.active /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#0078D4" /> <Setter Property="TextBlock.Foreground" Value="White" />
+            <Setter Property="Background" Value="{StaticResource AccentBrush}" /> <Setter Property="TextBlock.Foreground" Value="White" />
         </Style>
 
         <Style Selector="Button.sidebar-nav.active:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#005A9E" /> </Style>
+            <Setter Property="Background" Value="{StaticResource AccentBrushDarker}" /> </Style>
     </Window.Styles>
 
     <Grid ColumnDefinitions="64,*">
@@ -98,6 +98,21 @@
 
             <ContentControl
                 Content="{Binding CurrentViewModel}" />
+
+        </Border>
+
+        <!-- Modal -->
+
+        <Border
+            Grid.ColumnSpan="2"
+            ZIndex="10"
+            IsVisible="{Binding IsModalOpen}"
+            Background="{StaticResource ModalOverlayBrush}">
+
+            <ContentControl
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{Binding CurrentModalViewModel}" />
 
         </Border>
 

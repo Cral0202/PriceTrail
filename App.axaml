@@ -9,6 +9,23 @@
         <local:ViewLocator/>
     </Application.DataTemplates>
 
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Themes/Brushes.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+
+        <StyleInclude Source="/Styles/WindowStyles.axaml"/>
+        <StyleInclude Source="/Styles/ModalStyles.axaml" />
+        <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
+
+    </Application.Styles>
+
     <TrayIcon.Icons>
         <TrayIcons>
             <TrayIcon
@@ -30,25 +47,4 @@
             </TrayIcon>
         </TrayIcons>
     </TrayIcon.Icons>
-
-    <Application.Styles>
-        <FluentTheme />
-
-        <Style Selector="Button">
-            <Setter Property="Background" Value="#2D2D30"/>
-            <Setter Property="Foreground" Value="#E0E0E0"/>
-            <Setter Property="Padding" Value="12,6"/>
-            <Setter Property="CornerRadius" Value="8"/>
-        </Style>
-
-        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#202022"/>
-            <Setter Property="TextBlock.Foreground" Value="#FFFFFF"/>
-        </Style>
-
-        <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#202022"/>
-            <Setter Property="TextBlock.Foreground" Value="#FFFFFF"/>
-        </Style>
-    </Application.Styles>
 </Application>

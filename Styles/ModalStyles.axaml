@@ -1,0 +1,29 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style Selector="Border.modal">
+
+        <Setter
+            Property="Background"
+            Value="{StaticResource ModalSurfaceBrush}" />
+
+        <Setter
+            Property="BorderBrush"
+            Value="{StaticResource ModalBorderBrush}" />
+
+        <Setter
+            Property="BorderThickness"
+            Value="1" />
+
+        <Setter
+            Property="CornerRadius"
+            Value="10" />
+
+        <Setter
+            Property="Padding"
+            Value="20" />
+
+    </Style>
+
+</Styles>

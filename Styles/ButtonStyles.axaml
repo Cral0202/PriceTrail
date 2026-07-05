@@ -1,0 +1,97 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Default button -->
+
+    <Style Selector="Button">
+        <Setter
+            Property="Padding"
+            Value="12,6"/>
+
+        <Setter
+            Property="CornerRadius"
+            Value="8"/>
+
+        <Setter
+            Property="Foreground"
+            Value="{StaticResource ButtonForegroundBrush}"/>
+    </Style>
+
+    <!-- Outline button -->
+
+    <Style Selector="Button.outline">
+        <Setter
+            Property="Background"
+            Value="Transparent"/>
+
+        <Setter
+            Property="BorderBrush"
+            Value="{StaticResource BorderBrush}"/>
+
+        <Setter
+            Property="BorderThickness"
+            Value="1"/>
+    </Style>
+
+    <Style Selector="Button.outline:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter
+            Property="Background"
+            Value="{StaticResource SurfaceBrush}"/>
+
+        <Setter
+            Property="BorderBrush"
+            Value="{StaticResource BorderBrush}"/>
+    </Style>
+
+    <Style Selector="Button.outline:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter
+            Property="Background"
+            Value="{StaticResource SurfaceBrush}"/>
+
+        <Setter
+            Property="BorderBrush"
+            Value="{StaticResource BorderBrush}"/>
+    </Style>
+
+    <!-- Primary button -->
+
+    <Style Selector="Button.primary">
+        <Setter
+            Property="Background"
+            Value="{StaticResource PrimaryButtonBackgroundBrush}" />
+    </Style>
+
+    <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter
+            Property="Background"
+            Value="{StaticResource PrimaryButtonHoverBrush}"/>
+    </Style>
+
+    <Style Selector="Button.primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter
+            Property="Background"
+            Value="{StaticResource PrimaryButtonHoverBrush}"/>
+    </Style>
+
+    <!-- Danger button -->
+
+    <Style Selector="Button.danger">
+        <Setter
+            Property="Background"
+            Value="{StaticResource DangerButtonBackgroundBrush}" />
+    </Style>
+
+    <Style Selector="Button.danger:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter
+            Property="Background"
+            Value="{StaticResource DangerButtonHoverBrush}" />
+    </Style>
+
+    <Style Selector="Button.danger:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter
+            Property="Background"
+            Value="{StaticResource DangerButtonHoverBrush}" />
+    </Style>
+
+</Styles>
