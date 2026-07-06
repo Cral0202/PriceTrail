@@ -19,9 +19,8 @@
                 Spacing="10">
 
                 <TextBlock
-                    Text="Settings"
-                    FontSize="28"
-                    FontWeight="Bold" />
+                    Classes="page-title"
+                    Text="Settings" />
 
                 <CheckBox
                     Content="Automatically refresh prices"

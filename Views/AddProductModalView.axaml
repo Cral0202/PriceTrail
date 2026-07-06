@@ -12,9 +12,8 @@
         <StackPanel Spacing="10">
 
             <TextBlock
-                Text="Add Product"
-                FontSize="20"
-                FontWeight="Bold" />
+                Classes="modal-title"
+                Text="Add Product" />
 
             <TextBox
                 Text="{Binding NewProductName}"

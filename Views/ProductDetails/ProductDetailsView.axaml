@@ -30,9 +30,8 @@
 
                     <TextBlock
                         Grid.Column="0"
-                        Text="{Binding Product.Name}"
-                        FontSize="28"
-                        FontWeight="Bold" />
+                        Classes="page-title"
+                        Text="{Binding Product.Name}"/>
 
                     <StackPanel
                         Grid.Column="1"

@@ -21,9 +21,8 @@
 
                     <TextBlock
                         Grid.Column="0"
-                        Text="Products"
-                        FontSize="28"
-                        FontWeight="Bold" />
+                        Classes="page-title"
+                        Text="Products" />
 
                     <Button
                         Classes="primary"
@@ -38,7 +37,7 @@
                                 Symbol="Add"
                                 FontSize="16" />
 
-                            <TextBlock Text="Add Product"/>
+                            <TextBlock Text="Add Product" />
 
                         </StackPanel>
 

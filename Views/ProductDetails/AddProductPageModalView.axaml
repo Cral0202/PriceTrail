@@ -12,13 +12,12 @@
         <StackPanel Spacing="10">
 
             <TextBlock
-                Text="Add Product Page"
-                FontSize="20"
-                FontWeight="Bold"/>
+                Classes="modal-title"
+                Text="Add Product Page" />
 
             <TextBox
                 Text="{Binding Url}"
-                PlaceholderText="URL"/>
+                PlaceholderText="URL" />
 
             <StackPanel
                 Orientation="Horizontal"
@@ -28,12 +27,12 @@
                 <Button
                     Classes="outline"
                     Content="Cancel"
-                    Command="{Binding CloseCommand}"/>
+                    Command="{Binding CloseCommand}" />
 
                 <Button
                     Classes="primary"
                     Content="Add"
-                    Command="{Binding AddProductPageCommand}"/>
+                    Command="{Binding AddProductPageCommand}" />
 
             </StackPanel>
 

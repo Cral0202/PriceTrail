@@ -34,6 +34,7 @@
         </FluentTheme>
 
         <StyleInclude Source="/Styles/WindowStyles.axaml"/>
+        <StyleInclude Source="/Styles/TextStyles.axaml"/>
         <StyleInclude Source="/Styles/ModalStyles.axaml" />
         <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
         <StyleInclude Source="/Styles/CheckBoxStyles.axaml"/>
