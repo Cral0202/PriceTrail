@@ -12,6 +12,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Themes/Colors.axaml"/>
                 <ResourceInclude Source="/Themes/Brushes.axaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -22,13 +23,13 @@
             <FluentTheme.Palettes>
                 <ColorPaletteResources
                     x:Key="Dark"
-                    Accent="#B45309"
-                    RegionColor="#23211F"
-                    BaseHigh="#F3F3F3"
-                    BaseMedium="#BDBDBD"
-                    ChromeLow="#2B2927"
-                    ChromeMedium="#34312F"
-                    ChromeHigh="#474340"/>
+                    Accent="{StaticResource AccentColor}"
+                    RegionColor="{StaticResource WindowBackgroundColor}"
+                    BaseHigh="{StaticResource PrimaryTextColor}"
+                    BaseMedium="{StaticResource SecondaryTextColor}"
+                    ChromeLow="{StaticResource SurfaceColor}"
+                    ChromeMedium="{StaticResource SurfaceRaisedColor}"
+                    ChromeHigh="{StaticResource BorderColor}"/>
             </FluentTheme.Palettes>
         </FluentTheme>
 

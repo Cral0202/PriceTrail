@@ -5,58 +5,58 @@
     <!-- Surfaces -->
     <SolidColorBrush
         x:Key="WindowBackgroundBrush"
-        Color="#23211F"/>
+        Color="{StaticResource WindowBackgroundColor}"/>
 
     <SolidColorBrush
         x:Key="SurfaceBrush"
-        Color="#2B2927"/>
+        Color="{StaticResource SurfaceColor}"/>
 
     <SolidColorBrush
         x:Key="SurfaceRaisedBrush"
-        Color="#34312F"/>
+        Color="{StaticResource SurfaceRaisedColor}"/>
 
     <!-- Borders -->
     <SolidColorBrush
         x:Key="BorderBrush"
-        Color="#474340"/>
+        Color="{StaticResource BorderColor}"/>
 
     <!-- Text -->
     <SolidColorBrush
         x:Key="PrimaryTextBrush"
-        Color="#F3F3F3"/>
+        Color="{StaticResource PrimaryTextColor}"/>
 
     <SolidColorBrush
         x:Key="SecondaryTextBrush"
-        Color="#BDBDBD"/>
+        Color="{StaticResource SecondaryTextColor}"/>
 
     <!-- Accent -->
     <SolidColorBrush
         x:Key="AccentBrushLighter"
-        Color="#C2410C"/>
+        Color="{StaticResource AccentLighterColor}"/>
 
     <SolidColorBrush
         x:Key="AccentBrush"
-        Color="#B45309"/>
+        Color="{StaticResource AccentColor}"/>
 
     <SolidColorBrush
         x:Key="AccentBrushDarker"
-        Color="#8E3307"/>
+        Color="{StaticResource AccentDarkerColor}"/>
 
     <!-- Modals -->
 
     <SolidColorBrush
         x:Key="ModalOverlayBrush"
-        Color="#80000000"/>
+        Color="{StaticResource ModalOverlayColor}"/>
 
     <SolidColorBrush
         x:Key="ModalSurfaceBrush"
-        Color="#1D1B1B" />
+        Color="{StaticResource ModalSurfaceColor}" />
 
     <!-- Buttons -->
 
     <SolidColorBrush
         x:Key="ButtonForegroundBrush"
-        Color="#E0E0E0"/>
+        Color="{StaticResource ButtonForegroundColor}"/>
 
     <LinearGradientBrush
         x:Key="PrimaryButtonBackgroundBrush"
@@ -65,11 +65,11 @@
 
         <GradientStop
             Offset="0"
-            Color="#C2410C"/>
+            Color="{StaticResource AccentLighterColor}"/>
 
         <GradientStop
             Offset="1"
-            Color="#B45309"/>
+            Color="{StaticResource AccentColor}"/>
 
     </LinearGradientBrush>
 
@@ -80,20 +80,20 @@
 
         <GradientStop
             Offset="0"
-            Color="#A93A0A"/>
+            Color="{StaticResource PrimaryButtonHoverStartColor}"/>
 
         <GradientStop
             Offset="1"
-            Color="#96450A"/>
+            Color="{StaticResource PrimaryButtonHoverEndColor}"/>
 
     </LinearGradientBrush>
 
     <SolidColorBrush
         x:Key="DangerButtonBackgroundBrush"
-        Color="#B3261E"/>
+        Color="{StaticResource DangerButtonBackgroundColor}"/>
 
     <SolidColorBrush
         x:Key="DangerButtonHoverBrush"
-        Color="#8C1D18"/>
+        Color="{StaticResource DangerButtonHoverColor}"/>
 
 </ResourceDictionary>

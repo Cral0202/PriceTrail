@@ -1,0 +1,49 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Surfaces -->
+
+    <Color x:Key="WindowBackgroundColor">#23211F</Color>
+
+    <Color x:Key="SurfaceColor">#2B2927</Color>
+
+    <Color x:Key="SurfaceRaisedColor">#34312F</Color>
+
+    <!-- Borders -->
+
+    <Color x:Key="BorderColor">#474340</Color>
+
+    <!-- Text -->
+
+    <Color x:Key="PrimaryTextColor">#F3F3F3</Color>
+
+    <Color x:Key="SecondaryTextColor">#BDBDBD</Color>
+
+    <!-- Accent -->
+
+    <Color x:Key="AccentLighterColor">#C2410C</Color>
+
+    <Color x:Key="AccentColor">#B45309</Color>
+
+    <Color x:Key="AccentDarkerColor">#8E3307</Color>
+
+    <!-- Modals -->
+
+    <Color x:Key="ModalOverlayColor">#80000000</Color>
+
+    <Color x:Key="ModalSurfaceColor">#1D1B1B</Color>
+
+    <!-- Buttons -->
+
+    <Color x:Key="ButtonForegroundColor">#E0E0E0</Color>
+
+    <Color x:Key="PrimaryButtonHoverStartColor">#A93A0A</Color>
+
+    <Color x:Key="PrimaryButtonHoverEndColor">#96450A</Color>
+
+    <Color x:Key="DangerButtonBackgroundColor">#B3261E</Color>
+
+    <Color x:Key="DangerButtonHoverColor">#8C1D18</Color>
+
+</ResourceDictionary>
