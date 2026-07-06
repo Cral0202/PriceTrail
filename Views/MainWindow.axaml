@@ -35,15 +35,6 @@
 
     </Window.DataTemplates>
 
-    <Window.Styles>
-        <Style Selector="Button.sidebar-nav.active /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{StaticResource AccentBrush}" /> <Setter Property="TextBlock.Foreground" Value="White" />
-        </Style>
-
-        <Style Selector="Button.sidebar-nav.active:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{StaticResource AccentBrushDarker}" /> </Style>
-    </Window.Styles>
-
     <Grid ColumnDefinitions="64,*">
 
         <!-- Sidebar -->
@@ -56,14 +47,14 @@
                 HorizontalAlignment="Center">
 
                 <Button
+                    Classes="sidebar"
+                    Classes.active="{Binding IsProductsActive}"
                     Width="48"
                     Height="48"
                     Padding="0"
                     CornerRadius="8"
                     ToolTip.Tip="Products"
-                    Command="{Binding ShowProductsCommand}"
-                    Classes="sidebar-nav"
-                    Classes.active="{Binding IsProductsActive}">
+                    Command="{Binding ShowProductsCommand}">
 
                     <fluentIcons:SymbolIcon
                         Symbol="Box"
@@ -72,14 +63,14 @@
                 </Button>
 
                 <Button
+                    Classes="sidebar"
+                    Classes.active="{Binding IsSettingsActive}"
                     Width="48"
                     Height="48"
                     Padding="0"
                     CornerRadius="8"
                     ToolTip.Tip="Settings"
-                    Command="{Binding ShowSettingsCommand}"
-                    Classes="sidebar-nav"
-                    Classes.active="{Binding IsSettingsActive}">
+                    Command="{Binding ShowSettingsCommand}">
 
                     <fluentIcons:SymbolIcon
                         Symbol="Settings"

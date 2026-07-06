@@ -8,15 +8,6 @@
     x:Class="PriceTrail.Views.ProductsView"
     x:DataType="vm:ProductsViewModel">
 
-    <!-- STYLES -->
-
-    <UserControl.Styles>
-        <Style Selector="Button.product-button:pointerover /template/ ContentPresenter, Button.product-button:pressed /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="Transparent" />
-        </Style>
-    </UserControl.Styles>
-
     <Grid>
 
         <ScrollViewer>
@@ -74,9 +65,8 @@
                         <DataTemplate x:DataType="models:Product.Product">
 
                             <Button
-                                Classes="product-button"
+                                Classes="transparent"
                                 Padding="0"
-                                Background="Transparent"
                                 BorderThickness="0"
                                 Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
                                 CommandParameter="{Binding}">
