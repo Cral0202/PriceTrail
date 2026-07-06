@@ -6,9 +6,9 @@
 
     <Color x:Key="WindowBackgroundColor">#23211F</Color>
 
-    <Color x:Key="SurfaceColor">#2B2927</Color>
+    <Color x:Key="SurfaceColor">#2E2A27</Color>
 
-    <Color x:Key="SurfaceRaisedColor">#34312F</Color>
+    <Color x:Key="SurfaceRaisedColor">#3F3A36</Color>
 
     <!-- Borders -->
 
