@@ -2,7 +2,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Background -->
+    <!-- Surfaces -->
     <SolidColorBrush
         x:Key="WindowBackgroundBrush"
         Color="#23211F"/>
@@ -25,7 +25,15 @@
         x:Key="PrimaryTextBrush"
         Color="#F3F3F3"/>
 
+    <SolidColorBrush
+        x:Key="SecondaryTextBrush"
+        Color="#BDBDBD"/>
+
     <!-- Accent -->
+    <SolidColorBrush
+        x:Key="AccentBrushLighter"
+        Color="#C2410C"/>
+
     <SolidColorBrush
         x:Key="AccentBrush"
         Color="#B45309"/>
@@ -44,17 +52,11 @@
         x:Key="ModalSurfaceBrush"
         Color="#1D1B1B" />
 
-    <SolidColorBrush
-        x:Key="ModalBorderBrush"
-        Color="#4A4A4A" />
-
-    <!-- Default button -->
+    <!-- Buttons -->
 
     <SolidColorBrush
         x:Key="ButtonForegroundBrush"
         Color="#E0E0E0"/>
-
-    <!-- Primary button -->
 
     <LinearGradientBrush
         x:Key="PrimaryButtonBackgroundBrush"
@@ -85,8 +87,6 @@
             Color="#96450A"/>
 
     </LinearGradientBrush>
-
-    <!-- Danger button -->
 
     <SolidColorBrush
         x:Key="DangerButtonBackgroundBrush"

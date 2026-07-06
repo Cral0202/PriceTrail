@@ -18,11 +18,24 @@
     </Application.Resources>
 
     <Application.Styles>
-        <FluentTheme />
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources
+                    x:Key="Dark"
+                    Accent="#B45309"
+                    RegionColor="#23211F"
+                    BaseHigh="#F3F3F3"
+                    BaseMedium="#BDBDBD"
+                    ChromeLow="#2B2927"
+                    ChromeMedium="#34312F"
+                    ChromeHigh="#474340"/>
+            </FluentTheme.Palettes>
+        </FluentTheme>
 
         <StyleInclude Source="/Styles/WindowStyles.axaml"/>
         <StyleInclude Source="/Styles/ModalStyles.axaml" />
         <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
+        <StyleInclude Source="/Styles/CheckBoxStyles.axaml"/>
 
     </Application.Styles>
 

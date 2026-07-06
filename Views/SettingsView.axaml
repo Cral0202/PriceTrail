@@ -29,7 +29,8 @@
 
                 <ComboBox
                     ItemsSource="{Binding RefreshIntervals}"
-                    SelectedItem="{Binding Settings.PriceRefreshInterval}">
+                    SelectedItem="{Binding Settings.PriceRefreshInterval}"
+                    IsEnabled="{Binding Settings.AutomaticPriceRefreshEnabled}">
 
                     <ComboBox.ItemTemplate>
                         <DataTemplate>

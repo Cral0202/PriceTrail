@@ -10,7 +10,7 @@
 
         <Setter
             Property="BorderBrush"
-            Value="{StaticResource ModalBorderBrush}" />
+            Value="{StaticResource BorderBrush}" />
 
         <Setter
             Property="BorderThickness"
