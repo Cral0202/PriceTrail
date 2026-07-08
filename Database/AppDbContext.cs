@@ -18,17 +18,12 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var dataDirectory = Path.Combine(
-            AppContext.BaseDirectory,
-            "Data");
+        var dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PriceTrail");
 
         Directory.CreateDirectory(dataDirectory);
 
-        var databasePath = Path.Combine(
-            dataDirectory,
-            "pricetrail.db");
+        var databasePath = Path.Combine(dataDirectory, "pricetrail.db");
 
-        optionsBuilder.UseSqlite(
-            $"Data Source={databasePath}");
+        optionsBuilder.UseSqlite($"Data Source={databasePath}");
     }
 }
