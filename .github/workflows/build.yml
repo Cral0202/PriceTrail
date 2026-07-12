@@ -45,6 +45,9 @@ jobs:
                   echo "VERSION=v$VERSION" >> $GITHUB_OUTPUT
                   echo "Extracted version: v$VERSION"
 
+            - name: Rename binary
+              run: mv bin/Release/net10.0/linux-x64/publish/PriceTrail bin/Release/net10.0/linux-x64/publish/PriceTrail-linux-x64
+
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v3
               with:
@@ -52,4 +55,4 @@ jobs:
                   name: ${{ steps.get_version.outputs.VERSION }}
                   body: "Release build"
                   make_latest: true
-                  files: bin/Release/net10.0/linux-x64/publish/*
+                  files: bin/Release/net10.0/linux-x64/publish/PriceTrail-linux-x64
