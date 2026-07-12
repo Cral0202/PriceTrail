@@ -44,6 +44,12 @@
 
         </ScrollViewer>
 
+        <TextBlock
+            Text="{Binding AppVersion, StringFormat=Version {0}}"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Opacity="0.7"/>
+
     </Grid>
 
 </UserControl>

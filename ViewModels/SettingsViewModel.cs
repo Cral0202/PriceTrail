@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Reflection;
 
 using PriceTrail.Models.Settings;
 using PriceTrail.States;
@@ -18,4 +19,9 @@ public partial class SettingsViewModel(SettingsState state) : ViewModelBase
         TimeSpan.FromHours(12),
         TimeSpan.FromDays(1)
     ];
+
+    public string AppVersion => Assembly.GetExecutingAssembly()
+        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+        .InformationalVersion
+        .Split('+')[0] ?? "unknown";
 }
