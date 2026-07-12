@@ -7,6 +7,9 @@ jobs:
     build-linux:
         runs-on: ubuntu-latest
 
+        permissions:
+            contents: write
+
         steps:
             - name: Checkout repository
               uses: actions/checkout@v7
@@ -33,3 +36,21 @@ jobs:
               with:
                   name: PriceTrail-linux-x64
                   path: bin/Release/net10.0/linux-x64/publish/
+
+            - name: Extract Version from .csproj
+              id: get_version
+              run: |
+                  # Finds the <Version> tag, extracts the value, and removes whitespace
+                  VERSION=$(grep -oP '(?<=<Version>)[^<]+' *.csproj | head -1 | tr -d '[:space:]')
+                  echo "VERSION=v$VERSION" >> $GITHUB_OUTPUT
+                  echo "Extracted version: v$VERSION"
+
+            - name: Create GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  tag_name: ${{ steps.get_version.outputs.VERSION }}
+                  name: Release ${{ steps.get_version.outputs.VERSION }}
+                  draft: false
+                  prerelease: false
+                  files: |
+                      bin/Release/net10.0/linux-x64/publish/*
