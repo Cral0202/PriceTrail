@@ -4,8 +4,24 @@ on:
     workflow_dispatch:
 
 jobs:
-    build-linux:
-        runs-on: ubuntu-latest
+    build:
+        name: Build (${{ matrix.os }})
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                include:
+                    - os: ubuntu-latest
+                      target: linux-x64
+                      binary-name: PriceTrail
+                      output-name: PriceTrail-linux-x64
+
+                    - os: windows-latest
+                      target: win-x64
+                      binary-name: PriceTrail.exe
+                      output-name: PriceTrail-win-x64.exe
+
+        outputs:
+            version: ${{ steps.get_version.outputs.VERSION }}
 
         permissions:
             contents: write
@@ -22,22 +38,29 @@ jobs:
             - name: Restore
               run: dotnet restore
 
-            - name: Publish Linux x64
+            - name: Publish Application
               run: |
                   dotnet publish \
                     -c Release \
-                    -r linux-x64 \
+                    -r ${{ matrix.target }} \
                     --self-contained true \
                     -p:PublishSingleFile=true \
-                    -p:IncludeNativeLibrariesForSelfExtract=true
+                    -p:IncludeNativeLibrariesForSelfExtract=true \
+                    -o ./publish
+
+            - name: Rename Binary
+              shell: bash
+              run: mv ./publish/${{ matrix.binary-name }} ./publish/${{ matrix.output-name }}
 
             - name: Upload artifact
               uses: actions/upload-artifact@v7
               with:
-                  name: PriceTrail-linux-x64
-                  path: bin/Release/net10.0/linux-x64/publish/
+                  name: ${{ matrix.output-name }}
+                  path: ./publish/${{ matrix.output-name }}
 
+              # Extract version only on the Linux runner to avoid duplicate runs
             - name: Extract Version from .csproj
+              if: matrix.os == 'ubuntu-latest'
               id: get_version
               run: |
                   # Finds the <Version> tag, extracts the value, and removes whitespace
@@ -45,14 +68,28 @@ jobs:
                   echo "VERSION=v$VERSION" >> $GITHUB_OUTPUT
                   echo "Extracted version: v$VERSION"
 
-            - name: Rename binary
-              run: mv bin/Release/net10.0/linux-x64/publish/PriceTrail bin/Release/net10.0/linux-x64/publish/PriceTrail-linux-x64
+    release:
+        name: Create GitHub Release
+        needs: build
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+
+        steps:
+            - name: Download artifacts
+              uses: actions/download-artifact@v7
+              with:
+                  path: release-artifacts
+                  merge-multiple: true
 
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v3
               with:
-                  tag_name: ${{ steps.get_version.outputs.VERSION }}
-                  name: ${{ steps.get_version.outputs.VERSION }}
+                  tag_name: ${{ needs.build.outputs.version }}
+                  name: ${{ needs.build.outputs.version }}
+                  target_commitish: ${{ github.sha }}
                   body: "Release build"
                   make_latest: true
-                  files: bin/Release/net10.0/linux-x64/publish/PriceTrail-linux-x64
+                  files: |
+                      release-artifacts/PriceTrail-linux-x64
+                      release-artifacts/PriceTrail-win-x64.exe
