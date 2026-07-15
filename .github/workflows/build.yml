@@ -1,4 +1,4 @@
-name: Build
+name: Build & Release
 
 on:
     workflow_dispatch:
@@ -39,6 +39,7 @@ jobs:
               run: dotnet restore
 
             - name: Publish Application
+              shell: bash
               run: |
                   dotnet publish \
                     -c Release \
