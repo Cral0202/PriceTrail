@@ -46,7 +46,7 @@ jobs:
             - name: Publish Application
               shell: bash
               run: |
-                  dotnet publish \
+                  dotnet publish PriceTrail.csproj \
                     -c Release \
                     -r ${{ matrix.target }} \
                     --self-contained true \
