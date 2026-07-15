@@ -20,6 +20,11 @@ jobs:
                       binary-name: PriceTrail.exe
                       output-name: PriceTrail-win-x64.exe
 
+                    - os: macos-latest
+                      target: osx-arm64
+                      binary-name: PriceTrail
+                      output-name: PriceTrail-macos-arm64.zip
+
         outputs:
             version: ${{ steps.get_version.outputs.VERSION }}
 
@@ -49,9 +54,19 @@ jobs:
                     -p:IncludeNativeLibrariesForSelfExtract=true \
                     -o ./publish
 
-            - name: Rename Binary
+            - name: Rename/Package Binary
               shell: bash
-              run: mv ./publish/${{ matrix.binary-name }} ./publish/${{ matrix.output-name }}
+              run: |
+                  if [ "${{ matrix.target }}" = "osx-arm64" ]; then
+                    mkdir -p ./publish/PriceTrail.app/Contents/MacOS
+                    mv ./publish/PriceTrail ./publish/PriceTrail.app/Contents/MacOS/PriceTrail
+                    cd ./publish
+                    zip -r ${{ matrix.output-name }} PriceTrail.app
+                    rm -rf PriceTrail.app
+                  else
+                    # Standard rename for Windows/Linux
+                    mv ./publish/${{ matrix.binary-name }} ./publish/${{ matrix.output-name }}
+                  fi
 
             - name: Upload artifact
               uses: actions/upload-artifact@v7
@@ -94,3 +109,4 @@ jobs:
                   files: |
                       release-artifacts/PriceTrail-linux-x64
                       release-artifacts/PriceTrail-win-x64.exe
+                      release-artifacts/PriceTrail-macos-arm64.zip
