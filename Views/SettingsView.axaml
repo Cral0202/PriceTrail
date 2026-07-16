@@ -40,6 +40,28 @@
 
                 </ComboBox>
 
+                <Border
+                    IsVisible="{Binding UpdateInfo.IsUpdateAvailable}">
+
+                    <StackPanel Spacing="10">
+
+                        <TextBlock
+                            Text="Update available"
+                            FontWeight="Bold" />
+
+                        <TextBlock
+                            Text="{Binding UpdateInfo.LatestVersion,
+                            StringFormat=PriceTrail {0} is available.}" />
+
+                        <Button
+                            Classes="primary"
+                            Content="Download update"
+                            Command="{Binding OpenLatestReleaseCommand}"/>
+
+                    </StackPanel>
+
+                </Border>
+
             </StackPanel>
 
         </ScrollViewer>
