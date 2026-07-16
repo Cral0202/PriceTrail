@@ -27,7 +27,7 @@ public class UpdateState
 
         ToastNotificationService.Instance.ShowMessage(
             "Update available",
-            $"PriceTrail {result.LatestVersion} is available.",
+            $"PriceTrail {result.LatestVersion} is available. Download it from settings.",
             NotificationType.Information,
             TimeSpan.FromSeconds(10));
     }

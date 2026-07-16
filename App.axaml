@@ -38,6 +38,7 @@
         <StyleInclude Source="/Styles/ModalStyles.axaml" />
         <StyleInclude Source="/Styles/ButtonStyles.axaml"/>
         <StyleInclude Source="/Styles/CheckBoxStyles.axaml"/>
+        <StyleInclude Source="/Styles/CardStyles.axaml"/>
 
     </Application.Styles>
 

@@ -22,4 +22,24 @@
             Value="Bold"/>
     </Style>
 
+    <Style Selector="TextBlock.card-title">
+        <Setter
+            Property="FontSize"
+            Value="18"/>
+
+        <Setter
+            Property="FontWeight"
+            Value="SemiBold"/>
+    </Style>
+
+    <Style Selector="TextBlock.card-description">
+        <Setter
+            Property="Foreground"
+            Value="{DynamicResource SecondaryTextBrush}"/>
+
+        <Setter
+            Property="TextWrapping"
+            Value="Wrap"/>
+    </Style>
+
 </Styles>

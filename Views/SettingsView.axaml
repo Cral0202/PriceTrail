@@ -16,47 +16,94 @@
         <ScrollViewer>
 
             <StackPanel
-                Spacing="10">
+                Spacing="20"
+                MaxWidth="700"
+                HorizontalAlignment="Left">
 
                 <TextBlock
                     Classes="page-title"
                     Text="Settings" />
 
-                <CheckBox
-                    Content="Automatically refresh prices"
-                    IsChecked="{Binding Settings.AutomaticPriceRefreshEnabled}" />
+                <!-- Price Refresh -->
 
-                <ComboBox
-                    ItemsSource="{Binding RefreshIntervals}"
-                    SelectedItem="{Binding Settings.PriceRefreshInterval}"
-                    IsEnabled="{Binding Settings.AutomaticPriceRefreshEnabled}">
+                <Border Classes="card">
 
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
+                    <StackPanel Spacing="12">
+
+                        <TextBlock
+                            Classes="card-title"
+                            Text="Price Refresh" />
+
+                        <TextBlock
+                            Classes="card-description"
+                            Text="Keep your tracked product prices up to date automatically." />
+
+                        <CheckBox
+                            Content="Automatically refresh prices"
+                            IsChecked="{Binding Settings.AutomaticPriceRefreshEnabled}" />
+
+                        <StackPanel
+                            Spacing="6"
+                            IsEnabled="{Binding Settings.AutomaticPriceRefreshEnabled}">
+
+                            <TextBlock Text="Refresh interval" />
+
+                            <ComboBox
+                                ItemsSource="{Binding RefreshIntervals}"
+                                SelectedItem="{Binding Settings.PriceRefreshInterval}">
+
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            Text="{Binding Converter={StaticResource TimeSpanConverter}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+
+                            </ComboBox>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </Border>
+
+                <!-- Updates -->
+
+                <Border Classes="card">
+
+                    <StackPanel Spacing="12">
+
+                        <TextBlock
+                            Classes="card-title"
+                            Text="Updates" />
+
+                        <TextBlock
+                            Classes="card-description"
+                            Text="Keep PriceTrail up to date with the latest improvements and fixes." />
+
+                        <StackPanel
+                            Spacing="10"
+                            IsVisible="{Binding UpdateInfo.IsUpdateAvailable}">
+
                             <TextBlock
-                                Text="{Binding Converter={StaticResource TimeSpanConverter}}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
+                                FontWeight="SemiBold"
+                                Text="Update available" />
 
-                </ComboBox>
+                            <TextBlock
+                                Text="{Binding UpdateInfo.LatestVersion,
+                                StringFormat=PriceTrail {0} is available.}" />
 
-                <Border
-                    IsVisible="{Binding UpdateInfo.IsUpdateAvailable}">
+                            <Button
+                                Classes="primary"
+                                Command="{Binding OpenLatestReleaseCommand}"
+                                Content="Download update" />
 
-                    <StackPanel Spacing="10">
+                        </StackPanel>
 
                         <TextBlock
-                            Text="Update available"
-                            FontWeight="Bold" />
-
-                        <TextBlock
-                            Text="{Binding UpdateInfo.LatestVersion,
-                            StringFormat=PriceTrail {0} is available.}" />
-
-                        <Button
-                            Classes="primary"
-                            Content="Download update"
-                            Command="{Binding OpenLatestReleaseCommand}"/>
+                            IsVisible="{Binding !UpdateInfo.IsUpdateAvailable}"
+                            Opacity="0.7"
+                            Text="You're running the latest version." />
 
                     </StackPanel>
 
