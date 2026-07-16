@@ -115,9 +115,8 @@
                 </Grid>
 
                 <Border
-                    Background="{StaticResource SurfaceBrush}"
-                    Padding="10"
-                    CornerRadius="10" >
+                    Classes="card"
+                    Padding="10">
 
                     <StackPanel
                         Orientation="Horizontal"
