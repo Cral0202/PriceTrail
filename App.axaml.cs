@@ -12,6 +12,7 @@ using System;
 using Avalonia.Controls;
 using PriceTrail.States;
 using PriceTrail.Services;
+using System.Threading.Tasks;
 
 namespace PriceTrail;
 
@@ -37,6 +38,10 @@ public partial class App : Application
         var priceRefreshService = new PriceRefreshService(appState.ProductState, appState.SettingsState);
         _ = priceRefreshService.RestartAsync();
 
+        // Check for updates
+        _ = CheckForUpdatesAsync();
+
+        // Open window
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
@@ -66,6 +71,21 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.Shutdown();
+        }
+    }
+
+    private async Task CheckForUpdatesAsync()
+    {
+        var updateService = new UpdateService();
+        var result = await updateService.CheckForUpdatesAsync();
+
+        if (result.IsUpdateAvailable)
+        {
+            ToastNotificationService.Instance.ShowMessage(
+                "Update available",
+                $"PriceTrail {result.LatestVersion} is available.",
+                Avalonia.Controls.Notifications.NotificationType.Information,
+                TimeSpan.FromSeconds(10));
         }
     }
 }
