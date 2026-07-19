@@ -36,9 +36,12 @@ public partial class App : Application
         // Open window
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var mainWindow = new MainWindow();
-            desktop.MainWindow = mainWindow;
+            var mainWindow = new MainWindow
+            {
+                DataContext = new MainWindowViewModel()
+            };
 
+            desktop.MainWindow = mainWindow;
             desktop.Exit += Desktop_Exit;
 
             _ = InitializeAppAsync(mainWindow);
