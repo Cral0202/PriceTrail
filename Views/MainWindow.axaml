@@ -40,9 +40,13 @@
 
     <Grid>
 
-        <Grid
-            ColumnDefinitions="64,*"
-            IsVisible="{Binding !IsLoading}">
+        <Grid ColumnDefinitions="64,*">
+            <Grid.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <Binding Path="!IsLoading" />
+                    <Binding Path="!HasError" />
+                </MultiBinding>
+            </Grid.IsVisible>
 
             <!-- Sidebar -->
             <Border
@@ -133,6 +137,34 @@
                 HorizontalAlignment="Center"
                 FontSize="14"
                 Foreground="Gray"/>
+        </StackPanel>
+
+        <StackPanel
+            IsVisible="{Binding HasError}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Spacing="16">
+
+            <fluentIcons:SymbolIcon
+                Symbol="ErrorCircle"
+                FontSize="48"
+                Foreground="Red"
+                HorizontalAlignment="Center"/>
+
+            <TextBlock
+                Text="Startup Error"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                FontWeight="Bold"
+                Foreground="Red"/>
+
+            <TextBlock
+                Text="{Binding ErrorMessage}"
+                HorizontalAlignment="Center"
+                TextAlignment="Center"
+                FontSize="14"
+                TextWrapping="Wrap"
+                MaxWidth="500"/>
         </StackPanel>
 
     </Grid>

@@ -20,6 +20,12 @@ public partial class MainWindowViewModel : ViewModelBase
     private bool _isLoading = true;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasError))]
+    private string? _errorMessage;
+
+    public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+
+    [ObservableProperty]
     private object? _currentViewModel;
 
     [ObservableProperty]

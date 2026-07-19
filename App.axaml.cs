@@ -71,8 +71,13 @@ public partial class App : Application
             // Check for updates
             _ = appState.UpdateState.CheckForUpdatesAsync();
         }
-        catch
+        catch (Exception ex)
         {
+            if (mainWindow.DataContext is MainWindowViewModel vm)
+            {
+                vm.ErrorMessage = ex.Message;
+                vm.IsLoading = false;
+            }
         }
     }
 
