@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.States;
+using PriceTrail.ViewModels.Products;
+using PriceTrail.ViewModels.Settings;
 
 namespace PriceTrail.ViewModels;
 

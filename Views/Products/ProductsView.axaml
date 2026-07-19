@@ -1,11 +1,11 @@
 <UserControl
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:PriceTrail.ViewModels"
+    xmlns:vm="using:PriceTrail.ViewModels.Products"
     xmlns:models="using:PriceTrail.Models"
     xmlns:asyncImageLoader="using:AsyncImageLoader"
     xmlns:fluentIcons="using:FluentIcons.Avalonia"
-    x:Class="PriceTrail.Views.ProductsView"
+    x:Class="PriceTrail.Views.Products.ProductsView"
     x:DataType="vm:ProductsViewModel">
 
     <Grid>

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Avalonia.Controls.Notifications;
 
-using PriceTrail.Models;
+using PriceTrail.Models.Updates;
 using PriceTrail.Services;
 
 namespace PriceTrail.States;

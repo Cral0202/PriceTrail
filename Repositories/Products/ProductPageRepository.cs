@@ -4,7 +4,7 @@ using PriceTrail.Database;
 using ProductModel = PriceTrail.Models.Product.Product;
 using PriceTrail.Models.Product;
 
-namespace PriceTrail.Repositories.Product;
+namespace PriceTrail.Repositories.Products;
 
 public class ProductPageRepository
 {

@@ -4,11 +4,11 @@ using System.Diagnostics;
 
 using CommunityToolkit.Mvvm.Input;
 
-using PriceTrail.Models;
+using PriceTrail.Models.Updates;
 using PriceTrail.Models.Settings;
 using PriceTrail.States;
 
-namespace PriceTrail.ViewModels;
+namespace PriceTrail.ViewModels.Settings;
 
 public partial class SettingsViewModel(SettingsState settingsState, UpdateState updateState) : ViewModelBase
 {

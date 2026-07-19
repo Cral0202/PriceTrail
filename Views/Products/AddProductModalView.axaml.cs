@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace PriceTrail.Views;
+namespace PriceTrail.Views.Products;
 
 public partial class AddProductModalView : UserControl
 {

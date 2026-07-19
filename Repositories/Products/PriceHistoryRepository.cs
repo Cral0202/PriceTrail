@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using PriceTrail.Database;
 using PriceTrail.Models.Product;
 
-namespace PriceTrail.Repositories.Product;
+namespace PriceTrail.Repositories.Products;
 
 public class PriceHistoryRepository
 {

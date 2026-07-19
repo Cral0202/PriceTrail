@@ -1,7 +1,10 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="using:PriceTrail.Views"
+        xmlns:productsViews="using:PriceTrail.Views.Products"
+        xmlns:productsVms="using:PriceTrail.ViewModels.Products"
         xmlns:productDetailViews="using:PriceTrail.Views.ProductDetails"
+        xmlns:productDetailVms="using:PriceTrail.ViewModels.ProductDetails"
         xmlns:vm="using:PriceTrail.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:fluentIcons="using:FluentIcons.Avalonia"
@@ -9,7 +12,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PriceTrail.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/logo_256x256.ico"
+        Icon="/Assets/Logo/logo_256x256.ico"
         Title="PriceTrail"
         Width="1200"
         Height="800"
@@ -25,11 +28,11 @@
 
     <Window.DataTemplates>
 
-        <DataTemplate DataType="vm:ProductsViewModel">
-            <views:ProductsView />
+        <DataTemplate DataType="productsVms:ProductsViewModel">
+            <productsViews:ProductsView />
         </DataTemplate>
 
-        <DataTemplate DataType="vm:ProductDetails.ProductDetailsViewModel">
+        <DataTemplate DataType="productDetailVms:ProductDetailsViewModel">
             <productDetailViews:ProductDetailsView />
         </DataTemplate>
 

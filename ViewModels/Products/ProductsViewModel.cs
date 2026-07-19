@@ -6,7 +6,7 @@ using PriceTrail.Models.Product;
 using PriceTrail.States;
 using PriceTrail.ViewModels.ProductDetails;
 
-namespace PriceTrail.ViewModels;
+namespace PriceTrail.ViewModels.Products;
 
 public partial class ProductsViewModel(MainWindowViewModel mainWindow, ProductState productState) : ViewModelBase
 {

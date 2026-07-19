@@ -1,4 +1,4 @@
-# <img src="Assets/logo_256x256.png" width="48" height="48" alt="PriceTrail Logo" align="center" /> PriceTrail
+# <img src="Assets/Logo/logo_256x256.png" width="48" height="48" alt="PriceTrail Logo" align="center" /> PriceTrail
 
 PriceTrail is a free desktop application for tracking product prices across multiple online stores.
 

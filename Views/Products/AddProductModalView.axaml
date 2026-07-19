@@ -1,8 +1,8 @@
 <UserControl
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:PriceTrail.ViewModels"
-    x:Class="PriceTrail.Views.AddProductModalView"
+    xmlns:vm="using:PriceTrail.ViewModels.Products"
+    x:Class="PriceTrail.Views.Products.AddProductModalView"
     x:DataType="vm:AddProductModalViewModel">
 
     <Border

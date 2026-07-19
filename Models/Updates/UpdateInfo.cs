@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace PriceTrail.Models;
+namespace PriceTrail.Models.Updates;
 
 public partial class UpdateInfo : ObservableObject
 {

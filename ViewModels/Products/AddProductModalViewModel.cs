@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using PriceTrail.Models.Product;
 using PriceTrail.States;
 
-namespace PriceTrail.ViewModels;
+namespace PriceTrail.ViewModels.Products;
 
 public partial class AddProductModalViewModel(MainWindowViewModel mainWindow, ProductState productState) : ViewModelBase
 {

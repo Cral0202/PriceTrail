@@ -45,7 +45,7 @@
     <TrayIcon.Icons>
         <TrayIcons>
             <TrayIcon
-                Icon="/Assets/logo_256x256.ico"
+                Icon="/Assets/Logo/logo_256x256.ico"
                 ToolTipText="PriceTrail">
 
                 <TrayIcon.Menu>
