@@ -8,12 +8,12 @@ using PriceTrail.Services;
 
 namespace PriceTrail.States;
 
-public class ProductState
+public class ProductState(PlaywrightBrowserService playrightBrowserService)
 {
     private readonly ProductRepository _productRepo = new();
     private readonly ProductPageRepository _productPageRepo = new();
     private readonly PriceHistoryRepository _priceHistoryRepo = new();
-    private readonly ProductExtractorService _extractor = new();
+    private readonly ProductExtractorService _extractor = new(playrightBrowserService);
     private readonly HashSet<int> _refreshingProducts = [];
 
     public ObservableCollection<Product> Products { get; } = [];

@@ -17,6 +17,8 @@ namespace PriceTrail;
 
 public partial class App : Application
 {
+    private PlaywrightBrowserService? _playwrightBrowserService;
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -28,8 +30,12 @@ public partial class App : Application
         using var db = new AppDbContext();
         db.Database.Migrate();
 
+        // Playwright
+        _playwrightBrowserService = new PlaywrightBrowserService();
+        await _playwrightBrowserService.InitializeAsync();
+
         // State
-        var appState = new AppState();
+        var appState = new AppState(_playwrightBrowserService); // TODO: Can we avoid having to pass the service all the way down to ProductState?
         await appState.SettingsState.InitializeAsync();
         await appState.ProductState.LoadProductsAsync();
 
@@ -47,9 +53,23 @@ public partial class App : Application
             {
                 DataContext = new MainWindowViewModel(appState),
             };
+
+            desktop.Exit += Desktop_Exit;
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private void ShutdownPlaywright()
+    {
+        // Force the async disposal to finish synchronously before the process dies
+        _playwrightBrowserService?.DisposeAsync().AsTask().GetAwaiter().GetResult();
+        _playwrightBrowserService = null;
+    }
+
+    private void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        ShutdownPlaywright();
     }
 
     private void TrayShowWindow_Click(object? sender, EventArgs e)
@@ -69,6 +89,7 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            ShutdownPlaywright();
             desktop.Shutdown();
         }
     }
