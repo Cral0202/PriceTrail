@@ -51,6 +51,8 @@ jobs:
             - name: Package Folder Build
               shell: bash
               run: |
+                  shopt -s dotglob   # make * globs include dotfiles/dotfolders
+
                   if [ "${{ matrix.target }}" = "osx-arm64" ]; then
                     mkdir -p ./publish-pkg/PriceTrail.app/Contents/MacOS
                     cp -R ./publish/* ./publish-pkg/PriceTrail.app/Contents/MacOS/
