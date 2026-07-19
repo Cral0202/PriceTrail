@@ -38,77 +38,134 @@
 
     </Window.DataTemplates>
 
-    <Grid ColumnDefinitions="64,*">
+    <Grid>
 
-        <!-- Sidebar -->
-        <Border
-            Grid.Column="0">
+        <Grid ColumnDefinitions="64,*">
+            <Grid.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <Binding Path="!IsLoading" />
+                    <Binding Path="!HasError" />
+                </MultiBinding>
+            </Grid.IsVisible>
 
-            <StackPanel
-                Margin="0,12"
-                Spacing="8"
-                HorizontalAlignment="Center">
+            <!-- Sidebar -->
+            <Border
+                Grid.Column="0">
 
-                <Button
-                    Classes="sidebar"
-                    Classes.active="{Binding IsProductsActive}"
-                    Width="48"
-                    Height="48"
-                    Padding="0"
-                    CornerRadius="8"
-                    ToolTip.Tip="Products"
-                    Command="{Binding ShowProductsCommand}">
+                <StackPanel
+                    Margin="0,12"
+                    Spacing="8"
+                    HorizontalAlignment="Center">
 
-                    <fluentIcons:SymbolIcon
-                        Symbol="Box"
-                        FontSize="24" />
+                    <Button
+                        Classes="sidebar"
+                        Classes.active="{Binding IsProductsActive}"
+                        Width="48"
+                        Height="48"
+                        Padding="0"
+                        CornerRadius="8"
+                        ToolTip.Tip="Products"
+                        Command="{Binding ShowProductsCommand}">
 
-                </Button>
+                        <fluentIcons:SymbolIcon
+                            Symbol="Box"
+                            FontSize="24" />
 
-                <Button
-                    Classes="sidebar"
-                    Classes.active="{Binding IsSettingsActive}"
-                    Width="48"
-                    Height="48"
-                    Padding="0"
-                    CornerRadius="8"
-                    ToolTip.Tip="Settings"
-                    Command="{Binding ShowSettingsCommand}">
+                    </Button>
 
-                    <fluentIcons:SymbolIcon
-                        Symbol="Settings"
-                        FontSize="24" />
+                    <Button
+                        Classes="sidebar"
+                        Classes.active="{Binding IsSettingsActive}"
+                        Width="48"
+                        Height="48"
+                        Padding="0"
+                        CornerRadius="8"
+                        ToolTip.Tip="Settings"
+                        Command="{Binding ShowSettingsCommand}">
 
-                </Button>
+                        <fluentIcons:SymbolIcon
+                            Symbol="Settings"
+                            FontSize="24" />
 
-            </StackPanel>
+                    </Button>
 
-        </Border>
+                </StackPanel>
 
-        <!-- Current page -->
-        <Border
-            Grid.Column="1"
-            Padding="20">
+            </Border>
 
-            <ContentControl
-                Content="{Binding CurrentViewModel}" />
+            <!-- Current page -->
+            <Border
+                Grid.Column="1"
+                Padding="20">
 
-        </Border>
+                <ContentControl
+                    Content="{Binding CurrentViewModel}" />
 
-        <!-- Modal -->
+            </Border>
 
-        <Border
-            Grid.ColumnSpan="2"
-            ZIndex="10"
-            IsVisible="{Binding IsModalOpen}"
-            Background="{StaticResource ModalOverlayBrush}">
+            <!-- Modal -->
 
-            <ContentControl
+            <Border
+                Grid.ColumnSpan="2"
+                ZIndex="10"
+                IsVisible="{Binding IsModalOpen}"
+                Background="{StaticResource ModalOverlayBrush}">
+
+                <ContentControl
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding CurrentModalViewModel}" />
+
+            </Border>
+
+        </Grid>
+
+        <StackPanel
+            IsVisible="{Binding IsLoading}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Spacing="20">
+
+            <ProgressBar
+                IsIndeterminate="True"
+                Width="250"
+                Height="4"
+                CornerRadius="2" />
+
+            <TextBlock
+                Text="Initializing..."
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="{Binding CurrentModalViewModel}" />
+                FontSize="14"
+                Foreground="Gray"/>
+        </StackPanel>
 
-        </Border>
+        <StackPanel
+            IsVisible="{Binding HasError}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Spacing="16">
+
+            <fluentIcons:SymbolIcon
+                Symbol="ErrorCircle"
+                FontSize="48"
+                Foreground="Red"
+                HorizontalAlignment="Center"/>
+
+            <TextBlock
+                Text="Startup Error"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                FontWeight="Bold"
+                Foreground="Red"/>
+
+            <TextBlock
+                Text="{Binding ErrorMessage}"
+                HorizontalAlignment="Center"
+                TextAlignment="Center"
+                FontSize="14"
+                TextWrapping="Wrap"
+                MaxWidth="500"/>
+        </StackPanel>
 
     </Grid>
 

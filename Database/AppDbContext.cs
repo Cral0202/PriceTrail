@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +17,7 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PriceTrail");
-
-        Directory.CreateDirectory(dataDirectory);
-
-        var databasePath = Path.Combine(dataDirectory, "pricetrail.db");
-
-        optionsBuilder.UseSqlite($"Data Source={databasePath}");
+        Directory.CreateDirectory(AppPaths.Data);
+        optionsBuilder.UseSqlite($"Data Source={AppPaths.Database}");
     }
 }

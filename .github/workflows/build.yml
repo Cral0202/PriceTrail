@@ -12,19 +12,15 @@ jobs:
                 include:
                     - os: ubuntu-latest
                       target: linux-x64
-                      binary-name: PriceTrail
-                      output-name: PriceTrail-linux-x64
+                      output-name: PriceTrail-linux-x64.tar.gz
 
                     - os: windows-latest
                       target: win-x64
-                      binary-name: PriceTrail.exe
-                      output-name: PriceTrail-win-x64.exe
+                      output-name: PriceTrail-win-x64.zip
 
                     - os: macos-latest
                       target: osx-arm64
-                      binary-name: PriceTrail
                       output-name: PriceTrail-macos-arm64.zip
-
         outputs:
             version: ${{ steps.get_version.outputs.VERSION }}
 
@@ -50,29 +46,29 @@ jobs:
                     -c Release \
                     -r ${{ matrix.target }} \
                     --self-contained true \
-                    -p:PublishSingleFile=true \
-                    -p:IncludeNativeLibrariesForSelfExtract=true \
                     -o ./publish
 
-            - name: Rename/Package Binary
+            - name: Package Folder Build
               shell: bash
               run: |
                   if [ "${{ matrix.target }}" = "osx-arm64" ]; then
-                    mkdir -p ./publish/PriceTrail.app/Contents/MacOS
-                    mv ./publish/PriceTrail ./publish/PriceTrail.app/Contents/MacOS/PriceTrail
+                    mkdir -p ./publish-pkg/PriceTrail.app/Contents/MacOS
+                    cp -R ./publish/* ./publish-pkg/PriceTrail.app/Contents/MacOS/
+                    cd ./publish-pkg
+                    zip -r ../${{ matrix.output-name }} PriceTrail.app
+                  elif [ "${{ matrix.target }}" = "win-x64" ]; then
                     cd ./publish
-                    zip -r ${{ matrix.output-name }} PriceTrail.app
-                    rm -rf PriceTrail.app
+                    zip -r ../${{ matrix.output-name }} .
                   else
-                    # Standard rename for Windows/Linux
-                    mv ./publish/${{ matrix.binary-name }} ./publish/${{ matrix.output-name }}
+                    cd ./publish
+                    tar -czf ../${{ matrix.output-name }} .
                   fi
 
             - name: Upload artifact
               uses: actions/upload-artifact@v7
               with:
                   name: ${{ matrix.output-name }}
-                  path: ./publish/${{ matrix.output-name }}
+                  path: ./${{ matrix.output-name }}
 
               # Extract version only on the Linux runner to avoid duplicate runs
             - name: Extract Version from .csproj
@@ -107,6 +103,6 @@ jobs:
                   body: "Release build"
                   make_latest: true
                   files: |
-                      release-artifacts/PriceTrail-linux-x64
-                      release-artifacts/PriceTrail-win-x64.exe
+                      release-artifacts/PriceTrail-linux-x64.tar.gz
+                      release-artifacts/PriceTrail-win-x64.zip
                       release-artifacts/PriceTrail-macos-arm64.zip

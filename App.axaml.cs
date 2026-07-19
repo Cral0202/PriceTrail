@@ -12,44 +12,82 @@ using System;
 using Avalonia.Controls;
 using PriceTrail.States;
 using PriceTrail.Services;
+using System.Threading.Tasks;
 
 namespace PriceTrail;
 
 public partial class App : Application
 {
+    private PlaywrightBrowserService? _playwrightBrowserService;
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override async void OnFrameworkInitializationCompleted()
+    public override void OnFrameworkInitializationCompleted()
     {
         // Apply db migrations on startup
         using var db = new AppDbContext();
         db.Database.Migrate();
 
-        // State
-        var appState = new AppState();
-        await appState.SettingsState.InitializeAsync();
-        await appState.ProductState.LoadProductsAsync();
-
-        // Background services
-        var priceRefreshService = new PriceRefreshService(appState.ProductState, appState.SettingsState);
-        _ = priceRefreshService.RestartAsync();
-
-        // Check for updates
-        _ = appState.UpdateState.CheckForUpdatesAsync();
+        _playwrightBrowserService = new PlaywrightBrowserService();
 
         // Open window
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
+            var mainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(appState),
+                DataContext = new MainWindowViewModel()
             };
+
+            desktop.MainWindow = mainWindow;
+            desktop.Exit += Desktop_Exit;
+
+            _ = InitializeAppAsync(mainWindow);
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    private async Task InitializeAppAsync(MainWindow mainWindow)
+    {
+        try
+        {
+            // Playwright
+            await _playwrightBrowserService!.InitializeAsync();
+
+            // State
+            var appState = new AppState(_playwrightBrowserService);
+            await appState.SettingsState.InitializeAsync();
+            await appState.ProductState.LoadProductsAsync();
+
+            mainWindow.DataContext = new MainWindowViewModel(appState);
+
+            // Background services
+            var priceRefreshService = new PriceRefreshService(appState.ProductState, appState.SettingsState);
+            _ = priceRefreshService.RestartAsync();
+
+            // Check for updates
+            _ = appState.UpdateState.CheckForUpdatesAsync();
+        }
+        catch (Exception ex)
+        {
+            if (mainWindow.DataContext is MainWindowViewModel vm)
+            {
+                vm.ErrorMessage = ex.Message;
+                vm.IsLoading = false;
+            }
+        }
+    }
+
+    private void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        if (_playwrightBrowserService != null)
+        {
+            _ = _playwrightBrowserService.DisposeAsync();
+            _playwrightBrowserService = null;
+        }
     }
 
     private void TrayShowWindow_Click(object? sender, EventArgs e)

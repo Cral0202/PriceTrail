@@ -17,7 +17,16 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     [ObservableProperty]
-    private object _currentViewModel;
+    private bool _isLoading = true;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasError))]
+    private string? _errorMessage;
+
+    public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+
+    [ObservableProperty]
+    private object? _currentViewModel;
 
     [ObservableProperty]
     public partial ObservableObject? CurrentModalViewModel { get; set; }
@@ -29,11 +38,15 @@ public partial class MainWindowViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(IsSettingsActive))]
     private NavigationPage _currentPage = NavigationPage.Products;
 
-    public ProductsViewModel ProductsViewModel { get; }
-    public SettingsViewModel SettingsViewModel { get; }
+    public ProductsViewModel? ProductsViewModel { get; }
+    public SettingsViewModel? SettingsViewModel { get; }
 
     public bool IsProductsActive => CurrentPage == NavigationPage.Products;
     public bool IsSettingsActive => CurrentPage == NavigationPage.Settings;
+
+    public MainWindowViewModel()
+    {
+    }
 
     public MainWindowViewModel(AppState appState)
     {
@@ -41,6 +54,7 @@ public partial class MainWindowViewModel : ViewModelBase
         SettingsViewModel = new SettingsViewModel(appState.SettingsState, appState.UpdateState);
 
         CurrentViewModel = ProductsViewModel;
+        IsLoading = false;
     }
 
     [RelayCommand]
