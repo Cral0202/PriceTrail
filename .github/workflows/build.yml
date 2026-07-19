@@ -58,7 +58,7 @@ jobs:
                     zip -r ../${{ matrix.output-name }} PriceTrail.app
                   elif [ "${{ matrix.target }}" = "win-x64" ]; then
                     cd ./publish
-                    zip -r ../${{ matrix.output-name }} .
+                    7z a ../${{ matrix.output-name }} *
                   else
                     cd ./publish
                     tar -czf ../${{ matrix.output-name }} .
