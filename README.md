@@ -6,6 +6,8 @@ Add product URLs from different stores, and PriceTrail will automatically extrac
 
 PriceTrail is currently in early development.
 
+⚠️ If you are using a VPN, some websites may block you. You may want to exclude PriceTrail from your VPN.
+
 ## Features
 
 - Track multiple store pages for the same product
