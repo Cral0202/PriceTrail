@@ -12,5 +12,5 @@ public partial class AppSettings : ObservableObject
     public partial bool AutomaticPriceRefreshEnabled { get; set; } = true;
 
     [ObservableProperty]
-    public partial TimeSpan PriceRefreshInterval { get; set; } = TimeSpan.FromMinutes(30);
+    public partial TimeSpan PriceRefreshInterval { get; set; } = TimeSpan.FromDays(1);
 }
