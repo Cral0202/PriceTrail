@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Playwright;
@@ -20,6 +21,7 @@ public class PlaywrightBrowserService : IAsyncDisposable
         _playwright = await Playwright.CreateAsync();
 
         await EnsureChromiumInstalledAsync();
+        DeleteOldBrowsers(); // Old browser folders will remain on Playwright updates, so we delete them
 
         _browser = await _playwright.Chromium.LaunchAsync(
             new BrowserTypeLaunchOptions
@@ -39,6 +41,40 @@ public class PlaywrightBrowserService : IAsyncDisposable
             if (exitCode != 0)
                 throw new InvalidOperationException($"Playwright Chromium installation failed with exit code {exitCode}.");
         });
+    }
+
+    private void DeleteOldBrowsers()
+    {
+        try
+        {
+            var baseDir = new DirectoryInfo(AppPaths.Playwright);
+
+            if (!baseDir.Exists)
+                return;
+
+            var browserDirs = baseDir.GetDirectories("chromium-*");
+
+            if (browserDirs.Length <= 1)
+                return;
+
+            // Sort folders by last modified time (newest first)
+            var sortedDirs = browserDirs.OrderByDescending(d => d.LastWriteTimeUtc).ToList();
+            var currentActiveDir = sortedDirs.First();
+
+            foreach (var oldDir in sortedDirs.Skip(1))
+            {
+                try
+                {
+                    oldDir.Delete(recursive: true);
+                }
+                catch (IOException)
+                {
+                }
+            }
+        }
+        catch (Exception)
+        {
+        }
     }
 
     public async ValueTask DisposeAsync()

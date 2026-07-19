@@ -73,7 +73,6 @@ public partial class App : Application
         }
         catch
         {
-
         }
     }
 
