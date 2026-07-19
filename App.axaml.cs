@@ -12,6 +12,7 @@ using System;
 using Avalonia.Controls;
 using PriceTrail.States;
 using PriceTrail.Services;
+using System.Threading.Tasks;
 
 namespace PriceTrail;
 
@@ -24,52 +25,62 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override async void OnFrameworkInitializationCompleted()
+    public override void OnFrameworkInitializationCompleted()
     {
         // Apply db migrations on startup
         using var db = new AppDbContext();
         db.Database.Migrate();
 
-        // Playwright
         _playwrightBrowserService = new PlaywrightBrowserService();
-        await _playwrightBrowserService.InitializeAsync();
-
-        // State
-        var appState = new AppState(_playwrightBrowserService); // TODO: Can we avoid having to pass the service all the way down to ProductState?
-        await appState.SettingsState.InitializeAsync();
-        await appState.ProductState.LoadProductsAsync();
-
-        // Background services
-        var priceRefreshService = new PriceRefreshService(appState.ProductState, appState.SettingsState);
-        _ = priceRefreshService.RestartAsync();
-
-        // Check for updates
-        _ = appState.UpdateState.CheckForUpdatesAsync();
 
         // Open window
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(appState),
-            };
+            var mainWindow = new MainWindow();
+            desktop.MainWindow = mainWindow;
 
             desktop.Exit += Desktop_Exit;
+
+            _ = InitializeAppAsync(mainWindow);
         }
 
         base.OnFrameworkInitializationCompleted();
     }
 
-    private void ShutdownPlaywright()
+    private async Task InitializeAppAsync(MainWindow mainWindow)
     {
-        // Force the async disposal to finish synchronously before the process dies
-        _playwrightBrowserService?.DisposeAsync().AsTask().GetAwaiter().GetResult();
-        _playwrightBrowserService = null;
+        try
+        {
+            // Playwright
+            await _playwrightBrowserService!.InitializeAsync();
+
+            // State
+            var appState = new AppState(_playwrightBrowserService);
+            await appState.SettingsState.InitializeAsync();
+            await appState.ProductState.LoadProductsAsync();
+
+            mainWindow.DataContext = new MainWindowViewModel(appState);
+
+            // Background services
+            var priceRefreshService = new PriceRefreshService(appState.ProductState, appState.SettingsState);
+            _ = priceRefreshService.RestartAsync();
+
+            // Check for updates
+            _ = appState.UpdateState.CheckForUpdatesAsync();
+        }
+        catch
+        {
+
+        }
     }
 
     private void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
     {
-        ShutdownPlaywright();
+        if (_playwrightBrowserService != null)
+        {
+            _ = _playwrightBrowserService.DisposeAsync();
+            _playwrightBrowserService = null;
+        }
     }
 
     private void TrayShowWindow_Click(object? sender, EventArgs e)
@@ -89,7 +100,6 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            ShutdownPlaywright();
             desktop.Shutdown();
         }
     }
