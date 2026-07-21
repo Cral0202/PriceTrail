@@ -87,7 +87,7 @@ jobs:
                     echo 'Type=Application' >> PriceTrail.AppDir/PriceTrail.desktop
                     echo 'Categories=Utility;' >> PriceTrail.AppDir/PriceTrail.desktop
 
-                    cp Assets/logo/logo_256x256.png PriceTrail.AppDir/PriceTrail.png
+                    cp Assets/Logo/logo_256x256.png PriceTrail.AppDir/PriceTrail.png
 
                     wget -q https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
                     chmod +x appimagetool-x86_64.AppImage
