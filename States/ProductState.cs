@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 
 using PriceTrail.Models.Product;
@@ -47,9 +48,9 @@ public class ProductState(PlaywrightBrowserService playrightBrowserService)
         await _productRepo.UpdateProductAsync(product);
     }
 
-    public async Task<string?> AddProductPageToProductAsync(Product product, string url)
+    public async Task<string?> AddProductPageToProductAsync(Product product, string url, CancellationToken cancellationToken = default)
     {
-        var result = await _extractor.ExtractAsync(url);
+        var result = await _extractor.ExtractAsync(url, cancellationToken);
 
         if (!result.IsSuccess)
             return result.ErrorMessage;

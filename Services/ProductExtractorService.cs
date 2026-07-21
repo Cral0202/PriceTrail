@@ -55,6 +55,12 @@ public class ProductExtractorService(PlaywrightBrowserService browserService)
 
             var page = await context.NewPageAsync();
 
+            // Cancellation immediately aborts any active Playwright network requests
+            await using var registration = cancellationToken.Register(() =>
+            {
+                _ = page.CloseAsync();
+            });
+
             await page.GotoAsync(
                 url,
                 new PageGotoOptions
@@ -62,8 +68,6 @@ public class ProductExtractorService(PlaywrightBrowserService browserService)
                     WaitUntil = WaitUntilState.DOMContentLoaded,
                     Timeout = NavigationTimeoutMs
                 });
-
-            cancellationToken.ThrowIfCancellationRequested();
 
             var html = await page.ContentAsync();
 
@@ -127,6 +131,15 @@ public class ProductExtractorService(PlaywrightBrowserService browserService)
 
             return ExtractionResult.Failure("Analyzed metadata blocks, but none contained valid product schema.");
         }
+        catch (OperationCanceledException)
+        {
+            return ExtractionResult.Failure("The page extraction was cancelled.");
+        }
+        catch (PlaywrightException) when (cancellationToken.IsCancellationRequested)
+        {
+            // Playwright throws a TargetClosedException when page.CloseAsync() breaks an active GotoAsync call
+            return ExtractionResult.Failure("The page extraction was cancelled.");
+        }
         catch (TimeoutException)
         {
             return ExtractionResult.Failure("The page took too long to load.");
@@ -134,10 +147,6 @@ public class ProductExtractorService(PlaywrightBrowserService browserService)
         catch (PlaywrightException e)
         {
             return ExtractionResult.Failure($"Could not load the web page. ({e.Message})");
-        }
-        catch (OperationCanceledException)
-        {
-            return ExtractionResult.Failure("The page extraction was cancelled.");
         }
         catch (Exception e)
         {

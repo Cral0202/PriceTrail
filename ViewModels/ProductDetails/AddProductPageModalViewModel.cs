@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,13 +12,18 @@ namespace PriceTrail.ViewModels.ProductDetails;
 
 public partial class AddProductPageModalViewModel(MainWindowViewModel mainWindow, ProductState productState, Product product) : ViewModelBase
 {
+    private CancellationTokenSource? _cts;
+
     [ObservableProperty]
     public partial string Url { get; set; } = "";
 
     [RelayCommand]
     private async Task AddProductPageAsync()
     {
-        string? errorMessage = await productState.AddProductPageToProductAsync(product, Url);
+        _cts?.Dispose();
+        _cts = new CancellationTokenSource();
+
+        string? errorMessage = await productState.AddProductPageToProductAsync(product, Url, _cts.Token);
         Close();
 
         if (errorMessage != null)
@@ -29,6 +35,10 @@ public partial class AddProductPageModalViewModel(MainWindowViewModel mainWindow
     [RelayCommand]
     private void Close()
     {
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = null;
+
         mainWindow.CurrentModalViewModel = null;
     }
 }
