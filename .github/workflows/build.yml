@@ -2,6 +2,12 @@ name: Build & Release
 
 on:
     workflow_dispatch:
+        inputs:
+            create_release:
+                description: "Create a release?"
+                required: true
+                type: boolean
+                default: false
 
 jobs:
     build:
@@ -12,7 +18,7 @@ jobs:
                 include:
                     - os: ubuntu-latest
                       target: linux-x64
-                      output-name: PriceTrail-linux-x64.tar.gz
+                      output-name: PriceTrail-linux-x64.AppImage
 
                     - os: windows-latest
                       target: win-x64
@@ -54,16 +60,43 @@ jobs:
                   shopt -s dotglob   # make * globs include dotfiles/dotfolders
 
                   if [ "${{ matrix.target }}" = "osx-arm64" ]; then
+                    # --- MACOS BUILD ---
                     mkdir -p ./publish-pkg/PriceTrail.app/Contents/MacOS
                     cp -R ./publish/* ./publish-pkg/PriceTrail.app/Contents/MacOS/
                     cd ./publish-pkg
                     zip -r ../${{ matrix.output-name }} PriceTrail.app
                   elif [ "${{ matrix.target }}" = "win-x64" ]; then
+                    # --- WINDOWS BUILD ---
                     cd ./publish
                     7z a ../${{ matrix.output-name }} *
                   else
-                    cd ./publish
-                    tar -czf ../${{ matrix.output-name }} .
+                    # --- LINUX BUILD ---
+                    mkdir -p PriceTrail.AppDir/usr/bin
+                    cp -R ./publish/* PriceTrail.AppDir/usr/bin/
+
+                    cat << 'EOF' > PriceTrail.AppDir/AppRun
+                    #!/bin/sh
+                    SELF=$(dirname "$(readlink -f "$0")")
+                    exec "$SELF/usr/bin/PriceTrail" "$@"
+                    EOF
+                    chmod +x PriceTrail.AppDir/AppRun
+
+                    cat << 'EOF' > PriceTrail.AppDir/PriceTrail.desktop
+                    [Desktop Entry]
+                    Name=PriceTrail
+                    Exec=PriceTrail
+                    Icon=PriceTrail
+                    Type=Application
+                    Categories=Utility;
+                    EOF
+
+                    cp Assets/logo/logo_256x256.png PriceTrail.AppDir/PriceTrail.png
+
+                    wget -q https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+                    chmod +x appimagetool-x86_64.AppImage
+
+                    # "--appimage-extract-and-run" is used because GitHub runners may not allow FUSE mounts out-of-the-box"
+                    ARCH=x86_64 ./appimagetool-x86_64.AppImage --appimage-extract-and-run PriceTrail.AppDir ../${{ matrix.output-name }}
                   fi
 
             - name: Upload artifact
@@ -86,6 +119,7 @@ jobs:
         name: Create GitHub Release
         needs: build
         runs-on: ubuntu-latest
+        if: ${{ inputs.create_release == true }}
         permissions:
             contents: write
 
@@ -105,6 +139,6 @@ jobs:
                   body: "Release build"
                   make_latest: true
                   files: |
-                      release-artifacts/PriceTrail-linux-x64.tar.gz
+                      release-artifacts/PriceTrail-linux-x64.AppImage
                       release-artifacts/PriceTrail-win-x64.zip
                       release-artifacts/PriceTrail-macos-arm64.zip
