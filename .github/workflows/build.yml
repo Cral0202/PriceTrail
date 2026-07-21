@@ -74,21 +74,18 @@ jobs:
                     mkdir -p PriceTrail.AppDir/usr/bin
                     cp -R ./publish/* PriceTrail.AppDir/usr/bin/
 
-                    cat << 'EOF' > PriceTrail.AppDir/AppRun
-                    #!/bin/sh
-                    SELF=$(dirname "$(readlink -f "$0")")
-                    exec "$SELF/usr/bin/PriceTrail" "$@"
-                    EOF
+                    echo '#!/bin/sh' > PriceTrail.AppDir/AppRun
+                    echo 'SELF=$(dirname "$(readlink -f "$0")")' >> PriceTrail.AppDir/AppRun
+                    echo 'exec "$SELF/usr/bin/PriceTrail" "$@"' >> PriceTrail.AppDir/AppRun
+
                     chmod +x PriceTrail.AppDir/AppRun
 
-                    cat << 'EOF' > PriceTrail.AppDir/PriceTrail.desktop
-                    [Desktop Entry]
-                    Name=PriceTrail
-                    Exec=PriceTrail
-                    Icon=PriceTrail
-                    Type=Application
-                    Categories=Utility;
-                    EOF
+                    echo '[Desktop Entry]' > PriceTrail.AppDir/PriceTrail.desktop
+                    echo 'Name=PriceTrail' >> PriceTrail.AppDir/PriceTrail.desktop
+                    echo 'Exec=PriceTrail' >> PriceTrail.AppDir/PriceTrail.desktop
+                    echo 'Icon=PriceTrail' >> PriceTrail.AppDir/PriceTrail.desktop
+                    echo 'Type=Application' >> PriceTrail.AppDir/PriceTrail.desktop
+                    echo 'Categories=Utility;' >> PriceTrail.AppDir/PriceTrail.desktop
 
                     cp Assets/logo/logo_256x256.png PriceTrail.AppDir/PriceTrail.png
 
@@ -105,7 +102,7 @@ jobs:
                   name: ${{ matrix.output-name }}
                   path: ./${{ matrix.output-name }}
 
-              # Extract version only on the Linux runner to avoid duplicate runs
+            # Extract version only on the Linux runner to avoid duplicate runs
             - name: Extract Version from .csproj
               if: matrix.os == 'ubuntu-latest'
               id: get_version
