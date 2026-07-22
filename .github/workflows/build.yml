@@ -28,7 +28,7 @@ jobs:
                       target: osx-arm64
                       output-name: PriceTrail-macos-arm64.zip
         outputs:
-            version: ${{ steps.get_version.outputs.VERSION }}
+            tag_name: ${{ steps.get_version.outputs.TAG_NAME }}
 
         permissions:
             contents: write
@@ -44,6 +44,19 @@ jobs:
 
             - name: Restore
               run: dotnet restore
+
+            - name: Extract version from .csproj
+              id: get_version
+              shell: bash
+              run: |
+                  # Finds the <Version> tag, extracts the value, and removes whitespace
+                  APP_VERSION=$(sed -n 's/.*<Version>\(.*\)<\/Version>.*/\1/p' *.csproj | head -1 | tr -d '[:space:]')
+
+                  echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
+
+                  if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+                    echo "TAG_NAME=v$APP_VERSION" >> $GITHUB_OUTPUT
+                  fi
 
             - name: Publish Application
               shell: bash
@@ -61,8 +74,45 @@ jobs:
 
                   if [ "${{ matrix.target }}" = "osx-arm64" ]; then
                     # --- MACOS BUILD ---
-                    mkdir -p ./publish-pkg/PriceTrail.app/Contents/MacOS
-                    cp -R ./publish/* ./publish-pkg/PriceTrail.app/Contents/MacOS/
+                    APP=./publish-pkg/PriceTrail.app
+                    mkdir -p "$APP/Contents/MacOS"
+                    mkdir -p "$APP/Contents/Resources"
+
+                    cp -R ./publish/* "$APP/Contents/MacOS/"
+                    chmod +x "$APP/Contents/MacOS/PriceTrail"
+
+                    cp Assets/Logo/logo.icns "$APP/Contents/Resources/AppIcon.icns"
+
+                    cat << EOF > "$APP/Contents/Info.plist"
+                  <?xml version="1.0" encoding="UTF-8"?>
+                  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+                  <plist version="1.0">
+                  <dict>
+                      <key>CFBundleExecutable</key>
+                      <string>PriceTrail</string>
+                      <key>CFBundleIdentifier</key>
+                      <string>com.cral0202.pricetrail</string>
+                      <key>CFBundleName</key>
+                      <string>PriceTrail</string>
+                      <key>CFBundleIconFile</key>
+                      <string>AppIcon</string>
+                      <key>CFBundlePackageType</key>
+                      <string>APPL</string>
+                      <key>CFBundleShortVersionString</key>
+                      <string>$APP_VERSION</string>
+                      <key>CFBundleVersion</key>
+                      <string>$APP_VERSION</string>
+                      <key>LSMinimumSystemVersion</key>
+                      <string>14.0</string>
+                      <key>NSHighResolutionCapable</key>
+                      <true/>
+                  </dict>
+                  </plist>
+                  EOF
+
+                    # Ad-hoc sign
+                    codesign --force --deep -s - "$APP"
+
                     cd ./publish-pkg
                     zip -r ../${{ matrix.output-name }} PriceTrail.app
                   elif [ "${{ matrix.target }}" = "win-x64" ]; then
@@ -74,18 +124,22 @@ jobs:
                     mkdir -p PriceTrail.AppDir/usr/bin
                     cp -R ./publish/* PriceTrail.AppDir/usr/bin/
 
-                    echo '#!/bin/sh' > PriceTrail.AppDir/AppRun
-                    echo 'SELF=$(dirname "$(readlink -f "$0")")' >> PriceTrail.AppDir/AppRun
-                    echo 'exec "$SELF/usr/bin/PriceTrail" "$@"' >> PriceTrail.AppDir/AppRun
+                    cat << 'EOF' > PriceTrail.AppDir/AppRun
+                  #!/bin/sh
+                  SELF=$(dirname "$(readlink -f "$0")")
+                  exec "$SELF/usr/bin/PriceTrail" "$@"
+                  EOF
 
                     chmod +x PriceTrail.AppDir/AppRun
 
-                    echo '[Desktop Entry]' > PriceTrail.AppDir/PriceTrail.desktop
-                    echo 'Name=PriceTrail' >> PriceTrail.AppDir/PriceTrail.desktop
-                    echo 'Exec=PriceTrail' >> PriceTrail.AppDir/PriceTrail.desktop
-                    echo 'Icon=PriceTrail' >> PriceTrail.AppDir/PriceTrail.desktop
-                    echo 'Type=Application' >> PriceTrail.AppDir/PriceTrail.desktop
-                    echo 'Categories=Utility;' >> PriceTrail.AppDir/PriceTrail.desktop
+                    cat << 'EOF' > PriceTrail.AppDir/PriceTrail.desktop
+                  [Desktop Entry]
+                  Name=PriceTrail
+                  Exec=PriceTrail
+                  Icon=PriceTrail
+                  Type=Application
+                  Categories=Utility;
+                  EOF
 
                     cp Assets/Logo/logo_256x256.png PriceTrail.AppDir/PriceTrail.png
 
@@ -101,16 +155,6 @@ jobs:
               with:
                   name: ${{ matrix.output-name }}
                   path: ./${{ matrix.output-name }}
-
-            # Extract version only on the Linux runner to avoid duplicate runs
-            - name: Extract Version from .csproj
-              if: matrix.os == 'ubuntu-latest'
-              id: get_version
-              run: |
-                  # Finds the <Version> tag, extracts the value, and removes whitespace
-                  VERSION=$(grep -oP '(?<=<Version>)[^<]+' *.csproj | head -1 | tr -d '[:space:]')
-                  echo "VERSION=v$VERSION" >> $GITHUB_OUTPUT
-                  echo "Extracted version: v$VERSION"
 
     release:
         name: Create GitHub Release
@@ -130,8 +174,8 @@ jobs:
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v3
               with:
-                  tag_name: ${{ needs.build.outputs.version }}
-                  name: ${{ needs.build.outputs.version }}
+                  tag_name: ${{ needs.build.outputs.tag_name }}
+                  name: ${{ needs.build.outputs.tag_name }}
                   target_commitish: ${{ github.sha }}
                   body: "Release build"
                   make_latest: true

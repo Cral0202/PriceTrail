@@ -6,7 +6,7 @@
 
     <Version>1.2.1</Version>
 
-    <ApplicationIcon>Assets/Logo/logo_256x256.ico</ApplicationIcon>
+    <ApplicationIcon>Assets/Logo/logo.ico</ApplicationIcon>
 
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
