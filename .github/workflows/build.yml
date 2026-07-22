@@ -111,7 +111,8 @@ jobs:
                   EOF
 
                     # Ad-hoc sign
-                    codesign --force --deep -s - "$APP"
+                    codesign --force -s - "$APP/Contents/MacOS/PriceTrail"
+                    codesign --force -s - "$APP"
 
                     cd ./publish-pkg
                     zip -r ../${{ matrix.output-name }} PriceTrail.app
