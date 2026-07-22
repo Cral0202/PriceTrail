@@ -110,17 +110,7 @@ jobs:
                   </plist>
                   EOF
 
-                    # Remove +x from DLLs to fix codesign errors
-                    find "$APP/Contents/MacOS" -type f -name "*.dll" -exec chmod -x {} \;
-
-                    # Ad-hoc sign Mach-O binaries and .dll files
-                    find "$APP/Contents/MacOS" -type f | while read -r f; do
-                      if [[ "$f" == *.dll ]] || file "$f" | grep -q "Mach-O"; then
-                        codesign --force -s - "$f"
-                      fi
-                    done
-
-                    codesign --force -s - "$APP"
+                    # Should sign here, but could not get it to work
 
                     cd ./publish-pkg
                     zip -r ../${{ matrix.output-name }} PriceTrail.app
