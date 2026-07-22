@@ -111,7 +111,12 @@ jobs:
                   EOF
 
                     # Ad-hoc sign
-                    codesign --force -s - "$APP/Contents/MacOS/PriceTrail"
+                    find "$APP/Contents/MacOS" -type f | while read -r f; do
+                      if file "$f" | grep -q "Mach-O"; then
+                        codesign --force -s - "$f"
+                      fi
+                    done
+
                     codesign --force -s - "$APP"
 
                     cd ./publish-pkg
