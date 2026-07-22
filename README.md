@@ -4,8 +4,6 @@ PriceTrail is a free desktop application for tracking product prices across mult
 
 Add product URLs from different stores, and PriceTrail will automatically extract pricing information using JSON-LD data embedded in product pages.
 
-PriceTrail is currently in early development.
-
 ⚠️ If you are using a VPN, some websites may block you. You may want to exclude PriceTrail from your VPN.
 
 ## Features
