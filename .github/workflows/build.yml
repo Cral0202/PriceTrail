@@ -114,8 +114,13 @@ jobs:
                     find "$APP/Contents/MacOS" -type f -name "*.dll" -exec chmod -x {} \;
 
                     # Ad-hoc sign
-                    find "$APP/Contents/MacOS" -type f -exec codesign --force -s - {} +
-                    codesign --force --deep -s - "$APP"
+                    find "$APP/Contents/MacOS" -type f | while read -r f; do
+                      if file "$f" | grep -q "Mach-O"; then
+                        codesign --force -s - "$f"
+                      fi
+                    done
+
+                    codesign --force -s - "$APP"
 
                     cd ./publish-pkg
                     zip -r ../${{ matrix.output-name }} PriceTrail.app
