@@ -66,7 +66,6 @@ jobs:
                     -r ${{ matrix.target }} \
                     --self-contained true \
                     -p:PublishSingleFile=true \
-                    -p:DebugType=None \
                     -o ./publish
 
             - name: Package Folder Build
@@ -112,10 +111,7 @@ jobs:
                   </plist>
                   EOF
 
-                    # Ad-hoc sign
-                    find "$APP" -type f \( -perm -u+x -o -name "*.dylib" \) -exec codesign --force --sign - {} \;
-                    codesign --force --sign - "$APP"
-                    codesign --verify --strict --verbose=2 "$APP"
+                    # Should sign here, but could not get it to work
 
                     cd ./publish-pkg
                     zip -r ../${{ matrix.output-name }} PriceTrail.app
