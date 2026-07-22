@@ -14,6 +14,6 @@ public partial class OverviewViewModel(ProductState productState, Product produc
     [RelayCommand]
     private async Task DeleteProductPageAsync(ProductPage page)
     {
-        await productState.DeleteProductPageFromProductAsync(Product, page);
+        await productState.DeleteProductPageAsync(Product, page);
     }
 }

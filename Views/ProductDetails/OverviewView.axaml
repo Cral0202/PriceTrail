@@ -103,7 +103,7 @@
 
                                 <Button
                                     Classes="danger"
-                                    Command="{Binding $parent[UserControl].DataContext.DeleteProductPageCommand}"
+                                    Command="{Binding $parent[ItemsControl].DataContext.DeleteProductPageCommand}"
                                     CommandParameter="{Binding}" >
 
                                     <StackPanel

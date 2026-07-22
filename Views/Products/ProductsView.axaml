@@ -67,7 +67,7 @@
                                 Classes="transparent"
                                 Padding="0"
                                 BorderThickness="0"
-                                Command="{Binding $parent[UserControl].DataContext.OpenProductCommand}"
+                                Command="{Binding $parent[ItemsControl].DataContext.OpenProductCommand}"
                                 CommandParameter="{Binding}">
 
                                 <Border

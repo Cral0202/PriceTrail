@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:PriceTrail.ViewModels.ProductDetails"
     xmlns:views="using:PriceTrail.Views.ProductDetails"
-    xmlns:models="using:PriceTrail.Models"
     xmlns:converters="using:PriceTrail.Converters"
     xmlns:fluentIcons="using:FluentIcons.Avalonia"
     x:Class="PriceTrail.Views.ProductDetails.ProductDetailsView"

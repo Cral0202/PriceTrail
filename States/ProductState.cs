@@ -116,7 +116,7 @@ public class ProductState(PlaywrightBrowserService playrightBrowserService)
         }
     }
 
-    public async Task DeleteProductPageFromProductAsync(Product product, ProductPage page)
+    public async Task DeleteProductPageAsync(Product product, ProductPage page)
     {
         await _productPageRepo.DeleteProductPageAsync(page);
         product.ProductPages.Remove(page);
