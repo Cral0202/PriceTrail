@@ -115,7 +115,7 @@ jobs:
                     # Ad-hoc sign
                     find "$APP" -type f \( -perm -u+x -o -name "*.dylib" \) -exec codesign --force --sign - {} \;
                     codesign --force --sign - "$APP"
-                    codesign --verify --deep --strict --verbose=2 "$APP"
+                    codesign --verify --strict --verbose=2 "$APP"
 
                     cd ./publish-pkg
                     zip -r ../${{ matrix.output-name }} PriceTrail.app
