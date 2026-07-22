@@ -24,6 +24,24 @@
                     Classes="page-title"
                     Text="Settings" />
 
+                <!-- General -->
+
+                <Border Classes="card">
+                    <StackPanel Spacing="12">
+                        <TextBlock
+                            Classes="card-title"
+                            Text="General" />
+
+                        <TextBlock
+                            Classes="card-description"
+                            Text="Configure general application settings." />
+
+                        <CheckBox
+                            Content="Minimize to tray on close"
+                            IsChecked="{Binding Settings.MinimizeToTray}" />
+                    </StackPanel>
+                </Border>
+
                 <!-- Price Refresh -->
 
                 <Border Classes="card">

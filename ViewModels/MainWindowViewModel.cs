@@ -9,6 +9,8 @@ namespace PriceTrail.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
+    private readonly AppState? _appState;
+
     // Used for the sidebar
     public enum NavigationPage
     {
@@ -44,12 +46,16 @@ public partial class MainWindowViewModel : ViewModelBase
     public bool IsProductsActive => CurrentPage == NavigationPage.Products;
     public bool IsSettingsActive => CurrentPage == NavigationPage.Settings;
 
+    public bool MinimizeToTray => _appState?.SettingsState.Settings.MinimizeToTray ?? true;
+
     public MainWindowViewModel()
     {
     }
 
     public MainWindowViewModel(AppState appState)
     {
+        _appState = appState;
+
         ProductsViewModel = new ProductsViewModel(this, appState.ProductState);
         SettingsViewModel = new SettingsViewModel(appState.SettingsState, appState.UpdateState);
 
