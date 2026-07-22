@@ -113,9 +113,9 @@ jobs:
                     # Remove +x from DLLs to fix codesign errors
                     find "$APP/Contents/MacOS" -type f -name "*.dll" -exec chmod -x {} \;
 
-                    # Ad-hoc sign
+                    # Ad-hoc sign Mach-O binaries and .dll files
                     find "$APP/Contents/MacOS" -type f | while read -r f; do
-                      if file "$f" | grep -q "Mach-O"; then
+                      if [[ "$f" == *.dll ]] || file "$f" | grep -q "Mach-O"; then
                         codesign --force -s - "$f"
                       fi
                     done
