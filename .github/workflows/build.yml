@@ -65,6 +65,7 @@ jobs:
                     -c Release \
                     -r ${{ matrix.target }} \
                     --self-contained true \
+                    -p:PublishSingleFile=true \
                     -o ./publish
 
             - name: Package Folder Build
@@ -110,7 +111,8 @@ jobs:
                   </plist>
                   EOF
 
-                    # Should sign here, but could not get it to work
+                    # Ad-hoc sign
+                    codesign --force --deep --sign - "$APP"
 
                     cd ./publish-pkg
                     zip -r ../${{ matrix.output-name }} PriceTrail.app
