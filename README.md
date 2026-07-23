@@ -6,18 +6,18 @@ Add product URLs from different stores, and PriceTrail will automatically extrac
 
 ⚠️ If you are using a VPN, some websites may block you. You may want to exclude PriceTrail from your VPN.
 
+⚠️ The macOS build is unsigned and thus may not run.
+
 ## Features
 
-- Track multiple store pages for the same product
+- Compare prices across multiple stores
 - Automatic price extraction using JSON-LD
 - Price history tracking
 - Automatic price refreshes
-- Local SQLite database storage
 
 ## Planned Features
 
 - Improved UI (visuals and features)
-- More reliable product data extraction
 - Price notifications
 
 ## Screenshots
