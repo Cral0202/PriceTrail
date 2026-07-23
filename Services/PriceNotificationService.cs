@@ -11,15 +11,16 @@ public class PriceNotificationService
     public async Task CheckForNotifications(Product product, ProductPage existingPage, ProductPage updatedPage)
     {
         {
-            await CheckPriceDrop(product, existingPage, updatedPage);
+            await CheckPriceDrop(product, updatedPage);
         }
     }
 
-    private async Task CheckPriceDrop(Product product, ProductPage existingPage, ProductPage updatedPage)
+    // Checks whether the fetched price is lower than the current lowest product price
+    private async Task CheckPriceDrop(Product product, ProductPage updatedPage)
     {
-        if (existingPage.Price is decimal previous && updatedPage.Price is decimal current && current < previous)
+        if (updatedPage.Price is decimal newPrice && product.LowestPrice is decimal currentLowestPrice && newPrice < currentLowestPrice)
         {
-            await _notificationService.SendNotificationAsync("Price dropped!", $"{product.Name}\n{previous} → {current} {updatedPage.Currency}");
+            await _notificationService.SendNotificationAsync("Price dropped!", $"{product.Name}\n{currentLowestPrice} → {newPrice} {updatedPage.Currency}");
         }
     }
 }
