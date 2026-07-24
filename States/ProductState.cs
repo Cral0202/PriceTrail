@@ -9,12 +9,13 @@ using PriceTrail.Services;
 
 namespace PriceTrail.States;
 
-public class ProductState(PlaywrightBrowserService playrightBrowserService)
+public class ProductState(PlaywrightBrowserService playrightBrowserService, NotificationState notificationState)
 {
     private readonly ProductRepository _productRepo = new();
     private readonly ProductPageRepository _productPageRepo = new();
     private readonly PriceHistoryRepository _priceHistoryRepo = new();
     private readonly ProductExtractorService _extractor = new(playrightBrowserService);
+    private readonly PriceNotificationService _priceNotificationService = new(notificationState);
     private readonly HashSet<int> _refreshingProducts = [];
 
     public ObservableCollection<Product> Products { get; } = [];
@@ -91,6 +92,8 @@ public class ProductState(PlaywrightBrowserService playrightBrowserService)
 
                 productPage.HasError = false;
                 productPage.ErrorMessage = "";
+
+                await _priceNotificationService.CheckForNotifications(product, productPage, result.Page!);
 
                 productPage.Price = result.Page!.Price;
                 productPage.Currency = result.Page!.Currency;

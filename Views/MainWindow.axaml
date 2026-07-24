@@ -1,6 +1,5 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:views="using:PriceTrail.Views"
         xmlns:productsViews="using:PriceTrail.Views.Products"
         xmlns:productsVms="using:PriceTrail.ViewModels.Products"
         xmlns:productDetailViews="using:PriceTrail.Views.ProductDetails"
@@ -69,6 +68,22 @@
 
                         <fluentIcons:SymbolIcon
                             Symbol="Box"
+                            FontSize="24" />
+
+                    </Button>
+
+                    <Button
+                        Classes="sidebar"
+                        Classes.active="{Binding IsNotificationsActive}"
+                        Width="48"
+                        Height="48"
+                        Padding="0"
+                        CornerRadius="8"
+                        ToolTip.Tip="Notifications"
+                        Command="{Binding ShowNotificationsCommand}">
+
+                        <fluentIcons:SymbolIcon
+                            Symbol="Alert"
                             FontSize="24" />
 
                     </Button>

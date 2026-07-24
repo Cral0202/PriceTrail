@@ -58,8 +58,9 @@ public partial class App : Application
             await _playwrightBrowserService!.InitializeAsync();
 
             // State
-            var appState = new AppState(_playwrightBrowserService);
+            var appState = new AppState(_playwrightBrowserService); // TODO: Can we avoid having to pass the service all the way down to ProductState?
             await appState.SettingsState.InitializeAsync();
+            await appState.NotificationState.InitializeAsync();
             await appState.ProductState.LoadProductsAsync();
 
             mainWindow.DataContext = new MainWindowViewModel(appState);

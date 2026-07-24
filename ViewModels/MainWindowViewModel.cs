@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.States;
+using PriceTrail.ViewModels.Notifications;
 using PriceTrail.ViewModels.Products;
 using PriceTrail.ViewModels.Settings;
 
@@ -15,6 +16,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public enum NavigationPage
     {
         Products,
+        Notifications,
         Settings
     }
 
@@ -37,13 +39,17 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsProductsActive))]
+    [NotifyPropertyChangedFor(nameof(IsNotificationsActive))]
     [NotifyPropertyChangedFor(nameof(IsSettingsActive))]
+
     private NavigationPage _currentPage = NavigationPage.Products;
 
     public ProductsViewModel? ProductsViewModel { get; }
+    public NotificationsViewModel? NotificationsViewModel { get; }
     public SettingsViewModel? SettingsViewModel { get; }
 
     public bool IsProductsActive => CurrentPage == NavigationPage.Products;
+    public bool IsNotificationsActive => CurrentPage == NavigationPage.Notifications;
     public bool IsSettingsActive => CurrentPage == NavigationPage.Settings;
 
     public bool MinimizeToTray => _appState?.SettingsState.Settings.MinimizeToTray ?? true;
@@ -57,6 +63,7 @@ public partial class MainWindowViewModel : ViewModelBase
         _appState = appState;
 
         ProductsViewModel = new ProductsViewModel(this, appState.ProductState);
+        NotificationsViewModel = new NotificationsViewModel(appState.NotificationState);
         SettingsViewModel = new SettingsViewModel(appState.SettingsState, appState.UpdateState);
 
         CurrentViewModel = ProductsViewModel;
@@ -68,6 +75,13 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         CurrentViewModel = ProductsViewModel;
         CurrentPage = NavigationPage.Products;
+    }
+
+    [RelayCommand]
+    private void ShowNotifications()
+    {
+        CurrentViewModel = NotificationsViewModel;
+        CurrentPage = NavigationPage.Notifications;
     }
 
     [RelayCommand]
