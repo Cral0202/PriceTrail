@@ -14,11 +14,11 @@ Add product URLs from different stores, and PriceTrail will automatically extrac
 - Automatic price extraction using JSON-LD
 - Price history tracking
 - Automatic price refreshes
+- Price alerts
 
 ## Planned Features
 
 - Improved UI (visuals and features)
-- Price notifications
 
 ## Screenshots
 
