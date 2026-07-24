@@ -9,13 +9,13 @@ using PriceTrail.Services;
 
 namespace PriceTrail.States;
 
-public class ProductState(PlaywrightBrowserService playrightBrowserService)
+public class ProductState(PlaywrightBrowserService playrightBrowserService, NotificationState notificationState)
 {
     private readonly ProductRepository _productRepo = new();
     private readonly ProductPageRepository _productPageRepo = new();
     private readonly PriceHistoryRepository _priceHistoryRepo = new();
     private readonly ProductExtractorService _extractor = new(playrightBrowserService);
-    private readonly PriceNotificationService _priceNotificationService = new();
+    private readonly PriceNotificationService _priceNotificationService = new(notificationState);
     private readonly HashSet<int> _refreshingProducts = [];
 
     public ObservableCollection<Product> Products { get; } = [];

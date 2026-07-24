@@ -1,17 +1,19 @@
 using System.Threading.Tasks;
 
+using PriceTrail.Models.Notification;
 using PriceTrail.Models.Product;
+using PriceTrail.States;
 
 namespace PriceTrail.Services;
 
-public class PriceNotificationService
+public class PriceNotificationService(NotificationState notificationState)
 {
     private readonly NativeNotificationService _notificationService = new();
 
-    public async Task CheckForNotifications(Product product, ProductPage existingPage, ProductPage updatedPage)
+    public async Task CheckForNotifications(Product product, ProductPage previousPage, ProductPage newPage)
     {
         {
-            await CheckPriceDrop(product, updatedPage);
+            await CheckPriceDrop(product, newPage);
         }
     }
 
@@ -20,7 +22,16 @@ public class PriceNotificationService
     {
         if (updatedPage.Price is decimal newPrice && product.LowestPrice is decimal currentLowestPrice && newPrice < currentLowestPrice)
         {
-            await _notificationService.SendNotificationAsync("Price dropped!", $"{product.Name}\n{currentLowestPrice} → {newPrice} {updatedPage.Currency}");
+            var notification = new Notification
+            {
+                ProductId = product.Id,
+                Title = "Price dropped!",
+                Message = $"{product.Name}\n{currentLowestPrice} → {newPrice} {updatedPage.Currency}",
+                Type = NotificationType.PriceDrop
+            };
+
+            await notificationState.AddNotificationAsync(notification);
+            await _notificationService.SendNotificationAsync(notification.Title, notification.Message);
         }
     }
 }

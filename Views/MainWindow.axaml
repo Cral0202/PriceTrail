@@ -74,6 +74,22 @@
 
                     <Button
                         Classes="sidebar"
+                        Classes.active="{Binding IsNotificationsActive}"
+                        Width="48"
+                        Height="48"
+                        Padding="0"
+                        CornerRadius="8"
+                        ToolTip.Tip="Notifications"
+                        Command="{Binding ShowNotificationsCommand}">
+
+                        <fluentIcons:SymbolIcon
+                            Symbol="Alert"
+                            FontSize="24" />
+
+                    </Button>
+
+                    <Button
+                        Classes="sidebar"
                         Classes.active="{Binding IsSettingsActive}"
                         Width="48"
                         Height="48"
