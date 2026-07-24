@@ -12,9 +12,7 @@ public class PriceNotificationService(NotificationState notificationState)
 
     public async Task CheckForNotifications(Product product, ProductPage previousPage, ProductPage newPage)
     {
-        {
-            await CheckPriceDrop(product, newPage);
-        }
+        await CheckPriceDrop(product, newPage);
     }
 
     // Checks whether the fetched price is lower than the current lowest product price
