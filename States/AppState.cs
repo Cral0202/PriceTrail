@@ -14,6 +14,6 @@ public class AppState
         SettingsState = new SettingsState();
         NotificationState = new NotificationState();
         UpdateState = new UpdateState();
-        ProductState = new ProductState(playrightBrowserService, NotificationState); // TODO: Not clean
+        ProductState = new ProductState(playrightBrowserService, NotificationState, SettingsState); // TODO: Not clean
     }
 }

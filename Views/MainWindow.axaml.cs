@@ -33,7 +33,7 @@ public partial class MainWindow : Window
         // Check whether to minimize to tray or close the application
         if (DataContext is MainWindowViewModel vm)
         {
-            if (vm.MinimizeToTray)
+            if (vm.MinimizeToTrayEnabled)
             {
                 e.Cancel = true;
                 Hide();

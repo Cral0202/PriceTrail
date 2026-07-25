@@ -12,9 +12,7 @@
     </UserControl.Resources>
 
     <Grid>
-
         <ScrollViewer>
-
             <StackPanel
                 Spacing="20"
                 MaxWidth="700"
@@ -38,16 +36,14 @@
 
                         <CheckBox
                             Content="Minimize to tray on close"
-                            IsChecked="{Binding Settings.MinimizeToTray}" />
+                            IsChecked="{Binding Settings.MinimizeToTrayEnabled}" />
                     </StackPanel>
                 </Border>
 
                 <!-- Price Refresh -->
 
                 <Border Classes="card">
-
                     <StackPanel Spacing="12">
-
                         <TextBlock
                             Classes="card-title"
                             Text="Price Refresh" />
@@ -76,21 +72,38 @@
                                             Text="{Binding Converter={StaticResource TimeSpanConverter}}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
-
                             </ComboBox>
-
                         </StackPanel>
-
                     </StackPanel>
+                </Border>
 
+                <!-- Notifications -->
+
+                <Border Classes="card">
+                    <StackPanel Spacing="12">
+                        <TextBlock
+                            Classes="card-title"
+                            Text="Notifications" />
+
+                        <TextBlock
+                            Classes="card-description"
+                            Text="Get alerts when prices change." />
+
+                        <CheckBox
+                            Content="Enable notifications"
+                            IsChecked="{Binding Settings.NotificationsEnabled}" />
+
+                        <CheckBox
+                            Content="Notify me when prices drop"
+                            IsChecked="{Binding Settings.PriceDropNotificationEnabled}"
+                            IsEnabled="{Binding Settings.NotificationsEnabled}" />
+                    </StackPanel>
                 </Border>
 
                 <!-- Updates -->
 
                 <Border Classes="card">
-
                     <StackPanel Spacing="12">
-
                         <TextBlock
                             Classes="card-title"
                             Text="Updates" />
@@ -115,20 +128,14 @@
                                 Classes="primary"
                                 Command="{Binding OpenLatestReleaseCommand}"
                                 Content="Download update" />
-
                         </StackPanel>
-
                         <TextBlock
                             IsVisible="{Binding !UpdateInfo.IsUpdateAvailable}"
                             Opacity="0.7"
                             Text="You're running the latest version." />
-
                     </StackPanel>
-
                 </Border>
-
             </StackPanel>
-
         </ScrollViewer>
 
         <TextBlock
@@ -136,7 +143,5 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Opacity="0.7"/>
-
     </Grid>
-
 </UserControl>

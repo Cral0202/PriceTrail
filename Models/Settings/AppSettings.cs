@@ -15,5 +15,15 @@ public partial class AppSettings : ObservableObject
     public partial TimeSpan PriceRefreshInterval { get; set; } = TimeSpan.FromDays(1);
 
     [ObservableProperty]
-    public partial bool MinimizeToTray { get; set; } = true;
+    public partial bool MinimizeToTrayEnabled { get; set; } = true;
+
+    /*****************/
+    /* Notifications */
+    /*****************/
+
+    [ObservableProperty]
+    public partial bool NotificationsEnabled { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool PriceDropNotificationEnabled { get; set; } = true;
 }

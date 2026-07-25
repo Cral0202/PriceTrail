@@ -6,13 +6,17 @@ using PriceTrail.States;
 
 namespace PriceTrail.Services;
 
-public class PriceNotificationService(NotificationState notificationState)
+public class PriceNotificationService(NotificationState notificationState, SettingsState settingsState)
 {
     private readonly NativeNotificationService _notificationService = new();
 
     public async Task CheckForNotifications(Product product, ProductPage previousPage, ProductPage newPage)
     {
-        await CheckPriceDrop(product, newPage);
+        if (!settingsState.Settings.NotificationsEnabled)
+            return;
+
+        if (settingsState.Settings.PriceDropNotificationEnabled)
+            await CheckPriceDrop(product, newPage);
     }
 
     // Checks whether the fetched price is lower than the current lowest product price

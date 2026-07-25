@@ -52,7 +52,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public bool IsNotificationsActive => CurrentPage == NavigationPage.Notifications;
     public bool IsSettingsActive => CurrentPage == NavigationPage.Settings;
 
-    public bool MinimizeToTray => _appState?.SettingsState.Settings.MinimizeToTray ?? true;
+    public bool MinimizeToTrayEnabled => _appState?.SettingsState.Settings.MinimizeToTrayEnabled ?? true;
 
     public MainWindowViewModel()
     {

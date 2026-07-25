@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PriceTrail.Database;
 
@@ -10,9 +11,11 @@ using PriceTrail.Database;
 namespace PriceTrail.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260725195627_AddNotificationsSetting")]
+    partial class AddNotificationsSetting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.10");
@@ -142,9 +145,6 @@ namespace PriceTrail.Database.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("NotificationsEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("PriceDropNotificationEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<TimeSpan>("PriceRefreshInterval")
