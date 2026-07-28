@@ -4,26 +4,44 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.Models.Product;
+using PriceTrail.Services;
+using PriceTrail.Services.Factories;
 using PriceTrail.States;
 
 namespace PriceTrail.ViewModels.ProductDetails;
 
 public partial class ProductDetailsViewModel : ViewModelBase
 {
-    private readonly MainWindowViewModel _mainWindow;
+    private readonly NavigationService _navigation;
     private readonly ProductState _productState;
+
+    private readonly AddProductPageModalViewModelFactory _addProductPageFactory;
+    private readonly EditProductModalViewModelFactory _editProductFactory;
+    private readonly OverviewViewModelFactory _overviewFactory;
+    private readonly HistoryViewModelFactory _historyFactory;
 
     public Product Product { get; }
 
     [ObservableProperty] public partial ViewModelBase CurrentTabViewModel { get; set; }
 
-    public ProductDetailsViewModel(MainWindowViewModel mainWindow, ProductState productState, Product product)
+    public ProductDetailsViewModel(
+        NavigationService navigation,
+        ProductState productState,
+        AddProductPageModalViewModelFactory addProductPageFactory,
+        EditProductModalViewModelFactory editProductFactory,
+        OverviewViewModelFactory overviewFactory,
+        HistoryViewModelFactory historyFactory,
+        Product product)
     {
-        _mainWindow = mainWindow;
+        _navigation = navigation;
         _productState = productState;
+        _addProductPageFactory = addProductPageFactory;
+        _editProductFactory = editProductFactory;
+        _overviewFactory = overviewFactory;
+        _historyFactory = historyFactory;
         Product = product;
 
-        CurrentTabViewModel = new OverviewViewModel(productState, Product);
+        CurrentTabViewModel = _overviewFactory.Create(Product);
     }
 
     [RelayCommand]
@@ -35,14 +53,14 @@ public partial class ProductDetailsViewModel : ViewModelBase
     [RelayCommand]
     private void GoBack()
     {
-        _mainWindow.CurrentViewModel = _mainWindow.ProductsViewModel;
+        _navigation.GoBack();
     }
 
     [RelayCommand]
-    private void SelectOverview() => CurrentTabViewModel = new OverviewViewModel(_productState, Product);
+    private void SelectOverview() => CurrentTabViewModel = _overviewFactory.Create(Product);
 
     [RelayCommand]
-    private void SelectHistory() => CurrentTabViewModel = new HistoryViewModel(Product);
+    private void SelectHistory() => CurrentTabViewModel = _historyFactory.Create(Product);
 
     /**********/
     /* MODALS */
@@ -51,12 +69,12 @@ public partial class ProductDetailsViewModel : ViewModelBase
     [RelayCommand]
     private void OpenAddProductPageModal()
     {
-        _mainWindow.CurrentModalViewModel = new AddProductPageModalViewModel(_mainWindow, _productState, Product);
+        _navigation.OpenModal(_addProductPageFactory.Create(Product));
     }
 
     [RelayCommand]
     private void OpenEditProductModal()
     {
-        _mainWindow.CurrentModalViewModel = new EditProductModalViewModel(_mainWindow, _productState, Product);
+        _navigation.OpenModal(_editProductFactory.Create(Product));
     }
 }

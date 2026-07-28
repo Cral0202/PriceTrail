@@ -3,19 +3,20 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.Models.Product;
+using PriceTrail.Services;
+using PriceTrail.Services.Factories;
 using PriceTrail.States;
-using PriceTrail.ViewModels.ProductDetails;
 
 namespace PriceTrail.ViewModels.Products;
 
-public partial class ProductsViewModel(MainWindowViewModel mainWindow, ProductState productState) : ViewModelBase
+public partial class ProductsViewModel(NavigationService navigation, ProductDetailsViewModelFactory productDetailsFactory, AddProductModalViewModel addProductModalViewModel, ProductState productState) : ViewModelBase
 {
     public ObservableCollection<Product> Products => productState.Products;
 
     [RelayCommand]
     private void OpenProduct(Product product)
     {
-        mainWindow.CurrentViewModel = new ProductDetailsViewModel(mainWindow, productState, product);
+        navigation.NavigateTo(productDetailsFactory.Create(product));
     }
 
     /**********/
@@ -25,6 +26,6 @@ public partial class ProductsViewModel(MainWindowViewModel mainWindow, ProductSt
     [RelayCommand]
     private void OpenAddProductModal()
     {
-        mainWindow.CurrentModalViewModel = new AddProductModalViewModel(mainWindow, productState);
+        navigation.OpenModal(addProductModalViewModel);
     }
 }

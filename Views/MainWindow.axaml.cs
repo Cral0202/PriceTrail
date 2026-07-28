@@ -11,9 +11,10 @@ public partial class MainWindow : Window
 {
     private bool _isShuttingDown; // Used to prevent infinite recursion loop
 
-    public MainWindow()
+    public MainWindow(MainWindowViewModel viewModel, ToastNotificationService toastService)
     {
         InitializeComponent();
+        DataContext = viewModel;
         Closing += MainWindow_Closing;
 
         var manager = new WindowNotificationManager(this)
@@ -22,7 +23,7 @@ public partial class MainWindow : Window
             MaxItems = 3
         };
 
-        ToastNotificationService.Instance.Initialize(manager);
+        toastService.Initialize(manager);
     }
 
     private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)

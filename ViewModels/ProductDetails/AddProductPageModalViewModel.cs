@@ -10,7 +10,7 @@ using PriceTrail.States;
 
 namespace PriceTrail.ViewModels.ProductDetails;
 
-public partial class AddProductPageModalViewModel(MainWindowViewModel mainWindow, ProductState productState, Product product) : ViewModelBase
+public partial class AddProductPageModalViewModel(NavigationService navigation, ProductState productState, Product product, ToastNotificationService toastService) : ViewModelBase
 {
     private CancellationTokenSource? _cts;
 
@@ -28,7 +28,7 @@ public partial class AddProductPageModalViewModel(MainWindowViewModel mainWindow
 
         if (errorMessage != null)
         {
-            ToastNotificationService.Instance.ShowMessage("Failed to add URL", errorMessage, Avalonia.Controls.Notifications.NotificationType.Error);
+            toastService.ShowMessage("Failed to add URL", errorMessage, Avalonia.Controls.Notifications.NotificationType.Error);
         }
     }
 
@@ -39,6 +39,6 @@ public partial class AddProductPageModalViewModel(MainWindowViewModel mainWindow
         _cts?.Dispose();
         _cts = null;
 
-        mainWindow.CurrentModalViewModel = null;
+        navigation.CloseModal();
     }
 }

@@ -7,11 +7,11 @@ using PriceTrail.Models.Settings;
 
 namespace PriceTrail.Repositories.Settings;
 
-public class SettingsRepository
+public class SettingsRepository(IDbContextFactory<AppDbContext> contextFactory)
 {
     public async Task<AppSettings> LoadAsync()
     {
-        await using var db = new AppDbContext();
+        await using var db = await contextFactory.CreateDbContextAsync();
 
         var settings = await db.Settings.FirstOrDefaultAsync();
 
@@ -28,7 +28,7 @@ public class SettingsRepository
 
     public async Task SaveAsync(AppSettings settings)
     {
-        await using var db = new AppDbContext();
+        await using var db = await contextFactory.CreateDbContextAsync();
 
         db.Settings.Update(settings);
         await db.SaveChangesAsync();

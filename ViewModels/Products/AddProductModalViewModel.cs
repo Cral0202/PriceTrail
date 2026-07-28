@@ -4,11 +4,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.Models.Product;
+using PriceTrail.Services;
 using PriceTrail.States;
 
 namespace PriceTrail.ViewModels.Products;
 
-public partial class AddProductModalViewModel(MainWindowViewModel mainWindow, ProductState productState) : ViewModelBase
+public partial class AddProductModalViewModel(NavigationService navigation, ProductState productState) : ViewModelBase
 {
     [ObservableProperty]
     public partial string NewProductName { get; set; } = "";
@@ -33,6 +34,6 @@ public partial class AddProductModalViewModel(MainWindowViewModel mainWindow, Pr
     [RelayCommand]
     private void Close()
     {
-        mainWindow.CurrentModalViewModel = null;
+        navigation.CloseModal();
     }
 }

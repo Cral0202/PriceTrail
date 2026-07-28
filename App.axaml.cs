@@ -13,12 +13,21 @@ using Avalonia.Controls;
 using PriceTrail.States;
 using PriceTrail.Services;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using PriceTrail.Repositories.Products;
+using PriceTrail.ViewModels.Products;
+using PriceTrail.ViewModels.Notifications;
+using PriceTrail.ViewModels.Settings;
+using PriceTrail.Services.Factories;
+using PriceTrail.Repositories.Settings;
+using PriceTrail.Repositories.Notifications;
+using System.IO;
 
 namespace PriceTrail;
 
 public partial class App : Application
 {
-    private PlaywrightBrowserService? _playwrightBrowserService;
+    public IServiceProvider Services { get; private set; } = null!;
 
     public override void Initialize()
     {
@@ -27,20 +36,21 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        // Apply db migrations on startup
-        using var db = new AppDbContext();
-        db.Database.Migrate();
+        var services = new ServiceCollection();
+        RegisterServices(services);
+        Services = services.BuildServiceProvider();
 
-        _playwrightBrowserService = new PlaywrightBrowserService();
+        // Apply db migrations on startup
+        using (var scope = Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            db.Database.Migrate();
+        }
 
         // Open window
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var mainWindow = new MainWindow
-            {
-                DataContext = new MainWindowViewModel()
-            };
-
+            var mainWindow = Services.GetRequiredService<MainWindow>();
             desktop.MainWindow = mainWindow;
             desktop.Exit += Desktop_Exit;
 
@@ -52,42 +62,97 @@ public partial class App : Application
 
     private async Task InitializeAppAsync(MainWindow mainWindow)
     {
+        var vm = (MainWindowViewModel)mainWindow.DataContext!;
+
         try
         {
             // Playwright
-            await _playwrightBrowserService!.InitializeAsync();
+            var playwright = Services.GetRequiredService<PlaywrightBrowserService>();
+            await playwright.InitializeAsync();
 
             // State
-            var appState = new AppState(_playwrightBrowserService); // TODO: Can we avoid having to pass the service all the way down to ProductState?
-            await appState.SettingsState.InitializeAsync();
-            await appState.NotificationState.InitializeAsync();
-            await appState.ProductState.LoadProductsAsync();
+            var settingsState = Services.GetRequiredService<SettingsState>();
+            var notificationState = Services.GetRequiredService<NotificationState>();
+            var productState = Services.GetRequiredService<ProductState>();
+            var updateState = Services.GetRequiredService<UpdateState>();
 
-            mainWindow.DataContext = new MainWindowViewModel(appState);
+            await settingsState.InitializeAsync();
+            await notificationState.InitializeAsync();
+            await productState.LoadProductsAsync();
 
             // Background services
-            var priceRefreshService = new PriceRefreshService(appState.ProductState, appState.SettingsState);
+            var priceRefreshService = Services.GetRequiredService<PriceRefreshService>();
             _ = priceRefreshService.RestartAsync();
 
+            vm.IsLoading = false;
+
             // Check for updates
-            _ = appState.UpdateState.CheckForUpdatesAsync();
+            _ = updateState.CheckForUpdatesAsync();
         }
         catch (Exception ex)
         {
-            if (mainWindow.DataContext is MainWindowViewModel vm)
-            {
-                vm.ErrorMessage = ex.Message;
-                vm.IsLoading = false;
-            }
+            vm.ErrorMessage = ex.Message;
+            vm.IsLoading = false;
         }
     }
 
-    private void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    private static void RegisterServices(IServiceCollection services)
     {
-        if (_playwrightBrowserService != null)
+        // Database
+        services.AddDbContextFactory<AppDbContext>(options =>
         {
-            _ = _playwrightBrowserService.DisposeAsync();
-            _playwrightBrowserService = null;
+            Directory.CreateDirectory(AppPaths.Data);
+            options.UseSqlite($"Data Source={AppPaths.Database}");
+        });
+
+        // Repositories
+        services.AddSingleton<ProductRepository>();
+        services.AddSingleton<ProductPageRepository>();
+        services.AddSingleton<PriceHistoryRepository>();
+        services.AddSingleton<SettingsRepository>();
+        services.AddSingleton<NotificationRepository>();
+
+
+        // States
+        services.AddSingleton<SettingsState>();
+        services.AddSingleton<NotificationState>();
+        services.AddSingleton<UpdateState>();
+        services.AddSingleton<ProductState>();
+
+        // Services
+        services.AddSingleton<PlaywrightBrowserService>();
+        services.AddSingleton<ProductExtractorService>();
+        services.AddSingleton<PriceNotificationService>();
+        services.AddSingleton<NativeNotificationService>();
+        services.AddSingleton<PriceRefreshService>();
+        services.AddSingleton<NavigationService>();
+        services.AddSingleton<UpdateService>();
+        services.AddSingleton<ToastNotificationService>();
+
+        // Views
+        services.AddTransient<MainWindow>();
+
+        // ViewModels
+        services.AddTransient<MainWindowViewModel>();
+        services.AddTransient<ProductsViewModel>();
+        services.AddTransient<NotificationsViewModel>();
+        services.AddTransient<SettingsViewModel>();
+
+        services.AddTransient<AddProductModalViewModel>();
+
+        // Factories
+        services.AddSingleton<ProductDetailsViewModelFactory>();
+        services.AddSingleton<EditProductModalViewModelFactory>();
+        services.AddSingleton<AddProductPageModalViewModelFactory>();
+        services.AddSingleton<OverviewViewModelFactory>();
+        services.AddSingleton<HistoryViewModelFactory>();
+    }
+
+    private async void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        if (Services is IAsyncDisposable asyncDisposable)
+        {
+            await asyncDisposable.DisposeAsync();
         }
     }
 
@@ -96,7 +161,7 @@ public partial class App : Application
         if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
             return;
 
-        desktop.MainWindow ??= new MainWindow();
+        desktop.MainWindow ??= Services.GetRequiredService<MainWindow>();
 
         desktop.MainWindow.Show();
         desktop.MainWindow.ShowInTaskbar = true;

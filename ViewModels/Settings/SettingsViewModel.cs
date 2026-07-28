@@ -12,8 +12,8 @@ namespace PriceTrail.ViewModels.Settings;
 
 public partial class SettingsViewModel(SettingsState settingsState, UpdateState updateState) : ViewModelBase
 {
-    public AppSettings Settings { get; } = settingsState.Settings;
-    public UpdateInfo UpdateInfo { get; } = updateState.UpdateInfo;
+    public AppSettings Settings => settingsState.Settings;
+    public UpdateInfo UpdateInfo => updateState.UpdateInfo;
 
     public string AppVersion => Constants.AppVersion;
 

@@ -6,15 +6,9 @@ namespace PriceTrail.Services;
 
 public sealed class ToastNotificationService
 {
-    public static ToastNotificationService Instance { get; } = new();
-
     private static readonly TimeSpan DefaultNotificationDuration = TimeSpan.FromSeconds(5);
 
     private WindowNotificationManager? _manager;
-
-    private ToastNotificationService()
-    {
-    }
 
     public void Initialize(WindowNotificationManager manager)
     {

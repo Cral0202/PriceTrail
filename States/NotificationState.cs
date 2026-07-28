@@ -6,17 +6,15 @@ using PriceTrail.Repositories.Notifications;
 
 namespace PriceTrail.States;
 
-public class NotificationState
+public class NotificationState(NotificationRepository repo)
 {
-    private readonly NotificationRepository _repo = new();
-
     public ObservableCollection<Notification> Notifications { get; } = [];
 
     public async Task InitializeAsync()
     {
         Notifications.Clear();
 
-        foreach (var notification in await _repo.GetNotificationsAsync())
+        foreach (var notification in await repo.GetNotificationsAsync())
         {
             Notifications.Add(notification);
         }
@@ -24,13 +22,13 @@ public class NotificationState
 
     public async Task AddNotificationAsync(Notification notification)
     {
-        await _repo.AddNotificationAsync(notification);
+        await repo.AddNotificationAsync(notification);
         Notifications.Insert(0, notification);
     }
 
     public async Task ClearAsync()
     {
-        await _repo.ClearNotificationsAsync();
+        await repo.ClearNotificationsAsync();
         Notifications.Clear();
     }
 }

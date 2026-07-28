@@ -114,7 +114,7 @@
                 Padding="20">
 
                 <ContentControl
-                    Content="{Binding CurrentViewModel}" />
+                    Content="{Binding Navigation.CurrentViewModel}" />
 
             </Border>
 
@@ -123,13 +123,13 @@
             <Border
                 Grid.ColumnSpan="2"
                 ZIndex="10"
-                IsVisible="{Binding IsModalOpen}"
+                IsVisible="{Binding Navigation.CurrentModalViewModel, Converter={x:Static ObjectConverters.IsNotNull}}"
                 Background="{StaticResource ModalOverlayBrush}">
 
                 <ContentControl
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="{Binding CurrentModalViewModel}" />
+                    Content="{Binding Navigation.CurrentModalViewModel}" />
 
             </Border>
 

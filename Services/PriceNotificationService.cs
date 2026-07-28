@@ -6,10 +6,8 @@ using PriceTrail.States;
 
 namespace PriceTrail.Services;
 
-public class PriceNotificationService(NotificationState notificationState, SettingsState settingsState)
+public class PriceNotificationService(NotificationState notificationState, SettingsState settingsState, NativeNotificationService notificationService)
 {
-    private readonly NativeNotificationService _notificationService = new();
-
     public async Task CheckForNotifications(Product product, ProductPage previousPage, ProductPage newPage)
     {
         if (!settingsState.Settings.NotificationsEnabled)
@@ -33,7 +31,7 @@ public class PriceNotificationService(NotificationState notificationState, Setti
             };
 
             await notificationState.AddNotificationAsync(notification);
-            await _notificationService.SendNotificationAsync(notification.Title, notification.Message);
+            await notificationService.SendNotificationAsync(notification.Title, notification.Message);
         }
     }
 }

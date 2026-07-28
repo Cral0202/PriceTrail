@@ -9,20 +9,20 @@ using PriceTrail.Services;
 
 namespace PriceTrail.States;
 
-public class ProductState(PlaywrightBrowserService playrightBrowserService, NotificationState notificationState, SettingsState settingsState)
+public class ProductState(
+    ProductRepository productRepo,
+    ProductPageRepository productPageRepo,
+    PriceHistoryRepository priceHistoryRepo,
+    ProductExtractorService extractor,
+    PriceNotificationService priceNotificationService)
 {
-    private readonly ProductRepository _productRepo = new();
-    private readonly ProductPageRepository _productPageRepo = new();
-    private readonly PriceHistoryRepository _priceHistoryRepo = new();
-    private readonly ProductExtractorService _extractor = new(playrightBrowserService);
-    private readonly PriceNotificationService _priceNotificationService = new(notificationState, settingsState);
     private readonly HashSet<int> _refreshingProducts = [];
 
     public ObservableCollection<Product> Products { get; } = [];
 
     public async Task LoadProductsAsync()
     {
-        var products = await _productRepo.GetProductsAsync();
+        var products = await productRepo.GetProductsAsync();
 
         Products.Clear();
 
@@ -34,32 +34,32 @@ public class ProductState(PlaywrightBrowserService playrightBrowserService, Noti
 
     public async Task AddProductAsync(Product product)
     {
-        await _productRepo.AddProductAsync(product);
+        await productRepo.AddProductAsync(product);
         Products.Add(product);
     }
 
     public async Task DeleteProductAsync(Product product)
     {
-        await _productRepo.DeleteProductAsync(product);
+        await productRepo.DeleteProductAsync(product);
         Products.Remove(product);
     }
 
     public async Task UpdateProductAsync(Product product)
     {
-        await _productRepo.UpdateProductAsync(product);
+        await productRepo.UpdateProductAsync(product);
     }
 
     public async Task<string?> AddProductPageToProductAsync(Product product, string url, CancellationToken cancellationToken = default)
     {
-        var result = await _extractor.ExtractAsync(url, cancellationToken);
+        var result = await extractor.ExtractAsync(url, cancellationToken);
 
         if (!result.IsSuccess)
             return result.ErrorMessage;
 
         var productPage = result.Page!;
 
-        await _productPageRepo.AddProductPageAsync(product, productPage);
-        var historyEntry = await _priceHistoryRepo.AddPriceHistoryEntryAsync(productPage);
+        await productPageRepo.AddProductPageAsync(product, productPage);
+        var historyEntry = await priceHistoryRepo.AddPriceHistoryEntryAsync(productPage);
 
         productPage.PriceHistory.Add(historyEntry);
         product.ProductPages.Add(productPage);
@@ -79,29 +79,29 @@ public class ProductState(PlaywrightBrowserService playrightBrowserService, Noti
         {
             foreach (var productPage in product.ProductPages)
             {
-                var result = await _extractor.ExtractAsync(productPage.Url);
+                var result = await extractor.ExtractAsync(productPage.Url);
 
                 if (!result.IsSuccess)
                 {
                     productPage.HasError = true;
                     productPage.ErrorMessage = result.ErrorMessage!;
 
-                    await _productPageRepo.UpdateProductPageAsync(productPage);
+                    await productPageRepo.UpdateProductPageAsync(productPage);
                     continue;
                 }
 
                 productPage.HasError = false;
                 productPage.ErrorMessage = "";
 
-                await _priceNotificationService.CheckForNotifications(product, productPage, result.Page!);
+                await priceNotificationService.CheckForNotifications(product, productPage, result.Page!);
 
                 productPage.Price = result.Page!.Price;
                 productPage.Currency = result.Page!.Currency;
                 productPage.ImageUrl = result.Page!.ImageUrl;
 
-                await _productPageRepo.UpdateProductPageAsync(productPage);
+                await productPageRepo.UpdateProductPageAsync(productPage);
 
-                var historyEntry = await _priceHistoryRepo.AddPriceHistoryEntryAsync(productPage);
+                var historyEntry = await priceHistoryRepo.AddPriceHistoryEntryAsync(productPage);
                 productPage.PriceHistory.Add(historyEntry);
             }
         }
@@ -121,7 +121,7 @@ public class ProductState(PlaywrightBrowserService playrightBrowserService, Noti
 
     public async Task DeleteProductPageAsync(Product product, ProductPage page)
     {
-        await _productPageRepo.DeleteProductPageAsync(page);
+        await productPageRepo.DeleteProductPageAsync(page);
         product.ProductPages.Remove(page);
     }
 }

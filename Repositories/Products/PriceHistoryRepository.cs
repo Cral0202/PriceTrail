@@ -1,16 +1,18 @@
 using System;
 using System.Threading.Tasks;
 
+using Microsoft.EntityFrameworkCore;
+
 using PriceTrail.Database;
 using PriceTrail.Models.Product;
 
 namespace PriceTrail.Repositories.Products;
 
-public class PriceHistoryRepository
+public class PriceHistoryRepository(IDbContextFactory<AppDbContext> contextFactory)
 {
     public async Task<PriceHistoryEntry> AddPriceHistoryEntryAsync(ProductPage page)
     {
-        using var db = new AppDbContext();
+        using var db = await contextFactory.CreateDbContextAsync();
 
         var entry = new PriceHistoryEntry
         {

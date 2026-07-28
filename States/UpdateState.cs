@@ -8,15 +8,13 @@ using PriceTrail.Services;
 
 namespace PriceTrail.States;
 
-public class UpdateState
+public class UpdateState(UpdateService updateService, ToastNotificationService toastService)
 {
-    private readonly UpdateService _updateService = new();
-
     public UpdateInfo UpdateInfo { get; } = new();
 
     public async Task CheckForUpdatesAsync()
     {
-        var result = await _updateService.CheckForUpdatesAsync();
+        var result = await updateService.CheckForUpdatesAsync();
 
         if (!result.IsUpdateAvailable)
             return;
@@ -25,7 +23,7 @@ public class UpdateState
         UpdateInfo.LatestVersion = result.LatestVersion;
         UpdateInfo.ReleaseUrl = result.ReleaseUrl;
 
-        ToastNotificationService.Instance.ShowMessage(
+        toastService.ShowMessage(
             "Update available",
             $"PriceTrail {result.LatestVersion} is available. Download it from settings.",
             NotificationType.Information,

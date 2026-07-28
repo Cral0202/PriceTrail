@@ -4,11 +4,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.Models.Product;
+using PriceTrail.Services;
 using PriceTrail.States;
 
 namespace PriceTrail.ViewModels.ProductDetails;
 
-public partial class EditProductModalViewModel(MainWindowViewModel mainWindow, ProductState productState, Product product) : ViewModelBase
+public partial class EditProductModalViewModel(NavigationService navigation, ProductState productState, Product product) : ViewModelBase
 {
     [ObservableProperty]
     public partial string NewProductName { get; set; } = product.Name;
@@ -33,7 +34,7 @@ public partial class EditProductModalViewModel(MainWindowViewModel mainWindow, P
     {
         await productState.DeleteProductAsync(product);
         await Close();
-        mainWindow.CurrentViewModel = mainWindow.ProductsViewModel;
+        navigation.GoBack();
     }
 
     [RelayCommand]
@@ -45,6 +46,6 @@ public partial class EditProductModalViewModel(MainWindowViewModel mainWindow, P
             await ChangeProductNameAsync();
         }
 
-        mainWindow.CurrentModalViewModel = null;
+        navigation.CloseModal();
     }
 }

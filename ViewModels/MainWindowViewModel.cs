@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using PriceTrail.Services;
 using PriceTrail.States;
 using PriceTrail.ViewModels.Notifications;
 using PriceTrail.ViewModels.Products;
@@ -10,7 +11,9 @@ namespace PriceTrail.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    private readonly AppState? _appState;
+    private readonly SettingsState _settingsState;
+
+    public NavigationService Navigation { get; }
 
     // Used for the sidebar
     public enum NavigationPage
@@ -30,14 +33,6 @@ public partial class MainWindowViewModel : ViewModelBase
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
     [ObservableProperty]
-    private object? _currentViewModel;
-
-    [ObservableProperty]
-    public partial ObservableObject? CurrentModalViewModel { get; set; }
-
-    public bool IsModalOpen => CurrentModalViewModel != null;
-
-    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsProductsActive))]
     [NotifyPropertyChangedFor(nameof(IsNotificationsActive))]
     [NotifyPropertyChangedFor(nameof(IsSettingsActive))]
@@ -52,47 +47,39 @@ public partial class MainWindowViewModel : ViewModelBase
     public bool IsNotificationsActive => CurrentPage == NavigationPage.Notifications;
     public bool IsSettingsActive => CurrentPage == NavigationPage.Settings;
 
-    public bool MinimizeToTrayEnabled => _appState?.SettingsState.Settings.MinimizeToTrayEnabled ?? true;
+    public bool MinimizeToTrayEnabled => _settingsState.Settings.MinimizeToTrayEnabled;
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(NavigationService navigation, SettingsState settingsState, ProductsViewModel productsViewModel, NotificationsViewModel notificationsViewModel, SettingsViewModel settingsViewModel)
     {
-    }
+        _settingsState = settingsState;
 
-    public MainWindowViewModel(AppState appState)
-    {
-        _appState = appState;
+        ProductsViewModel = productsViewModel;
+        NotificationsViewModel = notificationsViewModel;
+        SettingsViewModel = settingsViewModel;
 
-        ProductsViewModel = new ProductsViewModel(this, appState.ProductState);
-        NotificationsViewModel = new NotificationsViewModel(appState.NotificationState);
-        SettingsViewModel = new SettingsViewModel(appState.SettingsState, appState.UpdateState);
+        Navigation = navigation;
 
-        CurrentViewModel = ProductsViewModel;
-        IsLoading = false;
+        Navigation.NavigateAndClearHistory(ProductsViewModel);
     }
 
     [RelayCommand]
     private void ShowProducts()
     {
-        CurrentViewModel = ProductsViewModel;
+        Navigation.NavigateAndClearHistory(ProductsViewModel!);
         CurrentPage = NavigationPage.Products;
     }
 
     [RelayCommand]
     private void ShowNotifications()
     {
-        CurrentViewModel = NotificationsViewModel;
+        Navigation.NavigateAndClearHistory(NotificationsViewModel!);
         CurrentPage = NavigationPage.Notifications;
     }
 
     [RelayCommand]
     private void ShowSettings()
     {
-        CurrentViewModel = SettingsViewModel;
+        Navigation.NavigateAndClearHistory(SettingsViewModel!);
         CurrentPage = NavigationPage.Settings;
-    }
-
-    partial void OnCurrentModalViewModelChanged(ObservableObject? value)
-    {
-        OnPropertyChanged(nameof(IsModalOpen));
     }
 }

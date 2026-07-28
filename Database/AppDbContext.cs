@@ -8,7 +8,7 @@ using PriceTrail.Models.Settings;
 
 namespace PriceTrail.Database;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<AppSettings> Settings => Set<AppSettings>();
     public DbSet<Notification> Notifications => Set<Notification>();
@@ -19,7 +19,11 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        Directory.CreateDirectory(AppPaths.Data);
-        optionsBuilder.UseSqlite($"Data Source={AppPaths.Database}");
+        // Executed by EF Core design-time tools if options weren't passed via DI
+        if (!optionsBuilder.IsConfigured)
+        {
+            Directory.CreateDirectory(AppPaths.Data);
+            optionsBuilder.UseSqlite($"Data Source={AppPaths.Database}");
+        }
     }
 }

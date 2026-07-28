@@ -6,20 +6,18 @@ using PriceTrail.Repositories.Settings;
 
 namespace PriceTrail.States;
 
-public class SettingsState
+public class SettingsState(SettingsRepository repo)
 {
-    private readonly SettingsRepository _repo = new();
-
     public AppSettings Settings { get; private set; } = new();
 
     private async void OnSettingsChanged(object? sender, PropertyChangedEventArgs e)
     {
-        await _repo.SaveAsync(Settings);
+        await repo.SaveAsync(Settings);
     }
 
     public async Task InitializeAsync()
     {
-        Settings = await _repo.LoadAsync();
+        Settings = await repo.LoadAsync();
         Settings.PropertyChanged += OnSettingsChanged;
     }
 }
