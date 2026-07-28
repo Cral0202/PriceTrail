@@ -41,11 +41,9 @@ public partial class App : Application
         Services = services.BuildServiceProvider();
 
         // Apply db migrations on startup
-        using (var scope = Services.CreateScope())
-        {
-            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            db.Database.Migrate();
-        }
+        var factory = Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
+        using var db = factory.CreateDbContext();
+        db.Database.Migrate();
 
         // Open window
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -111,7 +109,6 @@ public partial class App : Application
         services.AddSingleton<PriceHistoryRepository>();
         services.AddSingleton<SettingsRepository>();
         services.AddSingleton<NotificationRepository>();
-
 
         // States
         services.AddSingleton<SettingsState>();
