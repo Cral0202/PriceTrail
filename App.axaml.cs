@@ -78,6 +78,10 @@ public partial class App : Application
             await notificationState.InitializeAsync();
             await productState.LoadProductsAsync();
 
+            // Launch on startup handling
+            var startupService = Services.GetRequiredService<StartupService>();
+            startupService.ApplyLaunchOnStartup();
+
             // Background services
             var priceRefreshService = Services.GetRequiredService<PriceRefreshService>();
             _ = priceRefreshService.RestartAsync();
@@ -125,6 +129,7 @@ public partial class App : Application
         services.AddSingleton<NavigationService>();
         services.AddSingleton<UpdateService>();
         services.AddSingleton<ToastNotificationService>();
+        services.AddSingleton<StartupService>();
 
         // Views
         services.AddTransient<MainWindow>();

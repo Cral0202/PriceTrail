@@ -92,7 +92,7 @@ jobs:
                       <key>CFBundleExecutable</key>
                       <string>PriceTrail</string>
                       <key>CFBundleIdentifier</key>
-                      <string>com.cral0202.pricetrail</string>
+                      <string>com.pricetrail</string>
                       <key>CFBundleName</key>
                       <string>PriceTrail</string>
                       <key>CFBundleIconFile</key>

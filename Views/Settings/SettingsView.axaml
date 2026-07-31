@@ -35,6 +35,10 @@
                             Text="Configure general application settings." />
 
                         <CheckBox
+                            Content="Launch on startup"
+                            IsChecked="{Binding Settings.LaunchOnStartupEnabled}" />
+
+                        <CheckBox
                             Content="Minimize to tray on close"
                             IsChecked="{Binding Settings.MinimizeToTrayEnabled}" />
                     </StackPanel>

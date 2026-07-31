@@ -4,6 +4,8 @@ namespace PriceTrail;
 
 public static class Constants
 {
+    public const string AppName = "PriceTrail";
+    public const string BundleId = "com.pricetrail";
     public const string LatestReleaseApi = "https://api.github.com/repos/Cral0202/PriceTrail/releases/latest";
 
     public static string AppVersion =>

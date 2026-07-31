@@ -17,6 +17,9 @@ public partial class AppSettings : ObservableObject
     [ObservableProperty]
     public partial bool MinimizeToTrayEnabled { get; set; } = true;
 
+    [ObservableProperty]
+    public partial bool LaunchOnStartupEnabled { get; set; } = true;
+
     /*****************/
     /* Notifications */
     /*****************/
