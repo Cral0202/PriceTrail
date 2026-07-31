@@ -52,6 +52,24 @@ public partial class App : Application
             desktop.MainWindow = mainWindow;
             desktop.Exit += Desktop_Exit;
 
+            // Check if the application was launched on startup
+            bool isAutostart = desktop.Args != null && desktop.Args.Contains("--autostart", StringComparer.OrdinalIgnoreCase);
+
+            if (isAutostart)
+            {
+                mainWindow.WindowState = WindowState.Minimized;
+                mainWindow.ShowInTaskbar = false;
+
+                // Wait for the show, then hide it immediately
+                void onWindowOpened(object? sender, EventArgs args)
+                {
+                    mainWindow.Hide();
+                    mainWindow.Opened -= onWindowOpened;
+                }
+
+                mainWindow.Opened += onWindowOpened;
+            }
+
             _ = InitializeAppAsync(mainWindow);
         }
 

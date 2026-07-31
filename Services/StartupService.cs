@@ -64,7 +64,7 @@ public class StartupService
 
         if (enable)
         {
-            key.SetValue(Constants.AppName, $"\"{executablePath}\"");
+            key.SetValue(Constants.AppName, $"\"{executablePath}\" --autostart");
         }
         else
         {
@@ -91,7 +91,7 @@ public class StartupService
                 [Desktop Entry]
                 Type=Application
                 Name={Constants.AppName}
-                Exec="{executablePath}"
+                Exec="{executablePath}" --autostart
                 Terminal=false
                 X-GNOME-Autostart-enabled=true
                 """;
@@ -130,6 +130,7 @@ public class StartupService
                     <key>ProgramArguments</key>
                     <array>
                         <string>{executablePath}</string>
+                        <string>--autostart</string>
                     </array>
 
                     <key>RunAtLoad</key>
