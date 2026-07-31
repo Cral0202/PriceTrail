@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 using Microsoft.Win32;
 
@@ -51,6 +52,7 @@ public class StartupService
         }
     }
 
+    [SupportedOSPlatform("windows")]
     private static void SetWindowsStartup(bool enable)
     {
         string registryKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
@@ -70,6 +72,7 @@ public class StartupService
         }
     }
 
+    [SupportedOSPlatform("linux")]
     private static void SetLinuxStartup(bool enable)
     {
         string autostartDir = Path.Combine(
@@ -101,6 +104,7 @@ public class StartupService
         }
     }
 
+    [SupportedOSPlatform("macos")]
     private static void SetMacStartup(bool enable)
     {
         string launchAgentsDir = Path.Combine(

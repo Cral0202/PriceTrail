@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
 namespace PriceTrail.Services;
@@ -24,6 +25,7 @@ public class NativeNotificationService
         return Task.CompletedTask;
     }
 
+    [SupportedOSPlatform("windows")]
     private static void SendWindowsToast(string title, string message)
     {
         var formattedTitle = $"PriceTrail - {Escape(title)}";
@@ -38,15 +40,17 @@ public class NativeNotificationService
         RunProcess("powershell", $"-NoProfile -ExecutionPolicy Bypass -Command \"{script}\"");
     }
 
+    [SupportedOSPlatform("linux")]
+    private static void SendLinuxNotification(string title, string message)
+    {
+        RunProcess("notify-send", $"-a \"PriceTrail\" \"{Escape(title)}\" \"{Escape(message)}\"");
+    }
+
+    [SupportedOSPlatform("macos")]
     private static void SendMacNotification(string title, string message)
     {
         var script = $"display notification \"{Escape(message)}\" with title \"PriceTrail\" subtitle \"{Escape(title)}\"";
         RunProcess("osascript", $"-e '{script}'");
-    }
-
-    private static void SendLinuxNotification(string title, string message)
-    {
-        RunProcess("notify-send", $"-a \"PriceTrail\" \"{Escape(title)}\" \"{Escape(message)}\"");
     }
 
     private static string Escape(string input)
