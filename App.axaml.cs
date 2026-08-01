@@ -168,15 +168,7 @@ public partial class App : Application
         services.AddSingleton<HistoryViewModelFactory>();
     }
 
-    private async void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
-    {
-        if (Services is IAsyncDisposable asyncDisposable)
-        {
-            await asyncDisposable.DisposeAsync();
-        }
-    }
-
-    private void TrayShowWindow_Click(object? sender, EventArgs e)
+    public void ShowMainWindow()
     {
         if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
             return;
@@ -187,6 +179,19 @@ public partial class App : Application
         desktop.MainWindow.ShowInTaskbar = true;
         desktop.MainWindow.WindowState = WindowState.Normal;
         desktop.MainWindow.Activate();
+    }
+
+    private async void Desktop_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        if (Services is IAsyncDisposable asyncDisposable)
+        {
+            await asyncDisposable.DisposeAsync();
+        }
+    }
+
+    private void TrayShowWindow_Click(object? sender, EventArgs e)
+    {
+        ShowMainWindow();
     }
 
     private void TrayExit_Click(object? sender, EventArgs e)

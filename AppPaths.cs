@@ -12,4 +12,8 @@ public static class AppPaths
     public static string Database => Path.Combine(Data, "pricetrail.db");
 
     public static string Playwright => Path.Combine(Root, "Playwright");
+
+    public static string Runtime => Path.Combine(Root, "Runtime");
+
+    public static string InstanceLock => Path.Combine(Runtime, "instance.lock");
 }
