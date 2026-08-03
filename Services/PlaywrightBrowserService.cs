@@ -18,6 +18,13 @@ public class PlaywrightBrowserService : IAsyncDisposable
         Environment.SetEnvironmentVariable("PLAYWRIGHT_BROWSERS_PATH", AppPaths.Playwright);
         Directory.CreateDirectory(AppPaths.Playwright);
 
+        if (OperatingSystem.IsMacOS())
+        {
+            // In the .app bundle, the .playwright folder lives in "Contents/Resources" instead of next to the executable
+            var resourcesDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "Resources"));
+            Environment.SetEnvironmentVariable("PLAYWRIGHT_DRIVER_SEARCH_PATH", resourcesDir);
+        }
+
         _playwright = await Playwright.CreateAsync();
 
         await EnsureChromiumInstalledAsync();
