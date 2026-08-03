@@ -14,7 +14,9 @@ public partial class ProductPage : ObservableObject
     public Product? Product { get; set; } // Navigation property
 
     public string Url { get; set; } = "";
-    public string StoreName { get; set; } = "";
+
+    [ObservableProperty]
+    public partial string StoreName { get; set; } = "";
 
     [ObservableProperty]
     public partial decimal Price { get; set; } = 0;

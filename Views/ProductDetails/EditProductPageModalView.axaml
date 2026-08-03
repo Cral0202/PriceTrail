@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:PriceTrail.ViewModels.ProductDetails"
     xmlns:fluentIcons="using:FluentIcons.Avalonia"
-    x:Class="PriceTrail.Views.ProductDetails.EditProductModalView"
-    x:DataType="vm:EditProductModalViewModel">
+    x:Class="PriceTrail.Views.ProductDetails.EditProductPageModalView"
+    x:DataType="vm:EditProductPageModalViewModel">
 
     <Border
         Classes="modal"
@@ -14,16 +14,16 @@
 
             <TextBlock
                 Classes="modal-title"
-                Text="Edit Product"/>
+                Text="Edit Product Page"/>
 
             <StackPanel Spacing="4">
 
                 <TextBlock
-                    Text="Name"
+                    Text="Store Name"
                     Opacity="0.7" />
 
                 <TextBox
-                    Text="{Binding NewProductName}"
+                    Text="{Binding NewStoreName}"
                     PlaceholderText="Name" />
 
             </StackPanel>
@@ -38,7 +38,7 @@
 
                 <Button
                     Classes="danger"
-                    Command="{Binding DeleteProductCommand}">
+                    Command="{Binding DeleteProductPageCommand}">
 
                     <StackPanel
                         Orientation="Horizontal"

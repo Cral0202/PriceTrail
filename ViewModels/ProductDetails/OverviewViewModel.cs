@@ -1,19 +1,18 @@
-using System.Threading.Tasks;
-
 using CommunityToolkit.Mvvm.Input;
 
 using PriceTrail.Models.Product;
-using PriceTrail.States;
+using PriceTrail.Services;
+using PriceTrail.Services.Factories;
 
 namespace PriceTrail.ViewModels.ProductDetails;
 
-public partial class OverviewViewModel(ProductState productState, Product product) : ViewModelBase
+public partial class OverviewViewModel(NavigationService navigation, EditProductPageModalViewModelFactory editProductPageFactory, Product product) : ViewModelBase
 {
     public Product Product { get; } = product;
 
     [RelayCommand]
-    private async Task DeleteProductPageAsync(ProductPage page)
+    private void OpenEditProductPageModal(ProductPage productPage)
     {
-        await productState.DeleteProductPageAsync(Product, page);
+        navigation.OpenModal(editProductPageFactory.Create(Product, productPage));
     }
 }

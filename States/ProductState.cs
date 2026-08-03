@@ -124,4 +124,9 @@ public class ProductState(
         await productPageRepo.DeleteProductPageAsync(page);
         product.ProductPages.Remove(page);
     }
+
+    public async Task UpdateProductPageAsync(ProductPage page)
+    {
+        await productPageRepo.UpdateProductPageAsync(page);
+    }
 }

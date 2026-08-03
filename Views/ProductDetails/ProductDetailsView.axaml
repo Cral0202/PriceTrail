@@ -56,6 +56,24 @@
                         </Button>
 
                         <Button
+                            Classes="outline"
+                            Command="{Binding OpenEditProductModalCommand}">
+
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Spacing="8">
+
+                                <fluentIcons:SymbolIcon
+                                    Symbol="Edit"
+                                    FontSize="16" />
+
+                                <TextBlock Text="Edit" />
+
+                            </StackPanel>
+
+                        </Button>
+
+                        <Button
                             Classes="primary"
                             Command="{Binding OpenAddProductPageModalCommand}">
 
@@ -86,24 +104,6 @@
                                     FontSize="16" />
 
                                 <TextBlock Text="Refresh Prices" />
-
-                            </StackPanel>
-
-                        </Button>
-
-                        <Button
-                            Classes="primary"
-                            Command="{Binding OpenEditProductModalCommand}">
-
-                            <StackPanel
-                                Orientation="Horizontal"
-                                Spacing="8">
-
-                                <fluentIcons:SymbolIcon
-                                    Symbol="Edit"
-                                    FontSize="16" />
-
-                                <TextBlock Text="Edit" />
 
                             </StackPanel>
 

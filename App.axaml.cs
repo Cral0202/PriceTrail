@@ -166,6 +166,7 @@ public partial class App : Application
         services.AddSingleton<AddProductPageModalViewModelFactory>();
         services.AddSingleton<OverviewViewModelFactory>();
         services.AddSingleton<HistoryViewModelFactory>();
+        services.AddSingleton<EditProductPageModalViewModelFactory>();
     }
 
     public void ShowMainWindow()
