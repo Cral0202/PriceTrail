@@ -6,8 +6,6 @@ Add product URLs from different stores, and PriceTrail will automatically extrac
 
 ⚠️ If you are using a VPN, some websites may block you. You may want to exclude PriceTrail from your VPN.
 
-⚠️ The macOS build is unsigned and thus may not run.
-
 ## Features
 
 - Compare prices across multiple stores
